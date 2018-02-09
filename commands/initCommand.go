@@ -22,7 +22,7 @@ var (
 		Flags: []cli.Flag {
 			cli.StringFlag{
 				Name: "base-url",
-				Value: slickconfig.Configuration.Service.BaseUrl,
+				Value: slickconfig.Configuration.Options.BaseUrl,
 			},
 		},
 		Action: InitializeConfiguration,
@@ -32,7 +32,7 @@ var (
 func InitializeConfiguration(c *cli.Context) {
 	logger := log.New("slickcli.init")
 	if c.IsSet("base-url") {
-		slickconfig.Configuration.Service.BaseUrl = c.String("base-url")
+		slickconfig.Configuration.Options.BaseUrl = c.String("base-url")
 	}
 
 	// ---------------------------- JWT Keys ---------------------------------
@@ -46,14 +46,14 @@ func InitializeConfiguration(c *cli.Context) {
 		Type: "RSA PRIVATE KEY",
 		Bytes: x509.MarshalPKCS1PrivateKey(key),
 	}
-	slickconfig.Configuration.AuthEncryption.JWTPrivateKey = string(pem.EncodeToMemory(block))
+	slickconfig.Configuration.TokenEncryption.JWTPrivateKey = string(pem.EncodeToMemory(block))
 	public := key.Public()
 	buffer, err := x509.MarshalPKIXPublicKey(public)
 	block = &pem.Block{
 		Type: "RSA PUBLIC KEY",
 		Bytes: buffer,
 	}
-	slickconfig.Configuration.AuthEncryption.JWTPublicKey = string(pem.EncodeToMemory(block))
+	slickconfig.Configuration.TokenEncryption.JWTPublicKey = string(pem.EncodeToMemory(block))
 
 	// ---------------------------- TLS Key and Certificate ---------------------------------
 	logger.Debug("Generating TLS key and certificate...")
@@ -87,9 +87,9 @@ func InitializeConfiguration(c *cli.Context) {
 		BasicConstraintsValid: true,
 	}
 
-	baseUrl, err := url.Parse(slickconfig.Configuration.Service.BaseUrl)
+	baseUrl, err := url.Parse(slickconfig.Configuration.Options.BaseUrl)
 	if err != nil {
-		logger.Fatal("Failed to parse url!", "url", slickconfig.Configuration.Service.BaseUrl, "error", err)
+		logger.Fatal("Failed to parse url!", "url", slickconfig.Configuration.Options.BaseUrl, "error", err)
 	}
 
 	hosts := []string {baseUrl.Hostname(), "127.0.0.1", "localhost"}

@@ -31,10 +31,10 @@ type AuthenticationEncryptionConfiguration struct {
 }
 
 type SlickConfiguration struct {
-	Service ServiceConfiguration `toml:"service"`
-	Roles RolesConfiguration `toml:"roles"`
-	TLSEncryption TLSEncryptionConfiguration `toml:"tls-encryption"`
-	AuthEncryption AuthenticationEncryptionConfiguration `toml:"auth-encryption"`
+	Options         ServiceConfiguration                  `toml:"options"`
+	Roles           RolesConfiguration                    `toml:"roles"`
+	TLSEncryption   TLSEncryptionConfiguration            `toml:"tls-encryption"`
+	TokenEncryption AuthenticationEncryptionConfiguration `toml:"token-encryption"`
 }
 
 const (
@@ -50,7 +50,7 @@ var (
 )
 
 func init() {
-	Configuration.Service.BaseUrl = "https://localhost:8888"
+	Configuration.Options.BaseUrl = "https://localhost:8888"
 	Configuration.Roles.Defaults = DefaultRoles
 }
 
