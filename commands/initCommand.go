@@ -9,6 +9,11 @@ import (
 	"encoding/pem"
 	"crypto/x509"
 	"fmt"
+	"crypto/x509/pkix"
+	"net"
+	"time"
+	"math/big"
+	"net/url"
 )
 
 var (
@@ -17,7 +22,7 @@ var (
 		Flags: []cli.Flag {
 			cli.StringFlag{
 				Name: "base-url",
-				Value: slickconfig.Configuration.BaseUrl,
+				Value: slickconfig.Configuration.Service.BaseUrl,
 			},
 		},
 		Action: InitializeConfiguration,
@@ -27,9 +32,11 @@ var (
 func InitializeConfiguration(c *cli.Context) {
 	logger := log.New("slickcli.init")
 	if c.IsSet("base-url") {
-		slickconfig.Configuration.BaseUrl = c.String("base-url")
+		slickconfig.Configuration.Service.BaseUrl = c.String("base-url")
 	}
-	logger.Debug("Generating key...")
+
+	// ---------------------------- JWT Keys ---------------------------------
+	logger.Debug("Generating JWT keys...")
 	key, err := rsa.GenerateKey(rand.Reader, 1024)
 	if err != nil {
 		logger.Fatal("Unable to generate cryptographic key", err)
@@ -39,17 +46,73 @@ func InitializeConfiguration(c *cli.Context) {
 		Type: "RSA PRIVATE KEY",
 		Bytes: x509.MarshalPKCS1PrivateKey(key),
 	}
-	slickconfig.Configuration.JWTPrivateKey = string(pem.EncodeToMemory(block))
+	slickconfig.Configuration.AuthEncryption.JWTPrivateKey = string(pem.EncodeToMemory(block))
 	public := key.Public()
 	buffer, err := x509.MarshalPKIXPublicKey(public)
 	block = &pem.Block{
 		Type: "RSA PUBLIC KEY",
 		Bytes: buffer,
 	}
-	slickconfig.Configuration.JWTPublicKey = string(pem.EncodeToMemory(block))
+	slickconfig.Configuration.AuthEncryption.JWTPublicKey = string(pem.EncodeToMemory(block))
+
+	// ---------------------------- TLS Key and Certificate ---------------------------------
+	logger.Debug("Generating TLS key and certificate...")
+	key, err = rsa.GenerateKey(rand.Reader, 2048)
+	if err != nil {
+		logger.Fatal("Error generating TLS key.", "error", err)
+	}
+	block = &pem.Block{
+		Type: "RSA PRIVATE KEY",
+		Bytes: x509.MarshalPKCS1PrivateKey(key),
+	}
+	slickconfig.Configuration.TLSEncryption.TLSPrivateKey = string(pem.EncodeToMemory(block))
+
+	notBefore := time.Now()
+	notAfter := notBefore.Add(5*365*24*time.Hour)
+	serialNumberLimit := new(big.Int).Lsh(big.NewInt(1), 128)
+	serialNumber, err := rand.Int(rand.Reader, serialNumberLimit)
+	if err != nil {
+		logger.Fatal("Failed to generate serial number: ", "Error", err)
+	}
+
+	template := x509.Certificate{
+		SerialNumber: serialNumber,
+		Subject: pkix.Name{
+			Organization: []string{"Slick"},
+		},
+		NotBefore: notBefore,
+		NotAfter:  notAfter,
+		KeyUsage:              x509.KeyUsageKeyEncipherment | x509.KeyUsageDigitalSignature,
+		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth},
+		BasicConstraintsValid: true,
+	}
+
+	baseUrl, err := url.Parse(slickconfig.Configuration.Service.BaseUrl)
+	if err != nil {
+		logger.Fatal("Failed to parse url!", "url", slickconfig.Configuration.Service.BaseUrl, "error", err)
+	}
+
+	hosts := []string {baseUrl.Hostname(), "127.0.0.1", "localhost"}
+
+	for _, h := range hosts {
+		if ip := net.ParseIP(h); ip != nil {
+			template.IPAddresses = append(template.IPAddresses, ip)
+		} else {
+			template.DNSNames = append(template.DNSNames, h)
+		}
+	}
+
+	derBytes, err := x509.CreateCertificate(rand.Reader, &template, &template, key.Public(), key)
+	block = &pem.Block{
+		Type: "CERTIFICATE",
+		Bytes: derBytes,
+	}
+	slickconfig.Configuration.TLSEncryption.TLSCertificate = string(pem.EncodeToMemory(block))
+
 	configContent, err := slickconfig.Configuration.ToBytes()
 	if err != nil {
 		logger.Fatal("Problem generating configuration:", err)
 	}
+
 	fmt.Println(string(configContent))
 }

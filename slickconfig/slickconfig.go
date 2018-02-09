@@ -8,17 +8,39 @@ import (
 	"net/http"
 	"github.com/serussell/logxi/v1"
 	"fmt"
+	"os/user"
+	"path"
 )
 
-type SlickConfiguration struct {
-	BaseUrl string `toml:"base-url" comment:"You must supply a base url for slick"`
+type ServiceConfiguration struct {
+	BaseUrl string `toml:"base-url" comment:"You must supply a base url for slick.  If you change it you have to regenerate certificates."`
+}
+
+type RolesConfiguration struct {
+	Defaults []Role `toml:"default-roles" comment:"The default roles that slick gives (can be customized per-project)."`
+}
+
+type TLSEncryptionConfiguration struct {
+	TLSPrivateKey string `toml:"tls-private-key" comment:"The private key for tls encryption."`
+	TLSCertificate string `toml:"tls-certificate" comment:"The certificate for tls encryption."`
+}
+
+type AuthenticationEncryptionConfiguration struct {
 	JWTPrivateKey string `toml:"jwt-private-key" comment:"The private key used to sign the jwt tokens.  Generate using openssl genrsa -out app.rsa 1024"`
 	JWTPublicKey string `toml:"jwt-public-key" comment:"The public key used to verify the jwt tokens.  Generate using openssl rsa -in app.rsa -pubout > app.rsa.pub"`
+}
+
+type SlickConfiguration struct {
+	Service ServiceConfiguration `toml:"service"`
+	Roles RolesConfiguration `toml:"roles"`
+	TLSEncryption TLSEncryptionConfiguration `toml:"tls-encryption"`
+	AuthEncryption AuthenticationEncryptionConfiguration `toml:"auth-encryption"`
 }
 
 const (
 	locationSystem                       = "/etc/slick.toml"
 	locationLocal                        = "./slick.toml"
+	homeFileName                         = ".slick.toml"
 	ConfigurationEnvironmentVariableName = "SLICKCONF"
 )
 
@@ -28,7 +50,8 @@ var (
 )
 
 func init() {
-	Configuration.BaseUrl = "http://localhost:6789"
+	Configuration.Service.BaseUrl = "https://localhost:8888"
+	Configuration.Roles.Defaults = DefaultRoles
 }
 
 func (c *SlickConfiguration) LoadFromStandardLocations() {
@@ -40,11 +63,20 @@ func (c *SlickConfiguration) LoadFromStandardLocations() {
 		if err == nil {
 			c.Load(data)
 		} else {
-			data, err = ioutil.ReadFile(locationSystem)
+			usr, err := user.Current()
 			if err == nil {
-				c.Load(data)
-			} else {
-				logger.Warn("Unable to find configuration in any of the standard locations, only defaults available.")
+				data, err := ioutil.ReadFile(path.Join(usr.HomeDir, homeFileName))
+				if err == nil {
+					c.Load(data)
+				}
+			}
+			if err != nil {
+				data, err = ioutil.ReadFile(locationSystem)
+				if err == nil {
+					c.Load(data)
+				} else {
+					logger.Warn("Unable to find configuration in any of the standard locations, only defaults available.")
+				}
 			}
 		}
 	} else {
