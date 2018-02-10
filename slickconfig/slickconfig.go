@@ -30,8 +30,16 @@ type AuthenticationEncryptionConfiguration struct {
 	JWTPublicKey string `toml:"jwt-public-key" comment:"The public key used to verify the jwt tokens.  Generate using openssl rsa -in app.rsa -pubout > app.rsa.pub"`
 }
 
+type MongoConfiguration struct {
+	URL string `toml:"connect-url" comment:"The URL should contain any authentication information to use.  See https://godoc.org/github.com/globalsign/mgo#Dial"`
+	Database string `toml:"database" comment:"The name of the database to use for slick."`
+	UseTLS bool `toml:"use-tls" comment:"Use TLS (encryption) on the connection.  If you don't supply a root ca's file (with your server's certificate in it) then verification is not done.'" commented:"true"`
+	RootCertificatesLocation string `toml:"root-ca-file" comment:"If you want to validate the server's certificate, put in a path to the file storing the certificate(s)." commented:"true"`
+}
+
 type SlickConfiguration struct {
-	Options         ServiceConfiguration                  `toml:"options"`
+	Common          ServiceConfiguration                  `toml:"common"`
+	Mongo			MongoConfiguration                    `toml:"mongo"`
 	Roles           RolesConfiguration                    `toml:"roles"`
 	TLSEncryption   TLSEncryptionConfiguration            `toml:"tls-encryption"`
 	TokenEncryption AuthenticationEncryptionConfiguration `toml:"token-encryption"`
@@ -50,7 +58,9 @@ var (
 )
 
 func init() {
-	Configuration.Options.BaseUrl = "https://localhost:8888"
+	Configuration.Common.BaseUrl = "https://localhost:8888"
+	Configuration.Mongo.URL = "mongodb://localhost/"
+	Configuration.Mongo.Database = "slick"
 	Configuration.Roles.Defaults = DefaultRoles
 }
 

@@ -22,7 +22,7 @@ var (
 		Flags: []cli.Flag {
 			cli.StringFlag{
 				Name: "base-url",
-				Value: slickconfig.Configuration.Options.BaseUrl,
+				Value: slickconfig.Configuration.Common.BaseUrl,
 			},
 		},
 		Action: InitializeConfiguration,
@@ -32,7 +32,7 @@ var (
 func InitializeConfiguration(c *cli.Context) {
 	logger := log.New("slickcli.init")
 	if c.IsSet("base-url") {
-		slickconfig.Configuration.Options.BaseUrl = c.String("base-url")
+		slickconfig.Configuration.Common.BaseUrl = c.String("base-url")
 	}
 
 	// ---------------------------- JWT Keys ---------------------------------
@@ -87,9 +87,9 @@ func InitializeConfiguration(c *cli.Context) {
 		BasicConstraintsValid: true,
 	}
 
-	baseUrl, err := url.Parse(slickconfig.Configuration.Options.BaseUrl)
+	baseUrl, err := url.Parse(slickconfig.Configuration.Common.BaseUrl)
 	if err != nil {
-		logger.Fatal("Failed to parse url!", "url", slickconfig.Configuration.Options.BaseUrl, "error", err)
+		logger.Fatal("Failed to parse url!", "url", slickconfig.Configuration.Common.BaseUrl, "error", err)
 	}
 
 	hosts := []string {baseUrl.Hostname(), "127.0.0.1", "localhost"}
