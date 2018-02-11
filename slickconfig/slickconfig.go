@@ -16,6 +16,11 @@ type ServiceConfiguration struct {
 	BaseUrl string `toml:"base-url" comment:"You must supply a base url for slick.  If you change it you have to regenerate certificates."`
 }
 
+type GoogleOauthConfiguration struct {
+	ClientID string `toml:"client-id" comment:"ClientID from google for authentication." commented:"true"`
+	Secret string `toml:"secret" comment:"Secret from google for authentication." commented:"true"`
+}
+
 type RolesConfiguration struct {
 	Defaults []Role `toml:"default-roles" comment:"The default roles that slick gives (can be customized per-project)."`
 }
@@ -39,6 +44,7 @@ type MongoConfiguration struct {
 
 type SlickConfiguration struct {
 	Common          ServiceConfiguration                  `toml:"common"`
+	Google          GoogleOauthConfiguration              `toml:"google-authentication" comment:"To enable google authentication, go to https://console.developers.google.com and create a project, and then go to API and Services -> Credentials and create credentials."`
 	Mongo			MongoConfiguration                    `toml:"mongo"`
 	Roles           RolesConfiguration                    `toml:"roles"`
 	TLSEncryption   TLSEncryptionConfiguration            `toml:"tls-encryption"`
