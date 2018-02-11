@@ -14,6 +14,7 @@ import (
 	"time"
 	"math/big"
 	"net/url"
+	"io/ioutil"
 )
 
 var (
@@ -23,6 +24,9 @@ var (
 			cli.StringFlag{
 				Name: "base-url",
 				Value: slickconfig.Configuration.Common.BaseUrl,
+			},
+			cli.StringFlag{
+				Name: "o,output",
 			},
 		},
 		Action: InitializeConfiguration,
@@ -114,5 +118,10 @@ func InitializeConfiguration(c *cli.Context) {
 		logger.Fatal("Problem generating configuration:", err)
 	}
 
-	fmt.Println(string(configContent))
+	if c.IsSet("o") {
+		ioutil.WriteFile(c.String("o"), configContent, 0600)
+	} else {
+		fmt.Println(string(configContent))
+	}
+
 }
