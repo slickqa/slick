@@ -33,6 +33,7 @@ func main() {
 
 	app.Commands = []cli.Command{
 		commands.InitCommand,
+		commands.ServeCommand,
 	}
 
 	app.Run(os.Args)

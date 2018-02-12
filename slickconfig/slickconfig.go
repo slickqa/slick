@@ -14,6 +14,7 @@ import (
 
 type ServiceConfiguration struct {
 	BaseUrl string `toml:"base-url" comment:"You must supply a base url for slick.  If you change it you have to regenerate certificates."`
+	LocalWebFilesPath string `toml:"web-files-path" comment:"Path to the local web files.  If you are using a release version and it has the web files embedded, you won't need this." commented:"true"`
 }
 
 type GoogleOauthConfiguration struct {

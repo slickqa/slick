@@ -2,3 +2,5 @@ slick
 slick.exe
 slick.toml
 **/.idea
+web/dist
+web/node_modules
