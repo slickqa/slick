@@ -11,18 +11,102 @@ option csharp_namespace = "com.slickqa.client.protobuf";
 
 // auth stuff
 message IsAuthorizedRequest {
-  string permission = 1;
+  string CompanyName = 1;
+  string ProjectName = 2;
+  uint32 Permission = 3;
 }
 
 message IsAuthorizedResponse {
   bool allowed = 1;
 }
 
+message UserInfoRequest {
+  string EmailAddress = 1;
+}
+
+message UsersForCompanyQueryRequest {
+  string CompanyName = 1;
+}
+
+message UsersForProjectQueryRequest {
+  string CompanyName = 1;
+  string ProjectName = 2;
+}
+
+message UsersQueryResponse {
+  repeated UserInfo users = 1;
+}
+
+message ProjectPermissionInfo {
+  string ProjectName = 1; //`bson:"name"`
+  uint32 Permissions = 2; //`bson:"permission"`
+}
+
+message CompanyPermissionInfo {
+  string CompanyName = 1; //`bson:"name"`
+  uint32 CompanyAdmin = 2; //`bson:"admin"`
+  repeated ProjectPermissionInfo Projects = 3; //`bson:"projects"`
+}
+
+message UserInfo {
+  string EmailAddress = 1; //`bson:"_id"`
+  repeated CompanyPermissionInfo Companies = 2; //`bson:"companies"`
+  string FullName = 3; //`bson:"fullName"`
+  string GivenName = 4; //`bson:"givenName"`
+  string FamilyName = 5; //`bson:"familyName"`
+  string AvatarUrl = 6; //`bson:"avatarUrl"`
+  string JobTitle = 7; //`bson:"title"`
+  string HashedPassword = 8; //`bson:"hashedPassword"`
+}
+
+message ApiTokenLoginRequest {
+  string Token = 1;
+}
+
+message PlainUserLoginRequest {
+  string UserName = 1;
+  string Password = 2;
+}
+
+message LoginResponse {
+  bool Success = 1;
+  string Token = 2;
+  UserInfo User = 3;
+}
+
 service Auth {
   rpc IsAuthorized(IsAuthorizedRequest) returns(IsAuthorizedResponse) {
     option (google.api.http) = {
-            get: "/api/v1/isAuthorized/{permission}"
-        };
+            get: "/api/auth/isAuthorized/{CompanyName}/{ProjectName}/{Permission}"
+    };
+  }
+  rpc LoginWithToken(ApiTokenLoginRequest) returns(LoginResponse) {
+    option (google.api.http) = {
+            get: "/api/auth/login-with-token/{Token}"
+    };
+  }
+  rpc LoginWithCredentials(PlainUserLoginRequest) returns(LoginResponse) {
+    option (google.api.http) = {
+            post: "/api/auth/login"
+    };
+  }
+}
+
+service Users {
+  rpc GetUserInfo(UserInfoRequest) returns(UserInfo) {
+    option (google.api.http) = {
+            get: "/api/users/info/{EmailAddress}"
+    };
+  }
+  rpc GetUsersForCompany(UsersForCompanyQueryRequest) returns(UsersQueryResponse) {
+    option (google.api.http) = {
+            get: "/api/users/by-company/{CompanyName}"
+    };
+  }
+  rpc GetUsersForProject(UsersForProjectQueryRequest) returns (UsersQueryResponse) {
+    option (google.api.http) = {
+            get: "/api/users/by-project/{CompanyName}/{ProjectName}"
+    };
   }
 }
 

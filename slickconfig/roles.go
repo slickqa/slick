@@ -1,7 +1,7 @@
 package slickconfig
 
 const (
-	PERMISSION_ADMIN = 1 << iota
+	PERMISSION_ADMIN uint32 = 1 << iota
 	PERMISSION_BUILD_WRITE
 	PERMISSION_BUILD_DELETE
 	PERMISSION_TESTCASE_WRITE
@@ -56,3 +56,13 @@ var (
 	}
 
 )
+
+func GetPermissionName(permission uint32) string {
+	if (permission & PERMISSION_ADMIN) != 0 {
+		return "Administrator"
+	}
+	if (permission & PERMISSION_BUILD_WRITE) != 0 {
+		return "Build Write"
+	}
+	return "Unknown"
+}

@@ -15,7 +15,7 @@
     "application/json"
   ],
   "paths": {
-    "/api/v1/isAuthorized/{permission}": {
+    "/api/auth/isAuthorized/{CompanyName}/{ProjectName}/{Permission}": {
       "get": {
         "operationId": "IsAuthorized",
         "responses": {
@@ -28,7 +28,60 @@
         },
         "parameters": [
           {
-            "name": "permission",
+            "name": "CompanyName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "ProjectName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Permission",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "operationId": "LoginWithCredentials",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/slickqaLoginResponse"
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
+    "/api/auth/login-with-token/{Token}": {
+      "get": {
+        "operationId": "LoginWithToken",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/slickqaLoginResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Token",
             "in": "path",
             "required": true,
             "type": "string"
@@ -38,15 +91,181 @@
           "Auth"
         ]
       }
+    },
+    "/api/users/by-company/{CompanyName}": {
+      "get": {
+        "operationId": "GetUsersForCompany",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/slickqaUsersQueryResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "CompanyName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/api/users/by-project/{CompanyName}/{ProjectName}": {
+      "get": {
+        "operationId": "GetUsersForProject",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/slickqaUsersQueryResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "CompanyName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "ProjectName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/api/users/info/{EmailAddress}": {
+      "get": {
+        "operationId": "GetUserInfo",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/slickqaUserInfo"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "EmailAddress",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Users"
+        ]
+      }
     }
   },
   "definitions": {
+    "slickqaCompanyPermissionInfo": {
+      "type": "object",
+      "properties": {
+        "CompanyName": {
+          "type": "string"
+        },
+        "CompanyAdmin": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "Projects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/slickqaProjectPermissionInfo"
+          }
+        }
+      }
+    },
     "slickqaIsAuthorizedResponse": {
       "type": "object",
       "properties": {
         "allowed": {
           "type": "boolean",
           "format": "boolean"
+        }
+      }
+    },
+    "slickqaLoginResponse": {
+      "type": "object",
+      "properties": {
+        "Success": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "Token": {
+          "type": "string"
+        },
+        "User": {
+          "$ref": "#/definitions/slickqaUserInfo"
+        }
+      }
+    },
+    "slickqaProjectPermissionInfo": {
+      "type": "object",
+      "properties": {
+        "ProjectName": {
+          "type": "string"
+        },
+        "Permissions": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "slickqaUserInfo": {
+      "type": "object",
+      "properties": {
+        "EmailAddress": {
+          "type": "string"
+        },
+        "Companies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/slickqaCompanyPermissionInfo"
+          }
+        },
+        "FullName": {
+          "type": "string"
+        },
+        "GivenName": {
+          "type": "string"
+        },
+        "FamilyName": {
+          "type": "string"
+        },
+        "AvatarUrl": {
+          "type": "string"
+        },
+        "JobTitle": {
+          "type": "string"
+        },
+        "HashedPassword": {
+          "type": "string"
+        }
+      }
+    },
+    "slickqaUsersQueryResponse": {
+      "type": "object",
+      "properties": {
+        "users": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/slickqaUserInfo"
+          }
         }
       }
     }

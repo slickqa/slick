@@ -11,4 +11,4 @@ web/public/slick.swagger.json:
 	protoc -I/usr/local/include -I. -I${GOPATH}/src -I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis --swagger_out=logtostderr=true:web/public/ slick.proto
 
 clean:
-	rm -f slick.pb.go slick.pb.gw.go slick.swagger.json
+	rm -f slickqa/slick.pb.go slickqa/slick.pb.gw.go web/public/slick.swagger.json

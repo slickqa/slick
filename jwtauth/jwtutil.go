@@ -1,0 +1,170 @@
+package jwtauth
+
+import (
+	"github.com/dgrijalva/jwt-go"
+	"github.com/serussell/logxi/v1"
+	"fmt"
+	"errors"
+	"google.golang.org/grpc/credentials"
+	"context"
+	"crypto/rsa"
+	"github.com/slickqa/slick/slickqa"
+	"time"
+	"crypto"
+	"encoding/pem"
+	"github.com/slickqa/slick/slickconfig"
+	"crypto/x509"
+	"crypto/x509/pkix"
+	"google.golang.org/grpc/metadata"
+	"strings"
+)
+
+var (
+	JwtRSAPrivateKey *rsa.PrivateKey
+	JwtRSAPublicKey *rsa.PublicKey
+	logger log.Logger
+)
+
+func init() {
+	logger = log.New("jwtauth")
+}
+
+type jwtoken struct {
+	token string
+}
+
+func (j jwtoken) GetRequestMetadata(ctx context.Context, uri ...string) (map[string]string, error) {
+	return map[string]string{
+		"Authorization": fmt.Sprintf("Bearer %s", j.token),
+	}, nil
+}
+
+func (j jwtoken) RequireTransportSecurity() bool {
+	return true
+}
+
+type SlickCompany struct {
+	CompanyAdmin int `json:"a,omitempty"`
+	ProjectPermissions map[string]uint32 `json:"proj"`
+}
+
+type SlickPermissions struct {
+	SlickAdmin int `json:"sa,omitempty"`
+	Companies map[string] SlickCompany `json:"co"`
+}
+
+type SlickClaims struct {
+	Permissions SlickPermissions `json:"sp"`
+	FullName string `json:"name"`
+	GivenName string `json:"given_name"`
+	jwt.StandardClaims
+}
+
+func initKeys() {
+	var err error
+	var ok bool
+	block, _ := pem.Decode([]byte(slickconfig.Configuration.TokenEncryption.JWTPrivateKey))
+	JwtRSAPrivateKey, err = x509.ParsePKCS1PrivateKey(block.Bytes)
+	if err != nil {
+			logger.Error("Failed Parsing private key from PEM block.", "error", err)
+	}
+	block, _ = pem.Decode([]byte(slickconfig.Configuration.TokenEncryption.JWTPublicKey))
+	public_key, err := x509.ParsePKIXPublicKey(block.Bytes)
+
+	if JwtRSAPublicKey, ok = public_key.(*rsa.PublicKey); !ok { logger.Error("Failed Parsing RSA public key from PEM block.")
+	}
+}
+
+func CreateJWTForUser(user slickqa.UserInfo) (string, error) {
+	permissions := SlickPermissions{}
+	permissions.Companies = make(map[string]SlickCompany)
+	for _, company := range user.Companies  {
+		slickCompany := SlickCompany{
+			CompanyAdmin: int(company.CompanyAdmin),
+			ProjectPermissions: make(map[string]uint32),
+		}
+		for _, project := range company.Projects {
+			slickCompany.ProjectPermissions[project.ProjectName] = project.Permissions
+		}
+		permissions.Companies[company.CompanyName] = slickCompany
+	}
+	iat := time.Now()
+	claims := SlickClaims{
+		permissions,
+		user.FullName,
+		user.GivenName,
+		jwt.StandardClaims{
+			Subject: user.EmailAddress,
+			IssuedAt: iat.Unix(),
+			ExpiresAt: iat.Add(time.Minute * 30).Unix(),
+		},
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)
+	if JwtRSAPublicKey == nil || JwtRSAPrivateKey == nil {
+		initKeys()
+	}
+	return token.SignedString(JwtRSAPrivateKey)
+}
+
+func keyFunction(token *jwt.Token) (interface{}, error) {
+	if JwtRSAPublicKey == nil {
+		initKeys()
+	}
+	if JwtRSAPublicKey != nil {
+		return JwtRSAPublicKey, nil
+	} else {
+		return nil, errors.New("cannot get JwtRSAPublicKey from configuration")
+	}
+}
+
+func HasPermission(ctx context.Context, CompanyName string, ProjectName string, Permission uint32) error {
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		return errors.New("unable to get metadata from context")
+	}
+	authorization, ok := md["authorization"]
+	if !ok {
+		return errors.New("no authorization header key found")
+	}
+
+	if len(authorization) < 1 {
+		return errors.New("no authorization value found")
+	}
+
+	if !strings.HasPrefix(authorization[0], "Bearer ") {
+		return errors.New("malformed authorization value, does not start with Bearer ")
+	}
+
+	token, err := jwt.ParseWithClaims(authorization[0][7:], SlickClaims{}, keyFunction)
+	if err != nil {
+		return err
+	}
+	if claims, ok := token.Claims.(*SlickClaims); ok && token.Valid {
+		if claims.Permissions.SlickAdmin != 0 {
+			return nil
+		}
+		if company, ok := claims.Permissions.Companies[CompanyName]; ok {
+			if company.CompanyAdmin != 0 {
+				return nil
+			}
+			if projectPermission, ok := company.ProjectPermissions[ProjectName]; ok {
+				if (projectPermission & slickconfig.PERMISSION_ADMIN) != 0 {
+					return nil
+				}
+				if (projectPermission & Permission) != 0 {
+					return nil
+				}
+				return errors.New("user " + claims.Subject + " does not have permission " + slickconfig.GetPermissionName(Permission) + " for company/project " + CompanyName + "/" + ProjectName)
+
+			} else {
+				return errors.New("user "  + claims.Subject + " does not have any access to project " + ProjectName + "from company " + CompanyName)
+			}
+		} else {
+			return errors.New("user " + claims.Subject + " does not have permission to company " + CompanyName)
+		}
+	} else {
+		return errors.New("token was not valid")
+	}
+
+}
+
