@@ -34,6 +34,7 @@ func main() {
 	app.Commands = []cli.Command{
 		commands.InitCommand,
 		commands.ServeCommand,
+		commands.GenerateTokenCommand,
 	}
 
 	app.Run(os.Args)

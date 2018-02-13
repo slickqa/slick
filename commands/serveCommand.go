@@ -2,6 +2,7 @@ package commands
 
 import (
 	"github.com/codegangsta/cli"
+	"github.com/slickqa/slick/db"
 )
 
 var (
@@ -17,6 +18,9 @@ var (
 )
 
 func RunService(c *cli.Context) {
+	db.InitializeMongoConnection()
+	defer db.CloseMongoConnection()
+
 
 }
 

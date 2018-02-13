@@ -15,7 +15,6 @@ import (
 	"math/big"
 	"net/url"
 	"io/ioutil"
-	"os"
 )
 
 var (

@@ -18,12 +18,17 @@ type ServiceConfiguration struct {
 }
 
 type GoogleOauthConfiguration struct {
-	ClientID string `toml:"client-id" comment:"ClientID from google for authentication." commented:"true"`
-	Secret string `toml:"secret" comment:"Secret from google for authentication." commented:"true"`
+	ClientID string `toml:"client-id" comment:"ClientID from google for authentication."`
+	Secret string `toml:"secret" comment:"Secret from google for authentication."`
 }
 
 type RolesConfiguration struct {
 	Defaults []Role `toml:"default-roles" comment:"The default roles that slick gives (can be customized per-project)."`
+}
+
+type DefaultAccessConfiguration struct {
+	Company string `toml:"company-name" comment:"The company name for the projects you want to give access to."`
+	Projects []string `toml:"projects" comment:"The list of projects you want every user who logs in to have read only access to."`
 }
 
 type TLSEncryptionConfiguration struct {
@@ -39,12 +44,13 @@ type AuthenticationEncryptionConfiguration struct {
 type MongoConfiguration struct {
 	URL string `toml:"connect-url" comment:"The URL should contain any authentication information to use.  See https://godoc.org/github.com/globalsign/mgo#Dial"`
 	Database string `toml:"database" comment:"The name of the database to use for slick."`
-	UseTLS bool `toml:"use-tls" comment:"Use TLS (encryption) on the connection.  If you don't supply a root ca's file (with your server's certificate in it) then verification is not done.'" commented:"true"`
-	RootCertificatesLocation string `toml:"root-ca-file" comment:"If you want to validate the server's certificate, put in a path to the file storing the certificate(s)." commented:"true"`
+	UseTLS bool `toml:"use-tls" comment:"Use TLS (encryption) on the connection.  If you don't supply a root ca's file (with your server's certificate in it) then certificate verification is not done.'"`
+	RootCertificatesLocation string `toml:"root-ca-file" comment:"If you want to validate the server's certificate, put in a path to the file storing the certificate(s)."`
 }
 
 type SlickConfiguration struct {
 	Common          ServiceConfiguration                  `toml:"common"`
+	DefaultAccess   DefaultAccessConfiguration            `toml:"default-access"`
 	Google          GoogleOauthConfiguration              `toml:"google-authentication" comment:"To enable google authentication, go to https://console.developers.google.com and create a project, and then go to API and Services -> Credentials and create credentials."`
 	Mongo			MongoConfiguration                    `toml:"mongo"`
 	Roles           RolesConfiguration                    `toml:"roles"`

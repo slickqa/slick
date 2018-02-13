@@ -1,5 +1,8 @@
 package slickconfig
 
+import "strings"
+import "github.com/slickqa/slick/slickqa"
+
 const (
 	PERMISSION_ADMIN uint32 = 1 << iota
 	PERMISSION_BUILD_WRITE
@@ -18,7 +21,7 @@ const (
 type Role struct {
 	Name string `toml:"name"`
 	Description string `toml:"description"`
-	Permission int32 `toml:"permission"`
+	Permission uint32 `toml:"permission"`
 }
 
 var (
@@ -26,7 +29,7 @@ var (
 		Role {
 			Name: "Project Admin",
 			Description: "An admin of a project has complete control over it.",
-			Permission: PERMISSION_ADMIN,
+			Permission: slickqa.ProjectPermissionInfo_PERMISSION_ADMIN,
 		},
 		Role {
 			Name: "Tester",
@@ -58,11 +61,92 @@ var (
 )
 
 func GetPermissionName(permission uint32) string {
-	if (permission & PERMISSION_ADMIN) != 0 {
+	if permission == PERMISSION_ADMIN {
 		return "Administrator"
 	}
-	if (permission & PERMISSION_BUILD_WRITE) != 0 {
-		return "Build Write"
+	if permission == PERMISSION_BUILD_WRITE {
+		return "Write to Build"
+	}
+	if permission == PERMISSION_BUILD_DELETE {
+		return "Delete Build"
+	}
+	if permission == PERMISSION_TESTCASE_WRITE {
+		return "Write to Testcase"
+	}
+	if permission == PERMISSION_TESTCASE_DELETE {
+		return "Delete Testcase"
+	}
+	if permission == PERMISSION_TESTPLAN_WRITE {
+		return "Write to Testplan"
+	}
+	if permission == PERMISSION_TESTPLAN_DELETE {
+		return "Delete Testplan"
+	}
+	if permission == PERMISSION_TESTRUN_WRITE {
+		return "Write to Testrun"
+	}
+	if permission == PERMISSION_TESTRUN_DELETE {
+		return "Delete Testrun"
+	}
+	if permission == PERMISSION_RESULT_WRITE {
+		return "Write to Result"
+	}
+	if permission == PERMISSION_RESULT_DELETE {
+		return "Delete Result"
+	}
+	if permission == PERMISSION_REPORT_GENERATE {
+		return "Generate Report"
 	}
 	return "Unknown"
+}
+
+func GetPermissionNames(permission uint32) (retval []string) {
+	if (permission & PERMISSION_ADMIN) != 0 {
+		retval = append(retval, "Administrator")
+	}
+	if (permission & PERMISSION_BUILD_WRITE) != 0 {
+		retval = append(retval, "Write to Build")
+	}
+	if (permission & PERMISSION_BUILD_DELETE) != 0 {
+		retval = append(retval, "Delete Build")
+	}
+	if (permission & PERMISSION_TESTCASE_WRITE) != 0 {
+		retval = append(retval, "Write to Testcase")
+	}
+	if (permission & PERMISSION_TESTCASE_DELETE) != 0 {
+		retval = append(retval, "Delete Testcase")
+	}
+	if (permission & PERMISSION_TESTPLAN_WRITE) != 0 {
+		retval = append(retval, "Write to Testplan")
+	}
+	if (permission & PERMISSION_TESTPLAN_DELETE) != 0 {
+		retval = append(retval, "Delete Testplan")
+	}
+	if (permission & PERMISSION_TESTRUN_WRITE) != 0 {
+		retval = append(retval, "Write to Testrun")
+	}
+	if (permission & PERMISSION_TESTRUN_DELETE) != 0 {
+		retval = append(retval, "Delete Testrun")
+	}
+	if (permission & PERMISSION_RESULT_WRITE) != 0 {
+		retval = append(retval, "Write to Result")
+	}
+	if (permission & PERMISSION_RESULT_DELETE) != 0 {
+		retval = append(retval, "Delete Result")
+	}
+	if (permission & PERMISSION_REPORT_GENERATE) != 0 {
+		retval = append(retval, "Generate Report")
+	}
+	return retval
+}
+
+func DescribePermission(permission uint32) string {
+	permissions := GetPermissionNames(permission)
+	if len(permissions) > 1 {
+		return "Permissions " + strings.Join(permissions, ", ")
+	} else if len(permissions) == 1 {
+		return "Permission " + permissions[0]
+	} else {
+		return "Unknown Permission(s)"
+	}
 }

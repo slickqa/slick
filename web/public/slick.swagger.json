@@ -193,9 +193,12 @@
     "slickqaIsAuthorizedResponse": {
       "type": "object",
       "properties": {
-        "allowed": {
+        "Allowed": {
           "type": "boolean",
           "format": "boolean"
+        },
+        "Message": {
+          "type": "string"
         }
       }
     },
@@ -226,17 +229,29 @@
         }
       }
     },
-    "slickqaUserInfo": {
+    "slickqaSlickPermissionInfo": {
       "type": "object",
       "properties": {
-        "EmailAddress": {
-          "type": "string"
+        "SlickAdmin": {
+          "type": "integer",
+          "format": "int64"
         },
         "Companies": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/slickqaCompanyPermissionInfo"
           }
+        }
+      }
+    },
+    "slickqaUserInfo": {
+      "type": "object",
+      "properties": {
+        "EmailAddress": {
+          "type": "string"
+        },
+        "Permissions": {
+          "$ref": "#/definitions/slickqaSlickPermissionInfo"
         },
         "FullName": {
           "type": "string"

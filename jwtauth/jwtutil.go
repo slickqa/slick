@@ -5,16 +5,13 @@ import (
 	"github.com/serussell/logxi/v1"
 	"fmt"
 	"errors"
-	"google.golang.org/grpc/credentials"
 	"context"
 	"crypto/rsa"
 	"github.com/slickqa/slick/slickqa"
 	"time"
-	"crypto"
 	"encoding/pem"
 	"github.com/slickqa/slick/slickconfig"
 	"crypto/x509"
-	"crypto/x509/pkix"
 	"google.golang.org/grpc/metadata"
 	"strings"
 )
@@ -44,12 +41,12 @@ func (j jwtoken) RequireTransportSecurity() bool {
 }
 
 type SlickCompany struct {
-	CompanyAdmin int `json:"a,omitempty"`
+	CompanyAdmin uint32 `json:"a,omitempty"`
 	ProjectPermissions map[string]uint32 `json:"proj"`
 }
 
 type SlickPermissions struct {
-	SlickAdmin int `json:"sa,omitempty"`
+	SlickAdmin uint32 `json:"sa,omitempty"`
 	Companies map[string] SlickCompany `json:"co"`
 }
 
@@ -78,9 +75,9 @@ func initKeys() {
 func CreateJWTForUser(user slickqa.UserInfo) (string, error) {
 	permissions := SlickPermissions{}
 	permissions.Companies = make(map[string]SlickCompany)
-	for _, company := range user.Companies  {
+	for _, company := range user.Permissions.Companies  {
 		slickCompany := SlickCompany{
-			CompanyAdmin: int(company.CompanyAdmin),
+			CompanyAdmin: company.CompanyAdmin,
 			ProjectPermissions: make(map[string]uint32),
 		}
 		for _, project := range company.Projects {
@@ -88,6 +85,7 @@ func CreateJWTForUser(user slickqa.UserInfo) (string, error) {
 		}
 		permissions.Companies[company.CompanyName] = slickCompany
 	}
+	permissions.SlickAdmin = user.Permissions.SlickAdmin
 	iat := time.Now()
 	claims := SlickClaims{
 		permissions,
@@ -103,6 +101,7 @@ func CreateJWTForUser(user slickqa.UserInfo) (string, error) {
 	if JwtRSAPublicKey == nil || JwtRSAPrivateKey == nil {
 		initKeys()
 	}
+	fmt.Println(JwtRSAPrivateKey)
 	return token.SignedString(JwtRSAPrivateKey)
 }
 

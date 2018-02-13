@@ -17,7 +17,8 @@ message IsAuthorizedRequest {
 }
 
 message IsAuthorizedResponse {
-  bool allowed = 1;
+  bool Allowed = 1;
+  string Message = 2;
 }
 
 message UserInfoRequest {
@@ -48,9 +49,14 @@ message CompanyPermissionInfo {
   repeated ProjectPermissionInfo Projects = 3; //`bson:"projects"`
 }
 
+message SlickPermissionInfo {
+  uint32 SlickAdmin = 1; //`bson:"slickAdmin"`
+  repeated CompanyPermissionInfo Companies = 2; //`bson:"companies"`
+}
+
 message UserInfo {
   string EmailAddress = 1; //`bson:"_id"`
-  repeated CompanyPermissionInfo Companies = 2; //`bson:"companies"`
+  SlickPermissionInfo Permissions = 2; //`bson:"permissions"`
   string FullName = 3; //`bson:"fullName"`
   string GivenName = 4; //`bson:"givenName"`
   string FamilyName = 5; //`bson:"familyName"`
