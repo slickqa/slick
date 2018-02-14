@@ -55,9 +55,9 @@ const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
 // auth stuff
 type IsAuthorizedRequest struct {
-	CompanyName string `protobuf:"bytes,1,opt,name=CompanyName" json:"CompanyName,omitempty"`
-	ProjectName string `protobuf:"bytes,2,opt,name=ProjectName" json:"ProjectName,omitempty"`
-	Permission  uint32 `protobuf:"varint,3,opt,name=Permission" json:"Permission,omitempty"`
+	CompanyName string ` protobuf:"bytes,1,opt,name=CompanyName"        json:"CompanyName,omitempty"`
+	ProjectName string ` protobuf:"bytes,2,opt,name=ProjectName"        json:"ProjectName,omitempty"`
+	Permission  uint32 ` protobuf:"varint,3,opt,name=Permission"        json:"Permission,omitempty"`
 }
 
 func (m *IsAuthorizedRequest) Reset()                    { *m = IsAuthorizedRequest{} }
@@ -87,8 +87,8 @@ func (m *IsAuthorizedRequest) GetPermission() uint32 {
 }
 
 type IsAuthorizedResponse struct {
-	Allowed bool   `protobuf:"varint,1,opt,name=Allowed" json:"Allowed,omitempty"`
-	Message string `protobuf:"bytes,2,opt,name=Message" json:"Message,omitempty"`
+	Allowed bool   `protobuf:"varint,1,opt,name=Allowed"           json:"Allowed"`
+	Message string ` protobuf:"bytes,2,opt,name=Message"            json:"Message,omitempty"`
 }
 
 func (m *IsAuthorizedResponse) Reset()                    { *m = IsAuthorizedResponse{} }
@@ -111,7 +111,7 @@ func (m *IsAuthorizedResponse) GetMessage() string {
 }
 
 type UserInfoRequest struct {
-	EmailAddress string `protobuf:"bytes,1,opt,name=EmailAddress" json:"EmailAddress,omitempty"`
+	EmailAddress string ` protobuf:"bytes,1,opt,name=EmailAddress"       json:"EmailAddress,omitempty"`
 }
 
 func (m *UserInfoRequest) Reset()                    { *m = UserInfoRequest{} }
@@ -127,7 +127,7 @@ func (m *UserInfoRequest) GetEmailAddress() string {
 }
 
 type UsersForCompanyQueryRequest struct {
-	CompanyName string `protobuf:"bytes,1,opt,name=CompanyName" json:"CompanyName,omitempty"`
+	CompanyName string ` protobuf:"bytes,1,opt,name=CompanyName"        json:"CompanyName,omitempty"`
 }
 
 func (m *UsersForCompanyQueryRequest) Reset()                    { *m = UsersForCompanyQueryRequest{} }
@@ -143,8 +143,8 @@ func (m *UsersForCompanyQueryRequest) GetCompanyName() string {
 }
 
 type UsersForProjectQueryRequest struct {
-	CompanyName string `protobuf:"bytes,1,opt,name=CompanyName" json:"CompanyName,omitempty"`
-	ProjectName string `protobuf:"bytes,2,opt,name=ProjectName" json:"ProjectName,omitempty"`
+	CompanyName string ` protobuf:"bytes,1,opt,name=CompanyName"        json:"CompanyName,omitempty"`
+	ProjectName string ` protobuf:"bytes,2,opt,name=ProjectName"        json:"ProjectName,omitempty"`
 }
 
 func (m *UsersForProjectQueryRequest) Reset()                    { *m = UsersForProjectQueryRequest{} }
@@ -167,7 +167,7 @@ func (m *UsersForProjectQueryRequest) GetProjectName() string {
 }
 
 type UsersQueryResponse struct {
-	Users []*UserInfo `protobuf:"bytes,1,rep,name=users" json:"users,omitempty"`
+	Users []*UserInfo ` protobuf:"bytes,1,rep,name=users"              json:"users,omitempty"`
 }
 
 func (m *UsersQueryResponse) Reset()                    { *m = UsersQueryResponse{} }
@@ -183,8 +183,8 @@ func (m *UsersQueryResponse) GetUsers() []*UserInfo {
 }
 
 type ProjectPermissionInfo struct {
-	ProjectName string `protobuf:"bytes,1,opt,name=ProjectName" json:"ProjectName,omitempty"`
-	Permissions uint32 `protobuf:"varint,2,opt,name=Permissions" json:"Permissions,omitempty"`
+	ProjectName string ` protobuf:"bytes,1,opt,name=ProjectName"        json:"ProjectName,omitempty"  bson:"name"`
+	Permissions uint32 ` protobuf:"varint,2,opt,name=Permissions"       json:"Permissions,omitempty"  bson:"permission"`
 }
 
 func (m *ProjectPermissionInfo) Reset()                    { *m = ProjectPermissionInfo{} }
@@ -207,9 +207,9 @@ func (m *ProjectPermissionInfo) GetPermissions() uint32 {
 }
 
 type CompanyPermissionInfo struct {
-	CompanyName  string                   `protobuf:"bytes,1,opt,name=CompanyName" json:"CompanyName,omitempty"`
-	CompanyAdmin uint32                   `protobuf:"varint,2,opt,name=CompanyAdmin" json:"CompanyAdmin,omitempty"`
-	Projects     []*ProjectPermissionInfo `protobuf:"bytes,3,rep,name=Projects" json:"Projects,omitempty"`
+	CompanyName  string                   ` protobuf:"bytes,1,opt,name=CompanyName"        json:"CompanyName,omitempty"  bson:"name"`
+	CompanyAdmin uint32                   ` protobuf:"varint,2,opt,name=CompanyAdmin"      json:"CompanyAdmin,omitempty"  bson:"admin"`
+	Projects     []*ProjectPermissionInfo ` protobuf:"bytes,3,rep,name=Projects"           json:"Projects,omitempty"     bson:"projects"`
 }
 
 func (m *CompanyPermissionInfo) Reset()                    { *m = CompanyPermissionInfo{} }
@@ -239,8 +239,8 @@ func (m *CompanyPermissionInfo) GetProjects() []*ProjectPermissionInfo {
 }
 
 type SlickPermissionInfo struct {
-	SlickAdmin uint32                   `protobuf:"varint,1,opt,name=SlickAdmin" json:"SlickAdmin,omitempty"`
-	Companies  []*CompanyPermissionInfo `protobuf:"bytes,2,rep,name=Companies" json:"Companies,omitempty"`
+	SlickAdmin uint32                   ` protobuf:"varint,1,opt,name=SlickAdmin"        json:"SlickAdmin,omitempty"   bson:"slickAdmin"`
+	Companies  []*CompanyPermissionInfo ` protobuf:"bytes,2,rep,name=Companies"          json:"Companies,omitempty"    bson:"companies"`
 }
 
 func (m *SlickPermissionInfo) Reset()                    { *m = SlickPermissionInfo{} }
@@ -263,14 +263,14 @@ func (m *SlickPermissionInfo) GetCompanies() []*CompanyPermissionInfo {
 }
 
 type UserInfo struct {
-	EmailAddress   string               `protobuf:"bytes,1,opt,name=EmailAddress" json:"EmailAddress,omitempty"`
-	Permissions    *SlickPermissionInfo `protobuf:"bytes,2,opt,name=Permissions" json:"Permissions,omitempty"`
-	FullName       string               `protobuf:"bytes,3,opt,name=FullName" json:"FullName,omitempty"`
-	GivenName      string               `protobuf:"bytes,4,opt,name=GivenName" json:"GivenName,omitempty"`
-	FamilyName     string               `protobuf:"bytes,5,opt,name=FamilyName" json:"FamilyName,omitempty"`
-	AvatarUrl      string               `protobuf:"bytes,6,opt,name=AvatarUrl" json:"AvatarUrl,omitempty"`
-	JobTitle       string               `protobuf:"bytes,7,opt,name=JobTitle" json:"JobTitle,omitempty"`
-	HashedPassword string               `protobuf:"bytes,8,opt,name=HashedPassword" json:"HashedPassword,omitempty"`
+	EmailAddress   string               ` protobuf:"bytes,1,opt,name=EmailAddress"       json:"EmailAddress,omitempty"  bson:"_id"`
+	Permissions    *SlickPermissionInfo ` protobuf:"bytes,2,opt,name=Permissions"        json:"Permissions,omitempty"  bson:"permissions"`
+	FullName       string               ` protobuf:"bytes,3,opt,name=FullName"           json:"FullName,omitempty"     bson:"fullName"`
+	GivenName      string               ` protobuf:"bytes,4,opt,name=GivenName"          json:"GivenName,omitempty"    bson:"givenName"`
+	FamilyName     string               ` protobuf:"bytes,5,opt,name=FamilyName"         json:"FamilyName,omitempty"   bson:"familyName"`
+	AvatarUrl      string               ` protobuf:"bytes,6,opt,name=AvatarUrl"          json:"AvatarUrl,omitempty"    bson:"avatarUrl"`
+	JobTitle       string               ` protobuf:"bytes,7,opt,name=JobTitle"           json:"JobTitle,omitempty"     bson:"title"`
+	HashedPassword string               ` protobuf:"bytes,8,opt,name=HashedPassword"     json:"HashedPassword,omitempty"  bson:"hashedPassword"`
 }
 
 func (m *UserInfo) Reset()                    { *m = UserInfo{} }
@@ -335,7 +335,7 @@ func (m *UserInfo) GetHashedPassword() string {
 }
 
 type ApiTokenLoginRequest struct {
-	Token string `protobuf:"bytes,1,opt,name=Token" json:"Token,omitempty"`
+	Token string ` protobuf:"bytes,1,opt,name=Token"              json:"Token,omitempty"`
 }
 
 func (m *ApiTokenLoginRequest) Reset()                    { *m = ApiTokenLoginRequest{} }
@@ -351,8 +351,8 @@ func (m *ApiTokenLoginRequest) GetToken() string {
 }
 
 type PlainUserLoginRequest struct {
-	UserName string `protobuf:"bytes,1,opt,name=UserName" json:"UserName,omitempty"`
-	Password string `protobuf:"bytes,2,opt,name=Password" json:"Password,omitempty"`
+	UserName string ` protobuf:"bytes,1,opt,name=UserName"           json:"UserName,omitempty"`
+	Password string ` protobuf:"bytes,2,opt,name=Password"           json:"Password,omitempty"`
 }
 
 func (m *PlainUserLoginRequest) Reset()                    { *m = PlainUserLoginRequest{} }
@@ -375,9 +375,9 @@ func (m *PlainUserLoginRequest) GetPassword() string {
 }
 
 type LoginResponse struct {
-	Success bool      `protobuf:"varint,1,opt,name=Success" json:"Success,omitempty"`
-	Token   string    `protobuf:"bytes,2,opt,name=Token" json:"Token,omitempty"`
-	User    *UserInfo `protobuf:"bytes,3,opt,name=User" json:"User,omitempty"`
+	Success bool      `protobuf:"varint,1,opt,name=Success"           json:"Success"`
+	Token   string    ` protobuf:"bytes,2,opt,name=Token"              json:"Token,omitempty"`
+	User    *UserInfo ` protobuf:"bytes,3,opt,name=User"               json:"User,omitempty"`
 }
 
 func (m *LoginResponse) Reset()                    { *m = LoginResponse{} }
@@ -408,12 +408,12 @@ func (m *LoginResponse) GetUser() *UserInfo {
 
 // slick objects
 type Project struct {
-	Id              []byte                     `protobuf:"bytes,1,opt,name=Id,proto3" json:"Id,omitempty"`
-	Name            string                     `protobuf:"bytes,2,opt,name=Name" json:"Name,omitempty"`
-	AutomationTools []string                   `protobuf:"bytes,3,rep,name=AutomationTools" json:"AutomationTools,omitempty"`
-	Tags            []string                   `protobuf:"bytes,4,rep,name=Tags" json:"Tags,omitempty"`
-	Attributes      map[string]string          `protobuf:"bytes,5,rep,name=Attributes" json:"Attributes,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	LastUpdated     *google_protobuf.Timestamp `protobuf:"bytes,6,opt,name=LastUpdated" json:"LastUpdated,omitempty"`
+	Id              []byte                     ` protobuf:"bytes,1,opt,name=Id,proto3"          json:"Id,omitempty"           bson:"_id,omitempty"`
+	Name            string                     ` protobuf:"bytes,2,opt,name=Name"               json:"Name,omitempty"         bson:"name"`
+	AutomationTools []string                   ` protobuf:"bytes,3,rep,name=AutomationTools"    json:"AutomationTools,omitempty"  bson:"automationTools"`
+	Tags            []string                   ` protobuf:"bytes,4,rep,name=Tags"               json:"Tags,omitempty"         bson:"tags"`
+	Attributes      map[string]string          `   protobuf:"bytes,5,rep,name=Attributes"         json:"Attributes,omitempty"   protobuf_key:"bytes,1,opt,name=key"   protobuf_val:"bytes,2,opt,name=value"  bson:"attributes"`
+	LastUpdated     *google_protobuf.Timestamp ` protobuf:"bytes,6,opt,name=LastUpdated"        json:"LastUpdated,omitempty"  bson:"lastUpdated"`
 }
 
 func (m *Project) Reset()                    { *m = Project{} }

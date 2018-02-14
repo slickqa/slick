@@ -38,7 +38,7 @@ func InitializeMongoConnection() error {
 		}
 
 		dialInfo, err := mgo.ParseURL(slickconfig.Configuration.Mongo.URL)
-		if err != nil {
+		if err == nil {
 			MongoSession, err = mgo.DialWithInfo(dialInfo)
 			if err != nil {
 				logger.Fatal("Error connecting to mongodb!",
@@ -55,10 +55,12 @@ func InitializeMongoConnection() error {
 
 	} else {
 		MongoSession, err = mgo.Dial(slickconfig.Configuration.Mongo.URL)
-		logger.Fatal("Error connecting to mongodb!",
-			"URL", slickconfig.Configuration.Mongo.URL,
-			"Error", err)
-		return err
+		if err != nil {
+			logger.Fatal("Error connecting to mongodb!",
+				"URL", slickconfig.Configuration.Mongo.URL,
+				"Error", err)
+			return err
+		}
 	}
 	return nil
 }

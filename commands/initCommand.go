@@ -61,6 +61,10 @@ func InitializeConfiguration(c *cli.Context) {
 
 	// ---------------------------- TLS Key and Certificate ---------------------------------
 	logger.Debug("Generating TLS key and certificate...")
+	baseUrl, err := url.Parse(slickconfig.Configuration.Common.BaseUrl)
+	if err != nil {
+		logger.Fatal("Failed to parse url!", "url", slickconfig.Configuration.Common.BaseUrl, "error", err)
+	}
 	key, err = rsa.GenerateKey(rand.Reader, 2048)
 	if err != nil {
 		logger.Fatal("Error generating TLS key.", "error", err)
@@ -82,21 +86,19 @@ func InitializeConfiguration(c *cli.Context) {
 	template := x509.Certificate{
 		SerialNumber: serialNumber,
 		Subject: pkix.Name{
-			Organization: []string{"Slick"},
+			CommonName: baseUrl.Hostname(),
+			Organization: []string{"Slick QA Server"},
+			OrganizationalUnit: []string {"Slick"},
 		},
 		NotBefore: notBefore,
 		NotAfter:  notAfter,
-		KeyUsage:              x509.KeyUsageKeyEncipherment | x509.KeyUsageDigitalSignature,
-		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth},
+		KeyUsage:              x509.KeyUsageKeyEncipherment | x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign,
+		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth, x509.ExtKeyUsageClientAuth},
 		BasicConstraintsValid: true,
 	}
 
-	baseUrl, err := url.Parse(slickconfig.Configuration.Common.BaseUrl)
-	if err != nil {
-		logger.Fatal("Failed to parse url!", "url", slickconfig.Configuration.Common.BaseUrl, "error", err)
-	}
 
-	hosts := []string {baseUrl.Hostname(), "127.0.0.1", "localhost"}
+	hosts := []string {baseUrl.Hostname(), baseUrl.Host, "127.0.0.1", "localhost"}
 
 	for _, h := range hosts {
 		if ip := net.ParseIP(h); ip != nil {

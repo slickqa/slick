@@ -101,7 +101,6 @@ func CreateJWTForUser(user slickqa.UserInfo) (string, error) {
 	if JwtRSAPublicKey == nil || JwtRSAPrivateKey == nil {
 		initKeys()
 	}
-	fmt.Println(JwtRSAPrivateKey)
 	return token.SignedString(JwtRSAPrivateKey)
 }
 
@@ -134,7 +133,7 @@ func HasPermission(ctx context.Context, CompanyName string, ProjectName string, 
 		return errors.New("malformed authorization value, does not start with Bearer ")
 	}
 
-	token, err := jwt.ParseWithClaims(authorization[0][7:], SlickClaims{}, keyFunction)
+	token, err := jwt.ParseWithClaims(authorization[0][7:], &SlickClaims{}, keyFunction)
 	if err != nil {
 		return err
 	}

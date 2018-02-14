@@ -1,7 +1,6 @@
 package slickconfig
 
 import "strings"
-import "github.com/slickqa/slick/slickqa"
 
 const (
 	PERMISSION_ADMIN uint32 = 1 << iota
@@ -29,7 +28,7 @@ var (
 		Role {
 			Name: "Project Admin",
 			Description: "An admin of a project has complete control over it.",
-			Permission: slickqa.ProjectPermissionInfo_PERMISSION_ADMIN,
+			Permission: PERMISSION_ADMIN,
 		},
 		Role {
 			Name: "Tester",

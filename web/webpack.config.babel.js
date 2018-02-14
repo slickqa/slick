@@ -60,6 +60,7 @@ if (env === 'production') {
   ];
   devConfig.devServer = {
     compress: true,
+    disableHostCheck: true,
     clientLogLevel: 'none',
     contentBase: path.resolve('./dist'),
     publicPath: '/',

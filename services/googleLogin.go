@@ -17,8 +17,8 @@ import (
 
 func GoogleLoginHandlers(mux *http.ServeMux) {
 	oauth2Config := &oauth2.Config{
-		ClientID:     "",
-		ClientSecret: "",
+		ClientID:     slickconfig.Configuration.Google.ClientID,
+		ClientSecret: slickconfig.Configuration.Google.Secret,
 		RedirectURL:  fmt.Sprintf("%s/login/google-callback", slickconfig.Configuration.Common.BaseUrl),
 		Endpoint:     googleOAuth2.Endpoint,
 		Scopes:       []string{"profile", "email"},
