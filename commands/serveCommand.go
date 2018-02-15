@@ -19,6 +19,7 @@ import (
 	"github.com/koding/websocketproxy"
 	"net"
 	"github.com/slickqa/slick/services"
+	"github.com/GeertJohan/go.rice"
 	"io/ioutil"
 	"path"
 )
@@ -92,6 +93,7 @@ func RunService(c *cli.Context) {
 	ctx := context.Background()
 	grpcServer := grpc.NewServer(grpc.Creds(credentials.NewClientTLSFromCert(certPool, baseUrl.Host)))
 	slickqa.RegisterAuthServer(grpcServer, &services.SlickAuthService{})
+	slickqa.RegisterUsersServer(grpcServer, &services.SlickUsersService{})
 	dopts := []grpc.DialOption{grpc.WithTransportCredentials(credentials.NewTLS(&tls.Config{
 		ServerName: baseUrl.Host,
 		RootCAs:    certPool,
@@ -103,7 +105,14 @@ func RunService(c *cli.Context) {
 	err = slickqa.RegisterAuthHandlerFromEndpoint(ctx, restGatewayMux, baseUrl.Host, dopts)
 
 	if err != nil {
-		logger.Fatal("Error registering grpc gateway", "error", err)
+		logger.Fatal("Error registering auth grpc gateway", "error", err)
+		return
+	}
+
+	err = slickqa.RegisterUsersHandlerFromEndpoint(ctx, restGatewayMux, baseUrl.Host, dopts)
+
+	if err != nil {
+		logger.Fatal("Error registering users grpc gateway", "error", err)
 		return
 	}
 
@@ -132,6 +141,29 @@ func RunService(c *cli.Context) {
 					w.Write(indexContent)
 				}
 			})
+		} else {
+			box, err := rice.FindBox("../web/dist")
+			if err != nil {
+				logger.Error("Unable to find embedded content.", "error", err)
+			} else {
+				indexContent, err := box.Bytes("index.html")
+				if err != nil {
+					logger.Error("index.html not found in embedded content.", "error", err)
+					indexContent = make([]byte, 0)
+				}
+				riceServer := http.FileServer(box.HTTPBox())
+				rootHttpMux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
+					dotPos := strings.LastIndex(req.URL.Path, ".")
+					if dotPos > 0 && (len(req.URL.Path) - dotPos) < 5 && req.URL.Path != "index.html" {
+						// at this point we know that in the path there was a . within 5 digits of the end.
+						// we are going to ASSUME that means a file.  That could make a you know what out of you and me
+						riceServer.ServeHTTP(w, req)
+					} else {
+						w.Header().Set("Content-Type", "text/html; charset=utf-8")
+						w.Write(indexContent)
+					}
+				})
+			}
 		}
 	}
 

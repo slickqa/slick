@@ -96,6 +96,9 @@ func GetPermissionName(permission uint32) string {
 	if permission == PERMISSION_REPORT_GENERATE {
 		return "Generate Report"
 	}
+	if permission == 0 {
+		return "Read Only"
+	}
 	return "Unknown"
 }
 
@@ -136,6 +139,9 @@ func GetPermissionNames(permission uint32) (retval []string) {
 	if (permission & PERMISSION_REPORT_GENERATE) != 0 {
 		retval = append(retval, "Generate Report")
 	}
+	if permission == 0 {
+		retval = append(retval, "Read Only")
+	}
 	return retval
 }
 
@@ -148,4 +154,12 @@ func DescribePermission(permission uint32) string {
 	} else {
 		return "Unknown Permission(s)"
 	}
+}
+
+func PermissionFromRoles(userroles []string) uint32 {
+	retval := uint32(0)
+	for _, role := range userroles {
+		retval = retval | roles[role].Permission
+	}
+	return retval
 }

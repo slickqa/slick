@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
 
 import App from 'grommet/components/App';
-import Title from 'grommet/components/Title';
 import Split from 'grommet/components/Split';
 import Box from 'grommet/components/Box';
 import Headline from 'grommet/components/Headline';
 import Button from 'grommet/components/Button';
 import PlatformGoogleIcon from 'grommet/components/icons/base/PlatformGoogle';
-import TextInput from 'grommet/components/TextInput';
-import FormField from 'grommet/components/FormField';
-import Form from 'grommet/components/Form';
-import Label from 'grommet/components/Label';
-import FormFields from 'grommet/components/FormFields';
+import Spinning from 'grommet/components/icons/Spinning';
+import Card from 'grommet/components/Card';
+import UsersApi from 'slick-client/src/api/UsersApi';
 
 function isLoggedIn() {
     return localStorage.token;
@@ -46,11 +43,20 @@ export class LoginPage extends Component {
 export class UserInfoPage extends Component {
   constructor(props) {
     super(props);
+    this.users = new UsersApi();
+    this.users.apiClient.basePath = window.location.protocol + "//" + window.location.host;
+    this.users.apiClient.defaultHeaders["Authorization"] = "Bearer " + localStorage.token;
+    let that = this;
+    this.users.getCurrentUserInfo(function(error, data, response) {
+      console.log(data);
+      that.setState(function () {
+        return {"user": data};
+      });
+    });
     this.state = {
-      value: "",
-      message: ""
+      "user": undefined
     };
-    this.suggestions = ["hello", "world", "foo"];
+    window.users = this.users;
   }
 
   handleClick(e) {
@@ -64,45 +70,22 @@ export class UserInfoPage extends Component {
     window.location.reload();
   }
 
-  handleChange(event) {
-    this.setState({value: event.target.value});
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
-    this.handlePermissionCheck();
-  }
-
-  handlePermissionCheck() {
-    let that = this;
-    fetch("/api/v1/isAuthorized/" + this.state.value, {headers: {"Authorization": "Bearer " + localStorage.token}}).then(function(response) {
-      response.json().then(function(retval) {
-        that.setState({"message": "You have permission " + that.state.value + ": " + retval.allowed});
-      });
-    });
-  }
-
-  handleSelect(selection) {
-    this.setState({value: selection.suggestion});
-  }
-
   render() {
+    let user = <Spinning />;
+    if(this.state.user) {
+      window.user = this.state.user;
+      user =
+        <Card thumbnail={this.state.user.AvatarUrl}
+              heading={this.state.user.FullName}
+              description="stuff" />;
+
+
+    }
     return (
       <Box>
         <Headline size="large">Welcome {localStorage.userFirstName}</Headline>
         <Button onClick={this.handleClick} label="Logout" />
-        <Form onSubmit={this.handleSubmit.bind(this)} pad="large">
-          <FormFields>
-            <FormField>
-              <TextInput onDOMChange={this.handleChange.bind(this)}
-                         value={this.state.value}
-                         onSelect={this.handleSelect.bind(this)}
-                         suggestions={this.suggestions}/>
-            </FormField>
-          </FormFields>
-          <Button type="submit" label="Check Permission" />
-        </Form>
-        <Label margin="large">{this.state.message}</Label>
+        {user}
       </Box>
     )
   }

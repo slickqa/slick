@@ -146,6 +146,22 @@
         ]
       }
     },
+    "/api/users/current": {
+      "get": {
+        "operationId": "GetCurrentUserInfo",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/slickqaUserInfo"
+            }
+          }
+        },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
     "/api/users/info/{EmailAddress}": {
       "get": {
         "operationId": "GetUserInfo",
@@ -223,9 +239,11 @@
         "ProjectName": {
           "type": "string"
         },
-        "Permissions": {
-          "type": "integer",
-          "format": "int64"
+        "Roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },

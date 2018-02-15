@@ -68,6 +68,7 @@ const (
 var (
 	Configuration SlickConfiguration
 	logger = log.New("slickconfig")
+	roles = make(map[string]Role, 0)
 )
 
 func init() {
@@ -111,6 +112,9 @@ func (c *SlickConfiguration) Load(data []byte) {
 	err := toml.Unmarshal(data, c)
 	if err != nil {
 		logger.Warn("Problem loading configuration", "error", err)
+	}
+	for _, role := range c.Roles.Defaults {
+		roles[role.Name] = role
 	}
 }
 

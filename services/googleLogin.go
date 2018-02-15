@@ -37,7 +37,7 @@ func defaultAccessConfiguration() (*slickqa.SlickPermissionInfo) {
 		for i, projectName := range slickconfig.Configuration.DefaultAccess.Projects {
 			companyPerms.Projects[i] = &slickqa.ProjectPermissionInfo{
 				ProjectName: projectName,
-				Permissions: 0,
+				Roles: []string {"Read Only"},
 			}
 		}
 		retval.Companies = []*slickqa.CompanyPermissionInfo { &companyPerms }

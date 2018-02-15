@@ -21,6 +21,9 @@ message IsAuthorizedResponse {
   string Message = 2; //
 }
 
+message CurrentUserRequest {
+}
+
 message UserInfoRequest {
   string EmailAddress = 1; //
 }
@@ -40,7 +43,7 @@ message UsersQueryResponse {
 
 message ProjectPermissionInfo {
   string ProjectName = 1; //`bson:"name"`
-  uint32 Permissions = 2; //`bson:"permission"`
+  repeated string Roles = 2; //`bson:"roles"`
 }
 
 message CompanyPermissionInfo {
@@ -99,6 +102,11 @@ service Auth {
 }
 
 service Users {
+  rpc GetCurrentUserInfo(CurrentUserRequest) returns(UserInfo) {
+    option (google.api.http) = {
+            get: "/api/users/current"
+    };
+  }
   rpc GetUserInfo(UserInfoRequest) returns(UserInfo) {
     option (google.api.http) = {
             get: "/api/users/info/{EmailAddress}"
