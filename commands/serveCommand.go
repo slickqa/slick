@@ -96,8 +96,8 @@ func RunService(c *cli.Context) {
 	slickqa.RegisterAuthServer(grpcServer, &services.SlickAuthService{})
 	slickqa.RegisterUsersServer(grpcServer, &services.SlickUsersService{})
 	dialHostname := slickconfig.Configuration.Common.ListenIP
-	if dialHostname == "0.0.0.0" {
-		dialHostname = "127.0.0.1"
+	if dialHostname == "0.0.0.0" || dialHostname == "127.0.0.1" {
+		dialHostname = "localhost"
 	}
 	dopts := []grpc.DialOption{grpc.WithTransportCredentials(credentials.NewTLS(&tls.Config{
 		ServerName: fmt.Sprintf("%s:%d", dialHostname, slickconfig.Configuration.Common.ListenPort),
