@@ -16,6 +16,7 @@ const ApiClient = require('./ApiClient'),
  SlickqaCompanyPermissionInfo = require('./model/SlickqaCompanyPermissionInfo'),
  SlickqaIsAuthorizedResponse = require('./model/SlickqaIsAuthorizedResponse'),
  SlickqaLoginResponse = require('./model/SlickqaLoginResponse'),
+ SlickqaPlainUserLoginRequest = require('./model/SlickqaPlainUserLoginRequest'),
  SlickqaProjectPermissionInfo = require('./model/SlickqaProjectPermissionInfo'),
  SlickqaSlickPermissionInfo = require('./model/SlickqaSlickPermissionInfo'),
  SlickqaUserInfo = require('./model/SlickqaUserInfo'),
@@ -74,6 +75,11 @@ const ApiClient = require('./ApiClient'),
      * @property {module:model/SlickqaLoginResponse}
      */
     SlickqaLoginResponse: SlickqaLoginResponse,
+    /**
+     * The SlickqaPlainUserLoginRequest model constructor.
+     * @property {module:model/SlickqaPlainUserLoginRequest}
+     */
+    SlickqaPlainUserLoginRequest: SlickqaPlainUserLoginRequest,
     /**
      * The SlickqaProjectPermissionInfo model constructor.
      * @property {module:model/SlickqaProjectPermissionInfo}

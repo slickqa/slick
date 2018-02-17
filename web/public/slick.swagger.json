@@ -63,6 +63,16 @@
             }
           }
         },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/slickqaPlainUserLoginRequest"
+            }
+          }
+        ],
         "tags": [
           "Auth"
         ]
@@ -230,6 +240,17 @@
         },
         "User": {
           "$ref": "#/definitions/slickqaUserInfo"
+        }
+      }
+    },
+    "slickqaPlainUserLoginRequest": {
+      "type": "object",
+      "properties": {
+        "UserName": {
+          "type": "string"
+        },
+        "Password": {
+          "type": "string"
         }
       }
     },

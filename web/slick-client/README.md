@@ -92,6 +92,7 @@ Class | Method | HTTP request | Description
  - [SlickClient.SlickqaCompanyPermissionInfo](docs/SlickqaCompanyPermissionInfo.md)
  - [SlickClient.SlickqaIsAuthorizedResponse](docs/SlickqaIsAuthorizedResponse.md)
  - [SlickClient.SlickqaLoginResponse](docs/SlickqaLoginResponse.md)
+ - [SlickClient.SlickqaPlainUserLoginRequest](docs/SlickqaPlainUserLoginRequest.md)
  - [SlickClient.SlickqaProjectPermissionInfo](docs/SlickqaProjectPermissionInfo.md)
  - [SlickClient.SlickqaSlickPermissionInfo](docs/SlickqaSlickPermissionInfo.md)
  - [SlickClient.SlickqaUserInfo](docs/SlickqaUserInfo.md)
