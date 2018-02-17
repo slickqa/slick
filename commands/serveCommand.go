@@ -22,6 +22,7 @@ import (
 	"github.com/GeertJohan/go.rice"
 	"io/ioutil"
 	"path"
+	"fmt"
 )
 
 var (
@@ -167,9 +168,9 @@ func RunService(c *cli.Context) {
 		}
 	}
 
-	conn, err := net.Listen("tcp", slickconfig.Configuration.Common.ListenIP + ":"+ string(slickconfig.Configuration.Common.ListenPort))
+	conn, err := net.Listen("tcp", slickconfig.Configuration.Common.ListenIP + ":"+ fmt.Sprintf("%d", slickconfig.Configuration.Common.ListenPort))
 	if err != nil {
-		logger.Fatal("Error occured trying to listen on host:port", "host:port", baseUrl.Host, "error", err)
+		logger.Fatal("Error occured trying to listen on host:port", "host:port", slickconfig.Configuration.Common.ListenIP + ":" + fmt.Sprintf("%d", slickconfig.Configuration.Common.ListenPort), "error", err)
 		return
 	}
 
