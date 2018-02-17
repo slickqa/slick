@@ -83,6 +83,13 @@ message LoginResponse {
   UserInfo User = 3; //
 }
 
+message VersionRequest {
+}
+
+messave VersionInfoResponse {
+    string Version = 1; //
+}
+
 service Auth {
   rpc IsAuthorized(IsAuthorizedRequest) returns(IsAuthorizedResponse) {
     option (google.api.http) = {
@@ -125,6 +132,13 @@ service Users {
   }
 }
 
+service Version {
+  rpc GetFullVersion(VersionRequest) returns(VersionInfoResponse) {
+    option (google.api.http) = {
+            get: "/api/version"
+    };
+  }
+}
 // slick objects
 message Project {
   bytes Id = 1; //`bson:"_id,omitempty"`

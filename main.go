@@ -6,13 +6,14 @@ import (
 	"github.com/serussell/logxi/v1"
 	"github.com/slickqa/slick/slickconfig"
 	"github.com/slickqa/slick/commands"
+	"github.com/slickqa/slick/slickversion"
 )
 
 func main() {
 	logger := log.New("slick")
 	app := cli.NewApp()
 	app.Name = "slick"
-	app.Version = "5.0.0"
+	app.Version = slickversion.GetVersion()
 
 	app.Flags = []cli.Flag {
 		cli.StringFlag{
