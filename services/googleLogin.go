@@ -80,6 +80,7 @@ func issueLoginSession() http.Handler {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		logger.Debug("Successful Login", "user", user)
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		w.Write([]byte(fmt.Sprintf(`
 <html>

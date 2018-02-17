@@ -95,22 +95,26 @@ func RunService(c *cli.Context) {
 	grpcServer := grpc.NewServer(grpc.Creds(credentials.NewClientTLSFromCert(certPool, baseUrl.Host)))
 	slickqa.RegisterAuthServer(grpcServer, &services.SlickAuthService{})
 	slickqa.RegisterUsersServer(grpcServer, &services.SlickUsersService{})
+	dialHostname := slickconfig.Configuration.Common.ListenIP
+	if dialHostname == "0.0.0.0" {
+		dialHostname = "127.0.0.1"
+	}
 	dopts := []grpc.DialOption{grpc.WithTransportCredentials(credentials.NewTLS(&tls.Config{
-		ServerName: baseUrl.Host,
+		ServerName: fmt.Sprintf("%s:%d", dialHostname, slickconfig.Configuration.Common.ListenPort),
 		RootCAs:    certPool,
 	}))}
 
 	rootHttpMux := http.NewServeMux()
 	restGatewayMux := runtime.NewServeMux()
 
-	err = slickqa.RegisterAuthHandlerFromEndpoint(ctx, restGatewayMux, fmt.Sprintf("%s:%d", slickconfig.Configuration.Common.ListenIP, slickconfig.Configuration.Common.ListenPort), dopts)
+	err = slickqa.RegisterAuthHandlerFromEndpoint(ctx, restGatewayMux, fmt.Sprintf("%s:%d", dialHostname, slickconfig.Configuration.Common.ListenPort), dopts)
 
 	if err != nil {
 		logger.Fatal("Error registering auth grpc gateway", "error", err)
 		return
 	}
 
-	err = slickqa.RegisterUsersHandlerFromEndpoint(ctx, restGatewayMux, baseUrl.Host, dopts)
+	err = slickqa.RegisterUsersHandlerFromEndpoint(ctx, restGatewayMux, fmt.Sprintf("%s:%d", dialHostname, slickconfig.Configuration.Common.ListenPort), dopts)
 
 	if err != nil {
 		logger.Fatal("Error registering users grpc gateway", "error", err)
