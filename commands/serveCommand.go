@@ -160,7 +160,7 @@ func RunService(c *cli.Context) {
 				rootHttpMux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 					dotPos := strings.LastIndex(req.URL.Path, ".")
 					logger.Debug("Recieved request.", "path", req.URL.Path, "url", req.URL, "lastIndexOfDot", dotPos)
-					if dotPos > 0 && (len(req.URL.Path) - dotPos) < 5 && req.URL.Path != "index.html" {
+					if dotPos > 0 && (len(req.URL.Path) - dotPos) <= 5 && req.URL.Path != "index.html" {
 						// at this point we know that in the path there was a . within 5 digits of the end.
 						// we are going to ASSUME that means a file.  That could make a you know what out of you and me
 						riceServer.ServeHTTP(w, req)
