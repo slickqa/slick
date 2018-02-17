@@ -61,7 +61,7 @@ No authorization required
 
 <a name="loginWithCredentials"></a>
 # **loginWithCredentials**
-> SlickqaLoginResponse loginWithCredentials()
+> SlickqaLoginResponse loginWithCredentials(body)
 
 
 
@@ -71,6 +71,9 @@ var SlickClient = require('slick-client');
 
 var apiInstance = new SlickClient.AuthApi();
 
+var body = new SlickClient.SlickqaPlainUserLoginRequest(); // SlickqaPlainUserLoginRequest | 
+
+
 var callback = function(error, data, response) {
   if (error) {
     console.error(error);
@@ -78,11 +81,14 @@ var callback = function(error, data, response) {
     console.log('API called successfully. Returned data: ' + data);
   }
 };
-apiInstance.loginWithCredentials(callback);
+apiInstance.loginWithCredentials(body, callback);
 ```
 
 ### Parameters
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **body** | [**SlickqaPlainUserLoginRequest**](SlickqaPlainUserLoginRequest.md)|  | 
 
 ### Return type
 

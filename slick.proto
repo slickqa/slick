@@ -86,7 +86,7 @@ message LoginResponse {
 message VersionRequest {
 }
 
-messave VersionInfoResponse {
+message VersionInfoResponse {
     string Version = 1; //
 }
 

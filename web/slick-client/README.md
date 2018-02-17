@@ -85,6 +85,7 @@ Class | Method | HTTP request | Description
 *SlickClient.UsersApi* | [**getUserInfo**](docs/UsersApi.md#getUserInfo) | **GET** /api/users/info/{EmailAddress} | 
 *SlickClient.UsersApi* | [**getUsersForCompany**](docs/UsersApi.md#getUsersForCompany) | **GET** /api/users/by-company/{CompanyName} | 
 *SlickClient.UsersApi* | [**getUsersForProject**](docs/UsersApi.md#getUsersForProject) | **GET** /api/users/by-project/{CompanyName}/{ProjectName} | 
+*SlickClient.VersionApi* | [**getFullVersion**](docs/VersionApi.md#getFullVersion) | **GET** /api/version | 
 
 
 ## Documentation for Models
@@ -92,10 +93,12 @@ Class | Method | HTTP request | Description
  - [SlickClient.SlickqaCompanyPermissionInfo](docs/SlickqaCompanyPermissionInfo.md)
  - [SlickClient.SlickqaIsAuthorizedResponse](docs/SlickqaIsAuthorizedResponse.md)
  - [SlickClient.SlickqaLoginResponse](docs/SlickqaLoginResponse.md)
+ - [SlickClient.SlickqaPlainUserLoginRequest](docs/SlickqaPlainUserLoginRequest.md)
  - [SlickClient.SlickqaProjectPermissionInfo](docs/SlickqaProjectPermissionInfo.md)
  - [SlickClient.SlickqaSlickPermissionInfo](docs/SlickqaSlickPermissionInfo.md)
  - [SlickClient.SlickqaUserInfo](docs/SlickqaUserInfo.md)
  - [SlickClient.SlickqaUsersQueryResponse](docs/SlickqaUsersQueryResponse.md)
+ - [SlickClient.SlickqaVersionInfoResponse](docs/SlickqaVersionInfoResponse.md)
 
 
 ## Documentation for Authorization

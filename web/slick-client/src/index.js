@@ -16,10 +16,12 @@ const ApiClient = require('./ApiClient'),
  SlickqaCompanyPermissionInfo = require('./model/SlickqaCompanyPermissionInfo'),
  SlickqaIsAuthorizedResponse = require('./model/SlickqaIsAuthorizedResponse'),
  SlickqaLoginResponse = require('./model/SlickqaLoginResponse'),
+ SlickqaPlainUserLoginRequest = require('./model/SlickqaPlainUserLoginRequest'),
  SlickqaProjectPermissionInfo = require('./model/SlickqaProjectPermissionInfo'),
  SlickqaSlickPermissionInfo = require('./model/SlickqaSlickPermissionInfo'),
  SlickqaUserInfo = require('./model/SlickqaUserInfo'),
- SlickqaUsersQueryResponse = require('./model/SlickqaUsersQueryResponse'), AuthApi = require('./api/AuthApi'), UsersApi = require('./api/UsersApi')
+ SlickqaUsersQueryResponse = require('./model/SlickqaUsersQueryResponse'),
+ SlickqaVersionInfoResponse = require('./model/SlickqaVersionInfoResponse'), AuthApi = require('./api/AuthApi'), UsersApi = require('./api/UsersApi'), VersionApi = require('./api/VersionApi')
 
 
   /**
@@ -75,6 +77,11 @@ const ApiClient = require('./ApiClient'),
      */
     SlickqaLoginResponse: SlickqaLoginResponse,
     /**
+     * The SlickqaPlainUserLoginRequest model constructor.
+     * @property {module:model/SlickqaPlainUserLoginRequest}
+     */
+    SlickqaPlainUserLoginRequest: SlickqaPlainUserLoginRequest,
+    /**
      * The SlickqaProjectPermissionInfo model constructor.
      * @property {module:model/SlickqaProjectPermissionInfo}
      */
@@ -95,6 +102,11 @@ const ApiClient = require('./ApiClient'),
      */
     SlickqaUsersQueryResponse: SlickqaUsersQueryResponse,
     /**
+     * The SlickqaVersionInfoResponse model constructor.
+     * @property {module:model/SlickqaVersionInfoResponse}
+     */
+    SlickqaVersionInfoResponse: SlickqaVersionInfoResponse,
+    /**
      * The AuthApi service constructor.
      * @property {module:api/AuthApi}
      */
@@ -103,7 +115,12 @@ const ApiClient = require('./ApiClient'),
      * The UsersApi service constructor.
      * @property {module:api/UsersApi}
      */
-    UsersApi: UsersApi
+    UsersApi: UsersApi,
+    /**
+     * The VersionApi service constructor.
+     * @property {module:api/VersionApi}
+     */
+    VersionApi: VersionApi
   };
 
 module.exports = exports;

@@ -63,6 +63,16 @@
             }
           }
         },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/slickqaPlainUserLoginRequest"
+            }
+          }
+        ],
         "tags": [
           "Auth"
         ]
@@ -185,6 +195,22 @@
           "Users"
         ]
       }
+    },
+    "/api/version": {
+      "get": {
+        "operationId": "GetFullVersion",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/slickqaVersionInfoResponse"
+            }
+          }
+        },
+        "tags": [
+          "Version"
+        ]
+      }
     }
   },
   "definitions": {
@@ -230,6 +256,17 @@
         },
         "User": {
           "$ref": "#/definitions/slickqaUserInfo"
+        }
+      }
+    },
+    "slickqaPlainUserLoginRequest": {
+      "type": "object",
+      "properties": {
+        "UserName": {
+          "type": "string"
+        },
+        "Password": {
+          "type": "string"
         }
       }
     },
@@ -299,6 +336,14 @@
           "items": {
             "$ref": "#/definitions/slickqaUserInfo"
           }
+        }
+      }
+    },
+    "slickqaVersionInfoResponse": {
+      "type": "object",
+      "properties": {
+        "Version": {
+          "type": "string"
         }
       }
     }
