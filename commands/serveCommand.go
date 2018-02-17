@@ -167,7 +167,7 @@ func RunService(c *cli.Context) {
 		}
 	}
 
-	conn, err := net.Listen("tcp", "0.0.0.0:" + baseUrl.Port())
+	conn, err := net.Listen("tcp", slickconfig.Configuration.Common.ListenIP + ":"+ string(slickconfig.Configuration.Common.ListenPort))
 	if err != nil {
 		logger.Fatal("Error occured trying to listen on host:port", "host:port", baseUrl.Host, "error", err)
 		return

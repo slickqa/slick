@@ -14,6 +14,8 @@ import (
 
 type ServiceConfiguration struct {
 	BaseUrl string `toml:"base-url" comment:"You must supply a base url for slick.  If you change it you have to regenerate certificates."`
+	ListenIP string `toml:"listen-ip" comment:"The IP address to listen on.  If you want to listen on all interfaces use 0.0.0.0."`
+	ListenPort int `toml:"listen-port" comment:"The port to listen on.  Normally this will be the same as the port in your base url unless you are using a reverse proxy."`
 	LocalWebFilesPath string `toml:"web-files-path" comment:"Path to the local web files.  If you are using a release version and it has the web files embedded, you won't need this." commented:"true"`
 }
 
@@ -73,6 +75,8 @@ var (
 
 func init() {
 	Configuration.Common.BaseUrl = "https://localhost:8888"
+	Configuration.Common.ListenIP = "127.0.0.1"
+	Configuration.Common.ListenPort = 8888
 	Configuration.Mongo.URL = "mongodb://localhost/"
 	Configuration.Mongo.Database = "slick"
 	Configuration.Roles.Defaults = DefaultRoles
