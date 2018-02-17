@@ -137,7 +137,7 @@ func RunService(c *cli.Context) {
 			fileserver := http.FileServer(http.Dir(slickconfig.Configuration.Common.LocalWebFilesPath))
 			rootHttpMux.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 				dotPos := strings.LastIndex(req.URL.Path, ".")
-				if dotPos > 0 && (len(req.URL.Path) - dotPos) < 5 && req.URL.Path != "index.html" {
+				if dotPos > 0 && (len(req.URL.Path) - dotPos) <= 5 && req.URL.Path != "index.html" {
 					// at this point we know that in the path there was a . within 5 digits of the end.
 					// we are going to ASSUME that means a file.  That could make a you know what out of you and me
 					fileserver.ServeHTTP(w, req)
