@@ -98,7 +98,7 @@ func InitializeConfiguration(c *cli.Context) {
 	}
 
 
-	hosts := []string {baseUrl.Hostname(), baseUrl.Host, "127.0.0.1", "localhost"}
+	hosts := []string {baseUrl.Hostname(), baseUrl.Host, "127.0.0.1", "localhost", fmt.Sprintf("localhost:%d", slickconfig.Configuration.Common.ListenPort)}
 
 	for _, h := range hosts {
 		if ip := net.ParseIP(h); ip != nil {
