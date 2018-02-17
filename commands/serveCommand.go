@@ -103,7 +103,7 @@ func RunService(c *cli.Context) {
 	rootHttpMux := http.NewServeMux()
 	restGatewayMux := runtime.NewServeMux()
 
-	err = slickqa.RegisterAuthHandlerFromEndpoint(ctx, restGatewayMux, baseUrl.Host, dopts)
+	err = slickqa.RegisterAuthHandlerFromEndpoint(ctx, restGatewayMux, fmt.Sprintf("%s:%d", slickconfig.Configuration.Common.ListenIP, slickconfig.Configuration.Common.ListenPort), dopts)
 
 	if err != nil {
 		logger.Fatal("Error registering auth grpc gateway", "error", err)
