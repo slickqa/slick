@@ -103,7 +103,7 @@ service Auth {
   }
   rpc LoginWithCredentials(PlainUserLoginRequest) returns(LoginResponse) {
     option (google.api.http) = {
-            post: "/api/auth/login",
+            post: "/api/auth/login"
             body: "*"
     };
   }
