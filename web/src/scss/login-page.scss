@@ -1,4 +1,8 @@
 
+.LoginPageLogo {
+    height: 100%;
+}
+
 .LoginPage {
     height: 100vh;
     background-image: url(/img/sunrise.jpg);
@@ -9,6 +13,10 @@
 
 .LoginPage .grommetux-headline {
     color: #ffffff;
+}
+
+.LoginPage .grommetux-footer {
+    color: #aaaaaa;
 }
 
 @keyframes background-shrink {
