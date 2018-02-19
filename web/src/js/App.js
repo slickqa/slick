@@ -9,6 +9,11 @@ import PlatformGoogleIcon from 'grommet/components/icons/base/PlatformGoogle';
 import Spinning from 'grommet/components/icons/Spinning';
 import Footer from 'grommet/components/Footer';
 import Card from 'grommet/components/Card';
+import Section from 'grommet/components/Section';
+import Heading from 'grommet/components/Heading';
+import Accordian from 'grommet/components/Accordion';
+import AccordianPanel from 'grommet/components/AccordionPanel';
+import Paragraph from 'grommet/components/Paragraph';
 import UsersApi from 'slick-client/src/api/UsersApi';
 import VersionApi from 'slick-client/src/api/VersionApi';
 
@@ -94,14 +99,30 @@ export class UserInfoPage extends Component {
       user =
         <Card thumbnail={this.state.user.AvatarUrl}
               heading={this.state.user.FullName}
-              description="stuff" />;
+              description="The following are the companies and roles you are assigned."
+              separator="all">
+          {this.state.user.Permissions.Companies.map(function(company) {
+            return <Section key={company}>
+              <Heading tag="h3">{company.CompanyName}</Heading>
+              <Accordian openMulti={true}>
+                {company.Projects.map(function(project) {
+                  return <AccordianPanel key={project.ProjectName} heading={project.ProjectName}>
+                    <Paragraph margin="small">Role{project.Roles.length > 1 ? "s" : ""}: {project.Roles.join(", ")}</Paragraph>
+                  </AccordianPanel>;
+                })}
+              </Accordian>
+            </Section>
+          })}
+        </Card>;
 
 
     }
     return (
-      <Box>
+      <Box full="vertical" pad="medium">
         <Headline size="large">Welcome {localStorage.userFirstName}</Headline>
-        <Button onClick={this.handleClick} label="Logout" />
+        <Box margin={{vertical: "small"}}>
+          <Button onClick={this.handleClick} primary={true} label="Logout" />
+        </Box>
         {user}
       </Box>
     )
