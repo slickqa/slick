@@ -19,6 +19,23 @@
     color: #aaaaaa;
 }
 
+.LoginPage .grommetux-button {
+    color: #cccccc;
+    border-color: #cccccc;
+}
+
+.LoginPage .grommetux-button:hover .grommetux-control-icon {
+    color: #ffffff;
+    fill: #ffffff;
+    stroke: #ffffff;
+}
+
+.LoginPage .grommetux-control-icon {
+    color: #cccccc;
+    fill: #cccccc;
+    stroke: #cccccc;
+}
+
 @keyframes background-shrink {
     0% {
         background-size: 108% 108%;

@@ -24,7 +24,7 @@ function isLoggedIn() {
 export class SlickLogo extends Component {
   render() {
     return (
-      <Box>
+      <Box align="center">
         <Headline size={"xlarge"} style={{"fontFamily": "Audiowide, cursive", "letter-spacing": "30px"}}>S
           <span style={{"fontSize": "70%"}}>LICK</span>
         </Headline>
@@ -50,15 +50,13 @@ export class LoginPage extends Component {
   }
   render() {
     return (
-      <Split flex="left">
         <Box full="vertical" className="LoginPage">
-          <Box justify="center" align="center" className="LoginPageLogo"><SlickLogo/></Box>
+          <Box justify="center" align="center" className="LoginPageLogo">
+            <SlickLogo/>
+            <Button icon={<PlatformGoogleIcon/>} href="/login/google" label="Login with Google"/>
+          </Box>
           <Footer>{this.state.VersionString}</Footer>
         </Box>
-        <Box justify="center" pad={{"horizontal": "small"}} full="vertical" align="center">
-          <Button icon={<PlatformGoogleIcon/>} primary={true} href="/login/google" label="Login with Google"/>
-        </Box>
-      </Split>
     );
   }
 }
@@ -102,7 +100,7 @@ export class UserInfoPage extends Component {
               description="The following are the companies and roles you are assigned."
               separator="all">
           {this.state.user.Permissions.Companies.map(function(company) {
-            return <Section key={company}>
+            return <Section key={company.CompanyName}>
               <Heading tag="h3">{company.CompanyName}</Heading>
               <Accordian openMulti={true}>
                 {company.Projects.map(function(project) {
