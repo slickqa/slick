@@ -1,0 +1,7 @@
+$brand-font-family: 'Open Sans', Arial, sans-serif;
+
+$brand-color: #84252b;
+$brand-color-lighter: desaturate(lighten($brand-color, 50%), 20%);
+
+@import '~grommet/scss/grommet-core/settings';
+
