@@ -20,7 +20,7 @@ export class SlickLogo extends Component {
   render() {
     return (
       <Box>
-        <Headline size={"xlarge"} style={{"fontFamily": "Audiowide, cursive"}}>S
+        <Headline size={"xlarge"} style={{"fontFamily": "Audiowide, cursive", "letter-spacing": "30px"}}>S
           <span style={{"fontSize": "70%"}}>LICK</span>
         </Headline>
         <Headline size={"small"}>A Test Manager that doesn't suck!</Headline>
