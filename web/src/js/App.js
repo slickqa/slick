@@ -28,7 +28,6 @@ export class SlickLogo extends Component {
         <Headline size={"xlarge"} style={{"fontFamily": "Audiowide, cursive", "letter-spacing": "30px"}}>S
           <span style={{"fontSize": "70%"}}>LICK</span>
         </Headline>
-        <Headline size={"small"}>A Test Manager that doesn't suck!</Headline>
       </Box>
     );
   }
@@ -51,9 +50,11 @@ export class LoginPage extends Component {
   render() {
     return (
         <Box full="vertical" className="LoginPage">
-          <Box justify="center" align="center" className="LoginPageLogo">
-            <SlickLogo/>
-            <Button icon={<PlatformGoogleIcon/>} href="/login/google" label="Login with Google"/>
+          <Box flex="grow" justify="center" className="LoginPageLogo">
+            <Box alignSelf="center" align="center">
+              <SlickLogo/>
+              <Button icon={<PlatformGoogleIcon/>} href="/login/google" label="Login with Google"/>
+            </Box>
           </Box>
           <Footer>{this.state.VersionString}</Footer>
         </Box>

@@ -1,14 +1,39 @@
 
 .LoginPageLogo {
-    height: 100%;
 }
 
-.LoginPage {
-    height: 100vh;
+@media screen and (min-width:1024px) {
+  .LoginPage {
     background-image: url(/img/sunrise.jpg);
-    background-size: 110% 110%;
+    background-size: 100% 108%;
     background-position: center center;
     animation: background-shrink 8s ease-in-out infinite alternate;
+  }
+  @keyframes background-shrink {
+    0% {
+        background-size: 100% 108%;
+    }
+    100% {
+        background-size: 100% 100%;
+    }
+  }
+}
+
+@media screen and (max-width:1023px) {
+  .LoginPage {
+    background-image: url(/img/sunrise.jpg);
+    background-size: 180% 104%;
+    background-position: bottom center;
+    animation: background-shrink 3s ease-in-out infinite alternate;
+  }
+  @keyframes background-shrink {
+    0% {
+        background-size: 180% 104%;
+    }
+    100% {
+        background-size: 180% 100%;
+    }
+  }
 }
 
 .LoginPage .grommetux-headline {
@@ -36,11 +61,5 @@
     stroke: #cccccc;
 }
 
-@keyframes background-shrink {
-    0% {
-        background-size: 108% 108%;
-    }
-    100% {
-        background-size: 100% 100%;
-    }
-}
+
+
