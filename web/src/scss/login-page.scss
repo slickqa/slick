@@ -2,6 +2,33 @@
 .LoginPageLogo {
 }
 
+.slick-header .grommetux-select .grommetux-button__icon svg {
+    background-color: inherit;
+}
+
+.slick-logo-xlarge.grommetux-title {
+   font-family: 'Audiowide', cursive;
+   font-size: 140px;
+   letter-spacing: 30px;
+   color: $colored-text-color;
+}
+
+.slick-logo-xlarge.grommetux-title span {
+  margin-right: 0px;
+}
+
+.slick-logo-medium.grommetux-title {
+   font-family: 'Audiowide', cursive;
+   font-size: 40px;
+   letter-spacing: 5px;
+   color: $colored-text-color;
+}
+
+.slick-logo-medium.grommetux-title span {
+  margin-right: 0px;
+}
+
+
 @media screen and (min-width:1024px) {
   .LoginPage {
     background-image: url(/img/sunrise.jpg);
@@ -45,8 +72,8 @@
 }
 
 .LoginPage .grommetux-button {
-    color: #cccccc;
-    border-color: #cccccc;
+    color: $colored-text-color;
+    border-color: $colored-text-color;
 }
 
 .LoginPage .grommetux-button:hover .grommetux-control-icon {
