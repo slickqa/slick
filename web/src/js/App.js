@@ -18,8 +18,10 @@ import Accordian from 'grommet/components/Accordion';
 import AccordianPanel from 'grommet/components/AccordionPanel';
 import Paragraph from 'grommet/components/Paragraph';
 import Select from 'grommet/components/Select';
+import Columns from 'grommet/components/Columns';
 import UsersApi from 'slick-client/src/api/UsersApi';
 import VersionApi from 'slick-client/src/api/VersionApi';
+import {NotificationCard} from './demo';
 
 function isLoggedIn() {
     return localStorage.token;
@@ -121,7 +123,8 @@ export class UserInfo extends Component {
         <Card thumbnail={this.state.user.AvatarUrl}
               heading={this.state.user.FullName}
               description="The following are the companies and roles you are assigned."
-              separator="all">
+              separator="all"
+              margin="small">
           {this.state.user.Permissions.Companies.map(function(company) {
             return <Section key={company.CompanyName}>
               <Heading tag="h3">{company.CompanyName}</Heading>
@@ -181,7 +184,10 @@ export class ThemeDemo extends Component {
         <Select options={["Light", "Dark"]} value={this.state.background} onChange={this.changeBackground} />
       </SlickHeader>
       <Box flex="grow" pad="small">
-        <UserInfo/>
+        <Columns>
+          <UserInfo/>
+          <NotificationCard/>
+        </Columns>
       </Box>
       <SlickFooter/>
     </Box>;
