@@ -3,5 +3,7 @@ $brand-font-family: 'Open Sans', Arial, sans-serif;
 $brand-color: #84252b;
 $brand-color-lighter: desaturate(lighten($brand-color, 50%), 20%);
 
+$brand-graph-colors: (#008000, #006000, #ff0000);
+
 @import '~grommet/scss/grommet-core/settings';
 

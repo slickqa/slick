@@ -21,7 +21,7 @@ import Select from 'grommet/components/Select';
 import Columns from 'grommet/components/Columns';
 import UsersApi from 'slick-client/src/api/UsersApi';
 import VersionApi from 'slick-client/src/api/VersionApi';
-import {NotificationCard} from './demo';
+import {NotificationCard, TextCard, TabCard, Charts} from './demo';
 
 function isLoggedIn() {
     return localStorage.token;
@@ -187,7 +187,10 @@ export class ThemeDemo extends Component {
         <Columns>
           <UserInfo/>
           <NotificationCard/>
+          <TextCard/>
+          <TabCard/>
         </Columns>
+        <Charts/>
       </Box>
       <SlickFooter/>
     </Box>;
