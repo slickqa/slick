@@ -1,7 +1,4 @@
 
-.LoginPageLogo {
-}
-
 .slick-header .grommetux-select .grommetux-button__icon svg {
     background-color: inherit;
 }
@@ -29,38 +26,30 @@
 }
 
 
-@media screen and (min-width:1024px) {
-  .LoginPage {
-    background-image: url(/img/sunrise.jpg);
-    background-size: 100% 108%;
-    background-position: center center;
-    animation: background-shrink 8s ease-in-out infinite alternate;
-  }
-  @keyframes background-shrink {
-    0% {
-        background-size: 100% 108%;
-    }
-    100% {
-        background-size: 100% 100%;
-    }
-  }
+#background-video {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: fill;
 }
 
-@media screen and (max-width:1023px) {
-  .LoginPage {
-    background-image: url(/img/sunrise.jpg);
-    background-size: 180% 104%;
-    background-position: bottom center;
-    animation: background-shrink 3s ease-in-out infinite alternate;
-  }
-  @keyframes background-shrink {
-    0% {
-        background-size: 180% 104%;
-    }
-    100% {
-        background-size: 180% 100%;
-    }
-  }
+.LoginPageLogo {
+    position: fixed;
+    top: 40%;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, .6);
+    left: 0;
+    right: 0;
+}
+
+.LoginPage {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
 }
 
 .LoginPage .grommetux-headline {
@@ -69,6 +58,8 @@
 
 .LoginPage .grommetux-footer {
     color: #aaaaaa;
+    position: fixed;
+    bottom: 0;
 }
 
 .LoginPage .grommetux-button {

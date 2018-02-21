@@ -68,10 +68,21 @@ SlickLogo.propTypes = {
 export class LoginPage extends Component {
   constructor(props) {
     super(props);
+    this.videos = [
+      "hallstatt.mov",
+      "lake2.mov",
+      "lake.mov",
+      "london.mov",
+      "waterfall2.mov",
+      "waterfall.mov"
+    ]
   }
   render() {
     return (
         <Box full="vertical" className="LoginPage">
+          <video autoPlay muted loop id="background-video">
+            <source src={"/img/" + this.videos[Math.floor(Math.random() * this.videos.length)]} type="video/mp4" />
+          </video>
           <Box flex="grow" justify="center" className="LoginPageLogo">
             <Box alignSelf="center" align="center">
               <Box align="center">
