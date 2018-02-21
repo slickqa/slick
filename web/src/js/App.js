@@ -168,6 +168,34 @@ export class SlickHeader extends Component {
   }
 }
 
+export class ThemeChooser extends Component {
+  constructor(props) {
+    super(props);
+    this.themes = {
+      "Default": "/default-theme.css",
+      "Blue": "/blue-theme.css",
+      "Dev": "/dev-theme.css"
+    };
+    this.state = {
+      theme: "Default"
+    };
+    this.changeTheme = this.changeTheme.bind(this);
+  }
+
+  changeTheme(opts) {
+    this.setState(function() {
+      window.document.getElementById("theme").href = this.themes[opts.option];
+      return {theme: opts.option};
+    });
+  }
+
+  render() {
+    return (
+      <Select options={Object.keys(this.themes)} value={this.state.theme} onChange={this.changeTheme} />
+    );
+  }
+}
+
 export class ThemeDemo extends Component {
   constructor(props) {
     super(props);
@@ -192,6 +220,7 @@ export class ThemeDemo extends Component {
     }
     return <Box full={true} colorIndex={colorIndex}>
       <SlickHeader>
+        <ThemeChooser/>
         <Select options={["Light", "Dark"]} value={this.state.background} onChange={this.changeBackground} />
       </SlickHeader>
       <Box flex="grow" pad="small">
