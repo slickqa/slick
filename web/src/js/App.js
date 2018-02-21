@@ -72,9 +72,9 @@ export class LoginPage extends Component {
       "hallstatt.mov",
       "lake2.mov",
       "lake.mov",
-      "london.mov",
       "waterfall2.mov",
-      "waterfall.mov"
+      "waterfall.mov",
+      "paris.mov"
     ]
   }
   render() {
