@@ -140,9 +140,20 @@ service Version {
   }
 }
 // slick objects
-message Project {
-  bytes Id = 1; //`bson:"_id,omitempty"`
+
+message Link {
+  string Url = 1; //`bson:"url"`
   string Name = 2; //`bson:"name"`
+  string Category = 3; //`bson:"category"`
+}
+
+message ProjectIdentity {
+  string Company = 1; //`bson:"company"`
+  string Name = 2; //`bson:"name"`
+}
+
+message Project {
+  ProjectIdentity Id = 1; //`bson:"_id"`
   repeated string AutomationTools = 3; //`bson:"automationTools"`
   repeated string Tags = 4; //`bson:"tags"`
   map<string, string> Attributes = 5; //`bson:"attributes"`
@@ -150,10 +161,15 @@ message Project {
 
 }
 
-message Component{
-  bytes Id = 1; //`bson:"_id,omitempty"`
+message ComponentIdentity {
+  ProjectIdentity Project = 1; //`bson:"project"`
   string Name = 2; //`bson:"name"`
-  string Project = 3; //`bson:"_id,omitempty"`
+}
+
+message Component{
+  ComponentIdentity Id = 1; //`bson:"_id"`
+  string Description = 2; //
+
 }
 
 message Feature{
