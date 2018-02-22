@@ -163,7 +163,7 @@ export class UserInfo extends Component {
 
 export class SlickHeader extends Component {
   render() {
-    return <Header className="slick-header" pad="small" colorIndex="brand">
+    return <Header className="slick-header" pad="small" colorIndex="neutral-5">
       <SlickLogo size="medium"/>
       <Box flex="grow"> </Box>
       {this.props.children}
