@@ -1,0 +1,27 @@
+$brand-status-colors: (
+  critical: #dc1818,
+  error: #fa6400,
+  warning: #FFD144,
+  ok: #32ce21,
+  unknown: #CCCCCC,
+  disabled: #CCCCCC
+);
+
+// These are the the status colors in the following order: PASS, PASS ON RETRY, FAILED, SKIPPED, BROKEN, NO RESULT and NOT TESTED
+$brand-graph-colors: (#32ce21, #28811e, #dc1818, #e0cf7e, #ffd83d, #b6b6b6, #184fdc);
+
+.grommetux-background-color-index--dark .grommetux-check-box input.grommetux-check-box__input:checked + .grommetux-check-box__control {
+    background-color: $brand-color;
+}
+    
+.grommetux-background-color-index--dark input.grommetux-radio-button__input:checked + .grommetux-radio-button__control, .grommetux-background-color-index--dark .grommetux-background-color-index--dark input.grommetux-radio-button__input:checked + .grommetux-radio-button__control {
+    border-color: $brand-color;
+}
+
+.grommetux-background-color-index--dark input.grommetux-radio-button__input:checked + .grommetux-radio-button__control::after, .grommetux-background-color-index--light .grommetux-background-color-index--dark input.grommetux-radio-button__input:checked + .grommetux-radio-button__control::after {
+    background-color: $brand-color;
+}
+
+.grommetux-toast--medium {
+    min-height: 74px;
+}

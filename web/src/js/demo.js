@@ -35,7 +35,8 @@ export class NotificationCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      toast: false
+      toast: false,
+      status: "ok"
     };
     this.changeToastState = this.changeToastState.bind(this);
   }
@@ -49,16 +50,17 @@ export class NotificationCard extends Component {
   render() {
     let toast=null;
     if(this.state.toast) {
-      toast=<Toast status="ok" onClose={this.changeToastState}>A Toast Message</Toast>;
+      toast=<Toast size="medium" status="ok" onClose={this.changeToastState}>A Toast Message</Toast>;
     }
+
     return (
       <Card heading="Notifications" className="slick-card" margin="small">
-        <Notification status="ok" size="medium" margin="small" message="Ok" />
-        <Notification status="critical" size="medium" margin="small" message="Critical" />
-        <Notification status="warning" size="medium" margin="small" message="Warning"/>
-        <Notification status="disabled" size="medium" margin="small" message="Disabled"/>
-        <Notification status="unknown" size="medium" margin="small" message="Unknown"/>
-        <Button label="Show Toast Notification" onClick={this.changeToastState}/>
+        <Notification status="ok" size="medium" margin="small" message="Ok" onClick={this.changeToastState}/>
+        <Notification status="critical" size="medium" margin="small" message="Critical" onClick={this.changeToastState}/>
+        <Notification status="error" size="medium" margin="small" message="Error" onClick={this.changeToastState}/>
+        <Notification status="warning" size="medium" margin="small" message="Warning" onClick={this.changeToastState}/>
+        <Notification status="disabled" size="medium" margin="small" message="Disabled" onClick={this.changeToastState}/>
+        <Notification status="unknown" size="medium" margin="small" message="Unknown" onClick={this.changeToastState}/>
         {toast}
       </Card>
     );
