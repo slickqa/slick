@@ -134,8 +134,8 @@ export class UserInfo extends Component {
         <Card thumbnail={this.state.user.AvatarUrl}
               heading={this.state.user.FullName}
               description="The following are the companies and roles you are assigned."
-              separator="all"
-              margin="small">
+              margin="small"
+              className="slick-card">
           {this.state.user.Permissions.Companies.map(function(company) {
             return <Section key={company.CompanyName}>
               <Heading tag="h3">{company.CompanyName}</Heading>
@@ -200,7 +200,7 @@ export class ThemeDemo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      background: "Light"
+      background: "Dark"
     };
     this.changeBackground = this.changeBackground.bind(this);
   }
@@ -218,7 +218,7 @@ export class ThemeDemo extends Component {
     } else if(this.state.background === "Light") {
       colorIndex="light-1";
     }
-    return <Box full={true} colorIndex={colorIndex}>
+    return <Box className="theme-demo" full={true} colorIndex={colorIndex}>
       <SlickHeader>
         <ThemeChooser/>
         <Select options={["Light", "Dark"]} value={this.state.background} onChange={this.changeBackground} />

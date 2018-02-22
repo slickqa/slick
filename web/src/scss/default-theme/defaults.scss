@@ -3,7 +3,12 @@ $brand-font-family: 'Open Sans', Arial, sans-serif;
 $brand-color: #84252b;
 $brand-color-lighter: desaturate(lighten($brand-color, 50%), 20%);
 
+$brand-neutral-colors: (#0A64A0, #DC2878, #501EB4, #49516F, rgba(0,0,0,.7));
+
 $brand-graph-colors: (#008000, #006000, #ff0000);
 
 @import '~grommet/scss/grommet-core/settings';
 
+.grommetux-card.slick-card {
+  background-color: rgba(0,0,0,.7);
+}

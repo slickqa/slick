@@ -52,7 +52,7 @@ export class NotificationCard extends Component {
       toast=<Toast status="ok" onClose={this.changeToastState}>A Toast Message</Toast>;
     }
     return (
-      <Card heading="Notifications" separator="all" margin="small">
+      <Card heading="Notifications" className="slick-card" margin="small">
         <Notification status="ok" size="medium" margin="small" message="Ok" />
         <Notification status="critical" size="medium" margin="small" message="Critical" />
         <Notification status="warning" size="medium" margin="small" message="Warning"/>
@@ -86,7 +86,7 @@ export class TextCard extends Component {
       tip = <Tip target="has-a-tip" onClose={this.changeTipState}>This is the tip</Tip>;
     }
     return (
-      <Card heading="Text and Form Components" separator="all" margin="small">
+      <Card heading="Text and Form Components" className="slick-card" margin="small">
         <Markdown content="Markdown text can also be rendered, including [a link to google](https://www.google.com)" />
         <Anchor label="An Anchor" />
         <FilterControl unfilteredTotal={100}
@@ -115,7 +115,7 @@ export class TextCard extends Component {
 export class TabCard extends Component {
   render() {
     return (
-      <Card heading="Tabs and Icons" separator="all" margin="small">
+      <Card heading="Tabs and Icons" className="slick-card" margin="small">
         <Tabs>
           <Tab title='List Items'>
             <List>
