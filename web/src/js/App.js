@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import App from 'grommet/components/App';
 import Split from 'grommet/components/Split';
+import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 import Title from 'grommet/components/Title';
 import Box from 'grommet/components/Box';
 import Headline from 'grommet/components/Headline';
@@ -24,7 +25,7 @@ import VersionApi from 'slick-client/src/api/VersionApi';
 import {NotificationCard, TextCard, TabCard, Charts} from './demo';
 
 function isLoggedIn() {
-    return localStorage.token;
+  return localStorage.token;
 }
 
 export class SlickFooter extends Component {
@@ -35,8 +36,8 @@ export class SlickFooter extends Component {
     };
     this.vapi = new VersionApi();
     this.vapi.apiClient.basePath = window.location.protocol + "//" + window.location.host;
-    this.vapi.getFullVersion(function(error, data, response) {
-      this.setState(function() {
+    this.vapi.getFullVersion(function (error, data, response) {
+      this.setState(function () {
         return {VersionString: "Version " + data.Version};
       });
     }.bind(this));
@@ -52,9 +53,10 @@ export class SlickLogo extends Component {
   constructor(props) {
     super(props);
   }
+
   render() {
     let className = "slick-logo-xlarge";
-    if(this.props.size) {
+    if (this.props.size) {
       className = "slick-logo-" + this.props.size;
     }
     return <Title className={className}>S<span style={{"fontSize": "70%"}}>LICK</span></Title>;
@@ -77,22 +79,23 @@ export class LoginPage extends Component {
       "paris.mov"
     ]
   }
+
   render() {
     return (
-        <Box full="vertical" className="LoginPage">
-          <video autoPlay muted loop id="background-video">
-            <source src={"/img/" + this.videos[Math.floor(Math.random() * this.videos.length)]} type="video/mp4" />
-          </video>
-          <Box flex="grow" justify="center" className="LoginPageLogo">
-            <Box alignSelf="center" align="center">
-              <Box align="center">
-                <SlickLogo size="xlarge"/>
-              </Box>
-              <Button icon={<PlatformGoogleIcon/>} href="/login/google" label="Login with Google"/>
+      <Box full="vertical" className="LoginPage">
+        <video autoPlay muted loop id="background-video">
+          <source src={"/img/" + this.videos[Math.floor(Math.random() * this.videos.length)]} type="video/mp4"/>
+        </video>
+        <Box flex="grow" justify="center" className="LoginPageLogo">
+          <Box alignSelf="center" align="center">
+            <Box align="center">
+              <SlickLogo size="xlarge"/>
             </Box>
+            <Button icon={<PlatformGoogleIcon/>} href="/login/google" label="Login with Google"/>
           </Box>
-          <SlickFooter/>
         </Box>
+        <SlickFooter/>
+      </Box>
     );
   }
 }
@@ -115,7 +118,7 @@ export class UserInfo extends Component {
     this.users.apiClient.basePath = window.location.protocol + "//" + window.location.host;
     this.users.apiClient.defaultHeaders["Authorization"] = "Bearer " + localStorage.token;
     let that = this;
-    this.users.getCurrentUserInfo(function(error, data, response) {
+    this.users.getCurrentUserInfo(function (error, data, response) {
       that.setState(function () {
         return {"user": data};
       });
@@ -127,8 +130,8 @@ export class UserInfo extends Component {
   }
 
   render() {
-    let user = <Spinning />;
-    if(this.state.user) {
+    let user = <Spinning/>;
+    if (this.state.user) {
       window.user = this.state.user;
       user =
         <Card thumbnail={this.state.user.AvatarUrl}
@@ -136,13 +139,14 @@ export class UserInfo extends Component {
               description="The following are the companies and roles you are assigned."
               margin="small"
               className="slick-card">
-          {this.state.user.Permissions.Companies.map(function(company) {
+          {this.state.user.Permissions.Companies.map(function (company) {
             return <Section key={company.CompanyName}>
               <Heading tag="h3">{company.CompanyName}</Heading>
               <Accordian openMulti={true}>
-                {company.Projects.map(function(project) {
+                {company.Projects.map(function (project) {
                   return <AccordianPanel key={project.ProjectName} heading={project.ProjectName}>
-                    <Paragraph margin="small">Role{project.Roles.length > 1 ? "s" : ""}: {project.Roles.join(", ")}</Paragraph>
+                    <Paragraph
+                      margin="small">Role{project.Roles.length > 1 ? "s" : ""}: {project.Roles.join(", ")}</Paragraph>
                   </AccordianPanel>;
                 })}
               </Accordian>
@@ -163,7 +167,7 @@ export class SlickHeader extends Component {
       <SlickLogo size="medium"/>
       <Box flex="grow"> </Box>
       {this.props.children}
-      <Button onClick={logout} label="Logout" />
+      <Button onClick={logout} label="Logout"/>
     </Header>;
   }
 }
@@ -183,7 +187,7 @@ export class ThemeChooser extends Component {
   }
 
   changeTheme(opts) {
-    this.setState(function() {
+    this.setState(function () {
       window.document.getElementById("theme").href = this.themes[opts.option];
       return {theme: opts.option};
     });
@@ -191,7 +195,7 @@ export class ThemeChooser extends Component {
 
   render() {
     return (
-      <Select options={Object.keys(this.themes)} value={this.state.theme} onChange={this.changeTheme} />
+      <Select options={Object.keys(this.themes)} value={this.state.theme} onChange={this.changeTheme}/>
     );
   }
 }
@@ -206,17 +210,17 @@ export class ThemeDemo extends Component {
   }
 
   changeBackground(opts) {
-    this.setState(function() {
+    this.setState(function () {
       return {background: opts.option};
     });
   }
 
   render() {
-    let colorIndex="light-1";
-    if(this.state.background === "Dark") {
-      colorIndex="grey-1";
-    } else if(this.state.background === "Light") {
-      colorIndex="light-1";
+    let colorIndex = "light-1";
+    if (this.state.background === "Dark") {
+      colorIndex = "grey-1";
+    } else if (this.state.background === "Light") {
+      colorIndex = "light-1";
     }
     return <Box className="theme-demo" full={true} colorIndex={colorIndex}>
       <SlickHeader>
@@ -237,16 +241,19 @@ export class ThemeDemo extends Component {
 }
 
 
-
 export default class BasicApp extends Component {
   render() {
-    let page = <LoginPage/>;
-    if(isLoggedIn()) {
-      page = <ThemeDemo/>;
+    let page = LoginPage;
+    if (isLoggedIn()) {
+      page = ThemeDemo;
     }
     return (
       <App centered={false}>
-        {page}
+        <Router>
+          <Switch>
+            <Route exact path='/' component={page} />
+          </Switch>
+        </Router>
       </App>
     );
   }
