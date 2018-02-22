@@ -7,3 +7,15 @@ $brand-graph-colors: (#008000, #006000, #ff0000);
 
 @import '~grommet/scss/grommet-core/settings';
 
+.grommetux-card.slick-card {
+    background-color: rgba(0,0,0,.7);
+  }
+  
+  .grommetux-background-color-index--dark .grommetux-tab--active .grommetux-button.grommetux-button--plain  .grommetux-tab__label {
+    color: #ffffff;
+    border-color: #ffffff;
+  }
+  
+.theme-demo {
+    background-image: url("/img/clouds.JPG");
+  }
