@@ -221,7 +221,6 @@ export class ThemeDemo extends Component {
     return <Box className="theme-demo" full={true} colorIndex={colorIndex}>
       <SlickHeader>
         <ThemeChooser/>
-        <Select options={["Light", "Dark"]} value={this.state.background} onChange={this.changeBackground} />
       </SlickHeader>
       <Box flex="grow" pad="small">
         <Columns>
