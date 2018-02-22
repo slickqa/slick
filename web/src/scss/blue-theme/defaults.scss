@@ -1,9 +1,25 @@
 $brand-font-family: 'Open Sans', Arial, sans-serif;
 
-$brand-color: #000099;
+$brand-color: #ff9000;
 $brand-color-lighter: desaturate(lighten($brand-color, 50%), 20%);
-
+$brand-neutral-colors: (#425563, #5F7A76, #01a982, #767676, rgba(17, 100, 158, .8)) !default;
+$brand-accent-colors: (#2AD2C9, #614767, #ff8d6d) !default;
+$brand-status-colors: (
+  critical: #dc1818,
+  error: #fa6400,
+  warning: #FFD144,
+  ok: #28861e,
+  unknown: #CCCCCC,
+  disabled: #CCCCCC
+);
+$brand-link-color: inherit;
+$brand-link-text-decoration: underline;
+$brand-grey-colors: (#000001, #333333, #3B3B3B, #434343, #666666);
 $brand-graph-colors: (#008000, #006000, #ff0000);
+$control-brand-color: #049371;
+
+$link-hover-color: #000;
+$button-accent-color: #ff8d6d;
 
 @import '~grommet/scss/grommet-core/settings';
 
@@ -15,7 +31,19 @@ $brand-graph-colors: (#008000, #006000, #ff0000);
     color: #ffffff;
     border-color: #ffffff;
   }
-  
+
 .theme-demo {
-    background-image: url("/img/clouds.JPG");
+    background-image: url("/img/france.JPG");
   }
+
+.grommetux-background-color-index--dark .grommetux-check-box input.grommetux-check-box__input:checked + .grommetux-check-box__control {
+background-color: $brand-color;
+}
+
+.grommetux-background-color-index--dark input.grommetux-radio-button__input:checked + .grommetux-radio-button__control, .grommetux-background-color-index--dark .grommetux-background-color-index--dark input.grommetux-radio-button__input:checked + .grommetux-radio-button__control {
+border-color: $brand-color;
+}
+
+.grommetux-background-color-index--dark input.grommetux-radio-button__input:checked + .grommetux-radio-button__control::after, .grommetux-background-color-index--light .grommetux-background-color-index--dark input.grommetux-radio-button__input:checked + .grommetux-radio-button__control::after {
+background-color: $brand-color;
+}
