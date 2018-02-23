@@ -207,14 +207,27 @@ export class Charts extends Component {
                             size='small'
                             type='circle'
                             max={100}
-                            series={[{"label": "Fail", "value": 20, "colorIndex": "graph-3"}, 
-                            {"label": "Pass", "value": 50, "colorIndex": "graph-1"},
-                            {"label": "Pass on Retry", "value": 15, "colorIndex": "graph-2"}]} />
+                            series={[
+                              {"label": "Fail", "value": 20, "colorIndex": "graph-3"}, 
+                              {"label": "Pass", "value": 40, "colorIndex": "graph-1"},
+                              {"label": "Pass on Retry", "value": 10, "colorIndex": "graph-2"},
+                              {"label": "Skipped", "value": 5, "colorIndex": "graph-4"},
+                              {"label": "Broken", "value": 5, "colorIndex": "graph-5"},
+                              {"label": "No Result", "value": 10, "colorIndex": "graph-6"},
+                              {"label": "Not Tested", "value": 10, "colorIndex": "graph-7"}]} />
             <AnnotatedMeter legend={true}
                             size='medium'
                             type='bar'
-                            max={70}
-                            series={[{"label": "Fail", "value": 20, "colorIndex": "graph-3"}, {"label": "Pass", "value": 50, "colorIndex": "graph-1"}]} />
+                            max={100}
+                            series={[
+                              {"label": "Fail", "value": 20, "colorIndex": "graph-3"}, 
+                              {"label": "Pass", "value": 40, "colorIndex": "graph-1"},
+                              {"label": "Pass on Retry", "value": 10, "colorIndex": "graph-2"},
+                              {"label": "Skipped", "value": 5, "colorIndex": "graph-4"},
+                              {"label": "Broken", "value": 5, "colorIndex": "graph-5"},
+                              {"label": "No Result", "value": 10, "colorIndex": "graph-6"},
+                              {"label": "Not Tested", "value": 10, "colorIndex": "graph-7"} 
+                              ]} />
           </Columns>
         </Tab>
       </Tabs>
