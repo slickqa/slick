@@ -44,7 +44,7 @@ export class NotificationCard extends Component {
   changeToastState(tstate) {
     console.info("Current tState: " + tstate)
     this.setState(function(oldstate) {
-      return {toast: !oldstate.toast, status: tstate};
+      return {toast: !oldstate.toast, status: tstate !== undefined ? tstate : oldstate.status};
     })
   }
 
@@ -52,26 +52,26 @@ export class NotificationCard extends Component {
     let toast=null;
     if(this.state.toast) {
       if(this.state.status === "ok") {
-        toast=<Toast size="medium" status="ok" onClose={this.changeToastState.bind(this, "ok")}>A OK Toast Message</Toast>;
+        toast=<Toast size="medium" status="ok" onClose={() => this.changeToastState()}>A OK Toast Message</Toast>;
       }
       else if(this.state.status === "critical") {
-        toast=<Toast size="medium" status="critical" onClose={this.changeToastState.bind(this, "critical")}>A Critical Toast Message</Toast>;
+        toast=<Toast size="medium" status="critical" onClose={() => this.changeToastState()}>A Critical Toast Message</Toast>;
       }
       else if(this.state.status === "warning") {
-        toast=<Toast size="medium" status="warning" onClose={this.changeToastState.bind(this, "warning")}>A Warning Toast Message</Toast>;
+        toast=<Toast size="medium" status="warning" onClose={() => this.changeToastState()}>A Warning Toast Message</Toast>;
       }
       else if(this.state.status === "disabled") {
-        toast=<Toast size="medium" status="disabled" onClose={this.changeToastState.bind(this, "disabled")}>A Disabled Toast Message</Toast>;
+        toast=<Toast size="medium" status="disabled" onClose={() => this.changeToastState()}>A Disabled Toast Message</Toast>;
       }
       else {
-        toast=<Toast size="medium" status="unknown" onClose={this.changeToastState.bind(this, "unknown")}>A Unknown Toast Message</Toast>;
+        toast=<Toast size="medium" status="unknown" onClose={() => this.changeToastState()}>A Unknown Toast Message</Toast>;
       }
     }
 
     return (
       <Card heading="Notifications" className="slick-card" margin="small">
-        <Notification status="ok" size="medium" margin="small" message="Ok" onClick={this.changeToastState.bind(this, "ok")}/>
-        <Notification status="critical" size="medium" margin="small" message="Critical" onClick={this.changeToastState.bind(this, "critical")}/>
+        <Notification status="ok" size="medium" margin="small" message="Ok" onClick={() => this.changeToastState("ok")}/>
+        <Notification status="critical" size="medium" margin="small" message="Critical" onClick={() => this.changeToastState("critical")}/>
         <Notification status="warning" size="medium" margin="small" message="Warning" onClick={() => this.changeToastState("warning")}/>
         <Notification status="disabled" size="medium" margin="small" message="Disabled" onClick={() => this.changeToastState("disabled")}/>
         <Notification status="unknown" size="medium" margin="small" message="Unknown" onClick={() => this.changeToastState("unknown")}/>
