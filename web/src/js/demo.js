@@ -137,16 +137,16 @@ export class TabCard extends Component {
             <List>
               <ListItem justify='between'
                         separator='horizontal'>
-                <span>Alan</span>
-                <span className='secondary'>happy</span>
+                <span>Jared</span>
+                <span className='secondary'>$350,000</span>
               </ListItem>
               <ListItem justify='between'>
-                <span>Chris</span>
-                <span className='secondary'>cool</span>
+                <span>Lee</span>
+                <span className='secondary'>$350,000</span>
               </ListItem>
               <ListItem justify='between'>
-                <span>Eric</span>
-                <span className='secondary'>odd</span>
+                <span>Jason</span>
+                <span className='secondary'>$350,000</span>
               </ListItem>
             </List>
           </Tab>
@@ -206,8 +206,10 @@ export class Charts extends Component {
             <AnnotatedMeter legend={true}
                             size='small'
                             type='circle'
-                            max={70}
-                            series={[{"label": "Fail", "value": 20, "colorIndex": "graph-3"}, {"label": "Pass", "value": 50, "colorIndex": "graph-1"}]} />
+                            max={100}
+                            series={[{"label": "Fail", "value": 20, "colorIndex": "graph-3"}, 
+                            {"label": "Pass", "value": 50, "colorIndex": "graph-1"},
+                            {"label": "Pass on Retry", "value": 15, "colorIndex": "graph-2"}]} />
             <AnnotatedMeter legend={true}
                             size='medium'
                             type='bar'
