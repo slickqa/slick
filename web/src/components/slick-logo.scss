@@ -1,9 +1,22 @@
-.slick-logo-xlarge.grommetux-title {
-  font-family: 'Audiowide', cursive;
-  font-size: 140px;
-  letter-spacing: 30px;
-  color: $colored-text-color;
+@media only screen and (min-width: 999px)  {
+  .slick-logo-xlarge.grommetux-title {
+    font-family: 'Audiowide', cursive;
+    font-size: 140px;
+    letter-spacing: 30px;
+    color: $colored-text-color;
+  }
 }
+
+@media only screen and (max-width: 998px)  {
+  .slick-logo-xlarge.grommetux-title {
+    font-family: 'Audiowide', cursive;
+    font-size: 100px;
+    letter-spacing: 23px;
+    color: $colored-text-color;
+  }
+}
+
+
 
 .slick-logo-xlarge.grommetux-title span {
   margin-right: 0px;

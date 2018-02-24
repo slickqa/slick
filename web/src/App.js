@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
 import App from 'grommet/components/App';
-import Split from 'grommet/components/Split';
 import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 import Title from 'grommet/components/Title';
 import Box from 'grommet/components/Box';
-import Headline from 'grommet/components/Headline';
 import Button from 'grommet/components/Button';
 import PlatformGoogleIcon from 'grommet/components/icons/base/PlatformGoogle';
 import Spinning from 'grommet/components/icons/Spinning';
@@ -59,7 +57,7 @@ export class SlickLogo extends Component {
     if (this.props.size) {
       className = "slick-logo-" + this.props.size;
     }
-    return <Title className={className}>S<span style={{"fontSize": "70%"}}>LICK</span></Title>;
+    return <Title className={className} responsive={false}>S<span style={{"fontSize": "70%"}}>LICK</span></Title>;
   }
 }
 
