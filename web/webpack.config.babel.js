@@ -1,6 +1,7 @@
 import path from 'path';
 import webpack from 'webpack';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
+import globImporter from 'node-sass-glob-importer';
 
 const env = process.env.NODE_ENV || 'production';
 
@@ -56,7 +57,7 @@ if (env === 'production') {
   devConfig.devtool = 'cheap-module-source-map';
   devConfig.entry = [
     require.resolve('react-dev-utils/webpackHotDevClient'),
-    './src/js/index.js'
+    './src/index.js'
   ];
   devConfig.devServer = {
     compress: true,
@@ -76,7 +77,7 @@ if (env === 'production') {
 plugins.push(new webpack.LoaderOptionsPlugin(loaderOptionsConfig));
 
 export default Object.assign({
-  entry: './src/js/index.js',
+  entry: './src/index.js',
   output: {
     path: path.resolve('./dist'),
     filename: 'index.js',
@@ -107,7 +108,8 @@ export default Object.assign({
               outputStyle: 'compressed',
               includePaths: [
                 './node_modules'
-              ]
+              ],
+              importer: globImporter()
             }
           }
         ]

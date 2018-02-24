@@ -1,6 +1,6 @@
 $brand-color: #85262c;
 
-@import '../theme-common';
+@import 'theme-common';
 
 $brand-font-family: 'Open Sans', Arial, sans-serif;
 
@@ -29,3 +29,8 @@ $button-accent-color: #ff8d6d;
 .theme-demo {
   background-image: url("/img/london.JPG");
 }
+
+@import '~grommet/scss/grommet-core/index';
+
+@import 'slick-app';
+

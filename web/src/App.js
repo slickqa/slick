@@ -22,7 +22,7 @@ import Select from 'grommet/components/Select';
 import Columns from 'grommet/components/Columns';
 import UsersApi from 'slick-client/src/api/UsersApi';
 import VersionApi from 'slick-client/src/api/VersionApi';
-import {NotificationCard, TextCard, TabCard, Charts} from './demo';
+import {NotificationCard, TextCard, TabCard, Charts} from './components/theme-demo';
 
 function isLoggedIn() {
   return localStorage.token;
@@ -179,9 +179,9 @@ export class ThemeChooser extends Component {
   constructor(props) {
     super(props);
     this.themes = {
-      "Default": "/default-theme.css",
-      "Blue": "/blue-theme.css",
-      "Dev": "/dev-theme.css"
+      "Default": "/theme-default.css",
+      "Blue": "/theme-blue.css",
+      "Dev": "/theme-dev.css"
     };
     this.state = {
       theme: "Default"
