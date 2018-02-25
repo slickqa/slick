@@ -139,7 +139,7 @@ export class UserInfo extends Component {
               heading={this.state.user.FullName}
               description="The following are the companies and roles you are assigned."
               margin="small"
-              className="slick-card">
+              colorIndex="grey-1-a">
           {this.state.user.Permissions.Companies.map(function (company) {
             return <Section key={company.CompanyName}>
               <Heading tag="h3">{company.CompanyName}</Heading>

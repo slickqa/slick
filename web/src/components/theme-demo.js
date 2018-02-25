@@ -69,7 +69,7 @@ export class NotificationCard extends Component {
     }
 
     return (
-      <Card heading="Notifications" className="slick-card" margin="small">
+      <Card heading="Notifications" colorIndex="grey-1-a" margin="small">
         <Notification status="ok" size="medium" margin="small" message="Ok" onClick={() => this.changeToastState("ok")}/>
         <Notification status="critical" size="medium" margin="small" message="Critical" onClick={() => this.changeToastState("critical")}/>
         <Notification status="warning" size="medium" margin="small" message="Warning" onClick={() => this.changeToastState("warning")}/>
@@ -102,7 +102,7 @@ export class TextCard extends Component {
       tip = <Tip target="has-a-tip" onClose={this.changeTipState}>This is the tip</Tip>;
     }
     return (
-      <Card heading="Text and Form Components" className="slick-card" margin="small">
+      <Card heading="Text and Form Components" colorIndex="grey-1-a" margin="small">
         <Markdown content="Markdown text can also be rendered, including [a link to google](https://www.google.com)" />
         <Anchor label="An Anchor" />
         <FilterControl unfilteredTotal={100}
@@ -131,7 +131,7 @@ export class TextCard extends Component {
 export class TabCard extends Component {
   render() {
     return (
-      <Card heading="Tabs and Icons" className="slick-card" margin="small">
+      <Card heading="Tabs and Icons" colorIndex="grey-1-a" margin="small">
         <Tabs>
           <Tab title='List Items'>
             <List>
@@ -200,6 +200,7 @@ export class TabCard extends Component {
 export class Charts extends Component {
   render() {
     return (
+      <Box colorIndex="grey-2-a">
       <Tabs>
         <Tab title="Annotated Meter">
           <Columns justify="center">
@@ -208,7 +209,7 @@ export class Charts extends Component {
                             type='circle'
                             max={100}
                             series={[
-                              {"label": "Fail", "value": 20, "colorIndex": "graph-3"}, 
+                              {"label": "Fail", "value": 20, "colorIndex": "graph-3"},
                               {"label": "Pass", "value": 40, "colorIndex": "graph-1"},
                               {"label": "Pass on Retry", "value": 10, "colorIndex": "graph-2"},
                               {"label": "Skipped", "value": 5, "colorIndex": "graph-4"},
@@ -220,17 +221,18 @@ export class Charts extends Component {
                             type='bar'
                             max={100}
                             series={[
-                              {"label": "Fail", "value": 20, "colorIndex": "graph-3"}, 
+                              {"label": "Fail", "value": 20, "colorIndex": "graph-3"},
                               {"label": "Pass", "value": 40, "colorIndex": "graph-1"},
                               {"label": "Pass on Retry", "value": 10, "colorIndex": "graph-2"},
                               {"label": "Skipped", "value": 5, "colorIndex": "graph-4"},
                               {"label": "Broken", "value": 5, "colorIndex": "graph-5"},
                               {"label": "No Result", "value": 10, "colorIndex": "graph-6"},
-                              {"label": "Not Tested", "value": 10, "colorIndex": "graph-7"} 
+                              {"label": "Not Tested", "value": 10, "colorIndex": "graph-7"}
                               ]} />
           </Columns>
         </Tab>
       </Tabs>
+      </Box>
     )
   }
 }
