@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import './theme-default.scss';
+import './theme-red.scss';
 import './theme-blue.scss';
-import './theme-dev.scss';
+import './theme-light-blue.scss';
+import './theme-orange.scss';
+import './theme-green.scss';
 
 import App from './App';
 

@@ -176,27 +176,22 @@ export class SlickHeader extends Component {
 export class ThemeChooser extends Component {
   constructor(props) {
     super(props);
-    this.themes = {
-      "Default": "/theme-default.css",
-      "Blue": "/theme-blue.css",
-      "Dev": "/theme-dev.css"
-    };
     this.state = {
-      theme: "Default"
+      theme: "Red"
     };
     this.changeTheme = this.changeTheme.bind(this);
   }
 
   changeTheme(opts) {
     this.setState(function () {
-      window.document.getElementById("theme").href = this.themes[opts.option];
+      window.document.getElementById("theme").href = window.SlickThemes[opts.option];
       return {theme: opts.option};
     });
   }
 
   render() {
     return (
-      <Select options={Object.keys(this.themes)} value={this.state.theme} onChange={this.changeTheme}/>
+      <Select options={Object.keys(window.SlickThemes)} value={this.state.theme} onChange={this.changeTheme}/>
     );
   }
 }
