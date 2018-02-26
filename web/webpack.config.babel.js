@@ -97,7 +97,10 @@ export default Object.assign({
       {
         test: /\.js/,
         exclude: /node_modules/,
-        loader: 'babel-loader'
+        loader: 'babel-loader',
+        options: {
+          "plugins": ["import-glob"]
+        }
       },
       {
         test: /\.scss$/,
