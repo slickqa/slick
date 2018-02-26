@@ -14,7 +14,7 @@ export class ThemeDemo extends Component {
 
   render() {
     return (
-      <StandardPage>
+      <StandardPage nav="project">
           <Columns>
             <NotificationCard/>
             <TextCard/>

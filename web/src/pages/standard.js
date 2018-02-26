@@ -11,6 +11,10 @@ function isLoggedIn() {
 
 
 export default class StandardPage extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     if(isLoggedIn()) {
       return (
