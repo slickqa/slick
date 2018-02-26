@@ -5,10 +5,6 @@ import Anchor from 'grommet/components/Anchor';
 import Box from 'grommet/components/Box';
 import navigation from '../navigation';
 
-export function register() {
-  navigation.registerSidebarMapping("project", ProjectSideBarComponent);
-}
-
 export class ProjectSideBarComponent extends Component {
   render() {
     return (
@@ -19,3 +15,6 @@ export class ProjectSideBarComponent extends Component {
     );
   }
 }
+
+navigation.registerSidebarMapping("project", ProjectSideBarComponent);
+

@@ -6,10 +6,6 @@ import {NotificationCard, TextCard, TabCard, Charts} from '../components/theme-d
 
 import StandardPage from './standard';
 
-export function register() {
-  navigation.registerUrlMapping("/theme-demo", ThemeDemo);
-}
-
 export class ThemeDemo extends Component {
 
   render() {
@@ -26,3 +22,6 @@ export class ThemeDemo extends Component {
   }
 
 }
+
+navigation.registerUrlMapping("/theme-demo", ThemeDemo);
+

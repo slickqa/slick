@@ -6,7 +6,6 @@ import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 import Title from 'grommet/components/Title';
 import Box from 'grommet/components/Box';
 import Button from 'grommet/components/Button';
-import PlatformGoogleIcon from 'grommet/components/icons/base/PlatformGoogle';
 import Spinning from 'grommet/components/icons/Spinning';
 import Footer from 'grommet/components/Footer';
 import Card from 'grommet/components/Card';
@@ -21,11 +20,9 @@ import Columns from 'grommet/components/Columns';
 import UsersApi from 'slick-client/src/api/UsersApi';
 import VersionApi from 'slick-client/src/api/VersionApi';
 import {NotificationCard, TextCard, TabCard, Charts} from './components/theme-demo';
+import './pages/*.js';
+import './sidebar/*.js';
 
-import {register as registerThemeDemo} from './pages/theme-demo';
-import {register as registerProjectSidebar} from './sidebar/project';
-registerProjectSidebar();
-registerThemeDemo();
 import navigation from './navigation';
 
 function isLoggedIn() {
@@ -70,43 +67,6 @@ export class SlickLogo extends Component {
 SlickLogo.propTypes = {
   size: PropTypes.oneOf(["xlarge", "medium"])
 };
-
-export class LoginPage extends Component {
-  constructor(props) {
-    super(props);
-    this.videos = [
-      "hallstatt.mov",
-      "lake2.mov",
-      "lake.mov",
-      "waterfall2.mov",
-      "waterfall.mov",
-      "paris.mov"
-    ]
-  }
-
-  render() {
-    return (
-      <Box full="vertical" className="LoginPage">
-        <video autoPlay muted loop id="background-video">
-          <source src={"/img/" + this.videos[Math.floor(Math.random() * this.videos.length)]} type="video/mp4"/>
-        </video>
-        <Box flex="grow" justify="center" className="LoginPageLogo">
-          <Box alignSelf="center" align="center">
-            <Box align="center">
-              <SlickLogo size="xlarge"/>
-            </Box>
-            <Box className="login-page-description" align="right">
-              Test Management
-            </Box>
-            <Button icon={<PlatformGoogleIcon/>} href="/login/google" label="Login with Google"/>
-          </Box>
-        </Box>
-        <SlickFooter/>
-      </Box>
-    );
-  }
-}
-
 function logout() {
   delete localStorage.token;
   delete localStorage.userName;
@@ -245,15 +205,10 @@ export class ThemeDemo extends Component {
 
 export default class BasicApp extends Component {
   render() {
-    let page = LoginPage;
-    if (isLoggedIn()) {
-      page = ThemeDemo;
-    }
     return (
       <App centered={false}>
         <Router>
           <Switch>
-            <Route exact path='/' component={page} />
             {Object.entries(navigation.URLMapping).map((entry) => {
               return <Route exact path={entry[0]} component={entry[1]} />;
             })}
