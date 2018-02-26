@@ -22,6 +22,12 @@ import UsersApi from 'slick-client/src/api/UsersApi';
 import VersionApi from 'slick-client/src/api/VersionApi';
 import {NotificationCard, TextCard, TabCard, Charts} from './components/theme-demo';
 
+import {register as registerThemeDemo} from './pages/theme-demo';
+import {register as registerProjectSidebar} from './sidebar/project';
+registerProjectSidebar();
+registerThemeDemo();
+import navigation from './navigation';
+
 function isLoggedIn() {
   return localStorage.token;
 }
@@ -248,6 +254,9 @@ export default class BasicApp extends Component {
         <Router>
           <Switch>
             <Route exact path='/' component={page} />
+            {Object.entries(navigation.URLMapping).map((entry) => {
+              return <Route exact path={entry[0]} component={entry[1]} />;
+            })}
           </Switch>
         </Router>
       </App>
