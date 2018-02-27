@@ -13,7 +13,7 @@
 
     // CommonJS-like environments that support module.exports, like Node.
     const ApiClient = require('../ApiClient')
-    , SlickqaSlickPermissionInfo = require('./SlickqaSlickPermissionInfo')
+    , SlickqaPreferences = require('./SlickqaPreferences'), SlickqaSlickPermissionInfo = require('./SlickqaSlickPermissionInfo')
 
 
 
@@ -32,6 +32,7 @@
    */
   var exports = function() {
     var _this = this;
+
 
 
 
@@ -78,6 +79,9 @@
       if (data.hasOwnProperty('HashedPassword')) {
         obj['HashedPassword'] = ApiClient.convertToType(data['HashedPassword'], 'String');
       }
+      if (data.hasOwnProperty('UserPreferences')) {
+        obj['UserPreferences'] = SlickqaPreferences.constructFromObject(data['UserPreferences']);
+      }
     }
     return obj;
   }
@@ -114,6 +118,10 @@
    * @member {String} HashedPassword
    */
   exports.prototype['HashedPassword'] = undefined;
+  /**
+   * @member {module:model/SlickqaPreferences} UserPreferences
+   */
+  exports.prototype['UserPreferences'] = undefined;
 
 
 

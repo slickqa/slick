@@ -12,6 +12,7 @@
  */
 
     const ApiClient = require('../ApiClient'),
+     SlickqaAddUserRequest = require('../model/SlickqaAddUserRequest'),
      SlickqaUserInfo = require('../model/SlickqaUserInfo'),
      SlickqaUsersQueryResponse = require('../model/SlickqaUsersQueryResponse');
 
@@ -31,6 +32,56 @@
   var exports = function(apiClient) {
     this.apiClient = apiClient || ApiClient.instance;
 
+
+    /**
+     * Callback function to receive the result of the addUserToCompany operation.
+     * @callback module:api/UsersApi~addUserToCompanyCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/SlickqaUserInfo} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * @param {String} companyName 
+     * @param {module:model/SlickqaAddUserRequest} body 
+     * @param {module:api/UsersApi~addUserToCompanyCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/SlickqaUserInfo}
+     */
+    this.addUserToCompany = function(companyName, body, callback) {
+      var postBody = body;
+
+      // verify the required parameter 'companyName' is set
+      if (companyName == undefined || companyName == null) {
+        throw new Error("Missing the required parameter 'companyName' when calling addUserToCompany");
+      }
+
+      // verify the required parameter 'body' is set
+      if (body == undefined || body == null) {
+        throw new Error("Missing the required parameter 'body' when calling addUserToCompany");
+      }
+
+
+      var pathParams = {
+        'CompanyName': companyName
+      };
+      var queryParams = {
+      };
+      var headerParams = {
+      };
+      var formParams = {
+      };
+
+      var authNames = [];
+      var contentTypes = ['application/json'];
+      var accepts = ['application/json'];
+      var returnType = SlickqaUserInfo;
+
+      return this.apiClient.callApi(
+        '/api/users/by-company/{CompanyName}', 'POST',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
 
     /**
      * Callback function to receive the result of the getCurrentUserInfo operation.
@@ -203,6 +254,56 @@
 
       return this.apiClient.callApi(
         '/api/users/by-project/{CompanyName}/{ProjectName}', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the updateUser operation.
+     * @callback module:api/UsersApi~updateUserCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/SlickqaUserInfo} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * @param {String} emailAddress 
+     * @param {module:model/SlickqaUserInfo} body 
+     * @param {module:api/UsersApi~updateUserCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/SlickqaUserInfo}
+     */
+    this.updateUser = function(emailAddress, body, callback) {
+      var postBody = body;
+
+      // verify the required parameter 'emailAddress' is set
+      if (emailAddress == undefined || emailAddress == null) {
+        throw new Error("Missing the required parameter 'emailAddress' when calling updateUser");
+      }
+
+      // verify the required parameter 'body' is set
+      if (body == undefined || body == null) {
+        throw new Error("Missing the required parameter 'body' when calling updateUser");
+      }
+
+
+      var pathParams = {
+        'EmailAddress': emailAddress
+      };
+      var queryParams = {
+      };
+      var headerParams = {
+      };
+      var formParams = {
+      };
+
+      var authNames = [];
+      var contentTypes = ['application/json'];
+      var accepts = ['application/json'];
+      var returnType = SlickqaUserInfo;
+
+      return this.apiClient.callApi(
+        '/api/users/{EmailAddress}', 'PUT',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, callback
       );
