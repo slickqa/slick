@@ -58,11 +58,12 @@ export default class Navbar extends Component {
     return (
       <Box full="vertical" direction="row">
         <Box full="vertical">
+          <Box align="center" colorIndex="brand-a"><Anchor className="slick-nav-logo-icon" path="/">S</Anchor></Box>
           {navigation.SidebarMappings.map((entry) => {
             return <SidebarIcon key={entry.name} selected={this.state.nav === entry.name} name={entry.name} icon={React.createElement(entry.icon, {})} onSelect={this.changeNavAction(entry.name)}/>
           }, this)}
-          <Box flex="grow" colorIndex="neutral-5" onClick={this.changeNavAction(this.props.nav)} />
-          <Box colorIndex={this.state.nav === "User" ? "grey-1-a" : "neutral-5"}>
+          <Box flex="grow" colorIndex="brand-a" onClick={this.changeNavAction(this.props.nav)} />
+          <Box colorIndex={this.state.nav === "User" ? "grey-1-a" : "brand-a"}>
             <Menu icon={<UserIcon/>}>
               <Anchor path="/user/settings" icon={<UserSettingsIcon/>}>Settings</Anchor>
               <Anchor onClick={logout} icon={<LogoutIcon/>}>Logout</Anchor>

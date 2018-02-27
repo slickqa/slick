@@ -33,10 +33,10 @@ export default class SidebarIcon extends Component {
   render() {
     let tip = null;
     if(this.state.showToolTip) {
-      tip=<Tip target={"slick-nav-button-" + this.props.name} onClose={this.onHoverLeave}>{this.props.name}</Tip>;
+      tip=<Tip colorIndex="accent-4" target={"slick-nav-button-" + this.props.name} onClose={this.onHoverLeave}>{this.props.name}</Tip>;
     }
     return (
-      <Box colorIndex={this.props.selected ? "grey-1-a" : "neutral-5"}>
+      <Box colorIndex={this.props.selected ? "grey-1-a" : "brand-a"}>
         <Button id={"slick-nav-button-" + this.props.name} icon={this.props.icon} onClick={this.props.onSelect} onMouseEnter={this.onHover} onMouseLeave={this.onHoverLeave}>
           {tip}
         </Button>
