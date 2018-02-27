@@ -10,7 +10,7 @@ function isLoggedIn() {
 export class RootPage extends Component {
   render() {
     if(isLoggedIn()) {
-      return <Redirect to="/theme-demo"/>
+      return <Redirect to="/user/settings"/>
     } else {
       return <Redirect to="/login"/>;
     }

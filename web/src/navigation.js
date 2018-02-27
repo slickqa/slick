@@ -10,8 +10,8 @@ class Registration {
     this.URLMapping[url] = component;
   }
 
-  registerSidebarMapping(section, component) {
-    this.SidebarMapping[section] = component;
+  registerSidebarMapping(section, icon, component) {
+    this.SidebarMapping[section] = [icon, component];
   }
 }
 

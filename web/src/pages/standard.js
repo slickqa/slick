@@ -4,6 +4,7 @@ import Navbar from '../components/navbar';
 import Split from 'grommet/components/Split';
 import Box from 'grommet/components/Box';
 import {Redirect} from 'react-router-dom';
+import PropTypes from "prop-types";
 
 
 function isLoggedIn() {
@@ -20,7 +21,7 @@ export default class StandardPage extends Component {
     if(isLoggedIn()) {
       return (
         <Split flex="right" className="slick-standard-page">
-          <Navbar/>
+          <Navbar nav={this.props.nav}/>
           <Box full="vertical" pad="small" className="slick-standard-page-content">
             {this.props.children}
           </Box>
@@ -31,3 +32,7 @@ export default class StandardPage extends Component {
     }
   }
 }
+
+StandardPage.propTypes = {
+  nav: PropTypes.string.isRequired
+};
