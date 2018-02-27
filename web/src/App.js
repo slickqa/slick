@@ -210,7 +210,7 @@ export default class BasicApp extends Component {
         <Router>
           <Switch>
             {Object.entries(navigation.URLMapping).map((entry) => {
-              return <Route exact path={entry[0]} component={entry[1]} />;
+              return <Route exact path={entry[0]} key={entry[0]} component={entry[1]} />;
             })}
           </Switch>
         </Router>

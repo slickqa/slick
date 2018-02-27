@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Heading from 'grommet/components/Heading';
 import Anchor from 'grommet/components/Anchor';
 import Box from 'grommet/components/Box';
-import AppsIcon from 'grommet/components/icons/base/Apps';
+import ProjectIcon from 'grommet/components/icons/base/Technology';
 import navigation from '../navigation';
 
 export class ProjectSideBarComponent extends Component {
@@ -17,5 +17,5 @@ export class ProjectSideBarComponent extends Component {
   }
 }
 
-navigation.registerSidebarMapping("Projects", AppsIcon, ProjectSideBarComponent);
+navigation.registerSidebarMapping("Projects", 100, ProjectIcon, ProjectSideBarComponent);
 
