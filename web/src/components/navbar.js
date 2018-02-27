@@ -9,6 +9,7 @@ import UserSettingsIcon from 'grommet/components/icons/base/UserSettings';
 import LogoutIcon from 'grommet/components/icons/base/Logout';
 import Anchor from 'grommet/components/Anchor';
 import SidebarIcon from './SidebarIcon';
+import Animate from 'grommet/components/Animate';
 import navigation from '../navigation';
 import PropTypes from "prop-types";
 import findIndex from 'lodash/findIndex';
@@ -51,9 +52,7 @@ export default class Navbar extends Component {
     let nav = this.state.nav;
     let sideBarIndex = findIndex(navigation.SidebarMappings, (entry) => { return entry.name === nav; });
     if(sideBarIndex >= 0) {
-      sidebar = <Box full="vertical" pad="small" colorIndex="grey-1-a">
-        {React.createElement(navigation.SidebarMappings[sideBarIndex].comp, {})}
-      </Box>
+      sidebar = React.createElement(navigation.SidebarMappings[sideBarIndex].comp, {});
     }
     return (
       <Box full="vertical" direction="row">
@@ -70,7 +69,11 @@ export default class Navbar extends Component {
             </Menu>
           </Box>
         </Box>
-        {sidebar}
+        <Animate visible={sidebar !== null} enter={{"animation": "slide-right", "duration": 300}} keep={false}>
+          <Box full="vertical" pad="small" colorIndex="grey-1-a">
+            {sidebar}
+          </Box>
+        </Animate>
       </Box>
     );
   }
