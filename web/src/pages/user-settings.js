@@ -69,13 +69,13 @@ export class UserSettingsPage extends Component {
                     <TextInput id="GivenName" onDOMChange={this.onValueChange} value={this.state.user.GivenName}/>
                   </FormField>
                   <FormField label="Last Name" htmlFor="lastname">
-                    <TextInput id="lastname" value={this.state.user.FamilyName}/>
+                    <TextInput id="FamilyName" onDOMChange={this.onValueChange} value={this.state.user.FamilyName}/>
                   </FormField>
                   <FormField label="Email" htmlFor="email">
-                    <TextInput id="email" value={this.state.user.EmailAddress}/>
+                    <TextInput id="EmailAddress" value={this.state.user.EmailAddress}/>
                   </FormField>
                   <FormField label="Avatar URL" htmlFor="avatarurl">
-                    <TextInput id="avitarurl" value={this.state.user.AvatarUrl}/>
+                    <TextInput id="AvatarUrl" onDOMChange={this.onValueChange} value={this.state.user.AvatarUrl}/>
                   </FormField>
                 </Columns>
                 <Box pad="small" align="center">
