@@ -70,7 +70,19 @@ func (c *SlickClaims) HasReadPermissionForCompany(companyName string) bool {
 }
 
 func (c *SlickClaims) IsCompanyAdmin(companyName string) bool {
-
+	if c.Permissions.SlickAdmin != 0 {
+		return true
+	}
+	for name := range c.Permissions.Companies {
+		if name == companyName {
+			if c.Permissions.Companies[name].CompanyAdmin != 0 {
+				return true
+			} else {
+				return false
+			}
+		}
+	}
+	return false
 }
 
 func initKeys() {
