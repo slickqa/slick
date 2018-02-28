@@ -15,11 +15,13 @@ import {NotificationCard, TextCard, TabCard, Charts} from '../components/theme-d
 import StandardPage from './standard';
 import navigation from '../navigation';
 import User from 'grommet/components/icons/base/User';
+import BrowserStorage from '../BrowserStorage';
 
 export class UserSettingsPage extends Component {
   constructor(props) {
     super(props);
-    this.user = JSON.parse(localStorage.user);
+    this.browserStorage = new BrowserStorage();
+    this.user = this.browserStorage.User;
   }
 
   render() {
