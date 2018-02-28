@@ -28,6 +28,7 @@ export default class BrowserStorage {
       if(response.raw.ok) {
         localStorage.setItem('user', JSON.stringify(response.data));
       }
+      return response;
     });
   }
 

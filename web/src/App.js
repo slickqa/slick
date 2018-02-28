@@ -27,7 +27,12 @@ import './sidebar/*.js';
 import navigation from './navigation';
 
 ApiInit({
-  url: window.location.protocol + "//" + window.location.host
+  url: window.location.protocol + "//" + window.location.host,
+  fetchOptions: {
+    headers: {
+      Authorization: 'Bearer ' + localStorage.token
+    }
+  }
 });
 
 function isLoggedIn() {

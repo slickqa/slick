@@ -16,40 +16,66 @@ import StandardPage from './standard';
 import navigation from '../navigation';
 import User from 'grommet/components/icons/base/User';
 import BrowserStorage from '../BrowserStorage';
+import cloneDeep from 'lodash/cloneDeep';
 
 export class UserSettingsPage extends Component {
   constructor(props) {
     super(props);
     this.browserStorage = new BrowserStorage();
-    this.user = this.browserStorage.User;
+    this.state = {
+      user: this.browserStorage.User
+    }
+    this.onValueChange = this.onValueChange.bind(this);
+    this.onBasicInfoSubmit = this.onBasicInfoSubmit.bind(this);
+  }
+
+  onValueChange(event) {
+    let fieldName = event.target.id;
+    let fieldValue = event.target.value;
+    this.setState((old) => {
+      let blah = cloneDeep(old);
+      blah.user[fieldName] = fieldValue;
+      return blah;
+    });
+  }
+
+  onBasicInfoSubmit(event) {
+    event.preventDefault();
+    let that = this;
+    this.browserStorage.updateUserInfo(this.state.user).then((response) => {
+      console.log(response);
+      that.setState(() => {
+        return {user: response.data};
+      })
+    })
   }
 
   render() {
     return (
       <StandardPage nav="User">
-        <Heading><User size="medium"/> {this.user.FullName}</Heading>
+        <Heading><User size="medium"/> {this.state.user.FullName}</Heading>
         <Box pad="small">
           <Image size="small"
-                 src={this.user.AvatarUrl}
+                 src={this.state.user.AvatarUrl}
           />
         </Box>
         <Box colorIndex="grey-2-a">
           <Accordion active={0} openMulti={true}>
             <AccordionPanel true heading="Basic Info">
 
-              <Form plain={true}>
+              <Form plain={true} onSubmit={this.onBasicInfoSubmit}>
                 <Columns masonry={true} maxCount={8}>
                   <FormField label="First Name" htmlFor="firstname">
-                    <TextInput id="firstname" value={this.user.GivenName}/>
+                    <TextInput id="GivenName" onDOMChange={this.onValueChange} value={this.state.user.GivenName}/>
                   </FormField>
                   <FormField label="Last Name" htmlFor="lastname">
-                    <TextInput id="lastname" value={this.user.FamilyName}/>
+                    <TextInput id="lastname" value={this.state.user.FamilyName}/>
                   </FormField>
                   <FormField label="Email" htmlFor="email">
-                    <TextInput id="email" value={this.user.EmailAddress}/>
+                    <TextInput id="email" value={this.state.user.EmailAddress}/>
                   </FormField>
                   <FormField label="Avatar URL" htmlFor="avatarurl">
-                    <TextInput id="avitarurl" value={this.user.AvatarUrl}/>
+                    <TextInput id="avitarurl" value={this.state.user.AvatarUrl}/>
                   </FormField>
                 </Columns>
                 <Box pad="small" align="center">
