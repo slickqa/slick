@@ -102,6 +102,86 @@
         ]
       }
     },
+    "/api/companies": {
+      "post": {
+        "operationId": "CreateCompanySettings",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/slickqaCompanySettings"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/slickqaCompanySettings"
+            }
+          }
+        ],
+        "tags": [
+          "Company"
+        ]
+      }
+    },
+    "/api/companies/{CompanyName}": {
+      "get": {
+        "operationId": "GetCompanySettings",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/slickqaCompanySettings"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "CompanyName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Company"
+        ]
+      },
+      "put": {
+        "operationId": "UpdateCompanySettings",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/slickqaCompanySettings"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "CompanyName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/slickqaCompanySettings"
+            }
+          }
+        ],
+        "tags": [
+          "Company"
+        ]
+      }
+    },
     "/api/users/by-company/{CompanyName}": {
       "get": {
         "operationId": "GetUsersForCompany",
@@ -119,6 +199,36 @@
             "in": "path",
             "required": true,
             "type": "string"
+          }
+        ],
+        "tags": [
+          "Users"
+        ]
+      },
+      "post": {
+        "operationId": "AddUserToCompany",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/slickqaUserInfo"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "CompanyName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/slickqaAddUserRequest"
+            }
           }
         ],
         "tags": [
@@ -196,6 +306,38 @@
         ]
       }
     },
+    "/api/users/{EmailAddress}": {
+      "put": {
+        "operationId": "UpdateUser",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/slickqaUserInfo"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "EmailAddress",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/slickqaUserInfo"
+            }
+          }
+        ],
+        "tags": [
+          "Users"
+        ]
+      }
+    },
     "/api/version": {
       "get": {
         "operationId": "GetFullVersion",
@@ -214,6 +356,20 @@
     }
   },
   "definitions": {
+    "slickqaAddUserRequest": {
+      "type": "object",
+      "properties": {
+        "UserEmail": {
+          "type": "string"
+        },
+        "CompanyName": {
+          "type": "string"
+        },
+        "Permissions": {
+          "$ref": "#/definitions/slickqaCompanyPermissionInfo"
+        }
+      }
+    },
     "slickqaCompanyPermissionInfo": {
       "type": "object",
       "properties": {
@@ -232,6 +388,26 @@
         }
       }
     },
+    "slickqaCompanySettings": {
+      "type": "object",
+      "properties": {
+        "CompanyName": {
+          "type": "string"
+        },
+        "UserPreferenceTemplate": {
+          "$ref": "#/definitions/slickqaPreferences"
+        },
+        "CustomIconUrl": {
+          "type": "string"
+        },
+        "Links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/slickqaLink"
+          }
+        }
+      }
+    },
     "slickqaIsAuthorizedResponse": {
       "type": "object",
       "properties": {
@@ -241,6 +417,21 @@
         },
         "Message": {
           "type": "string"
+        }
+      }
+    },
+    "slickqaLink": {
+      "type": "object",
+      "properties": {
+        "Url": {
+          "type": "string"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "UIViewType": {
+          "type": "string",
+          "title": "to be used by UI, examples include iframe, video, picture, external, html-source, etc"
         }
       }
     },
@@ -267,6 +458,26 @@
         },
         "Password": {
           "type": "string"
+        }
+      }
+    },
+    "slickqaPreferences": {
+      "type": "object",
+      "properties": {
+        "HomeUrl": {
+          "type": "string"
+        },
+        "Theme": {
+          "type": "string"
+        },
+        "BackgroundUrl": {
+          "type": "string"
+        },
+        "Favorites": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
@@ -325,6 +536,9 @@
         },
         "HashedPassword": {
           "type": "string"
+        },
+        "UserPreferences": {
+          "$ref": "#/definitions/slickqaPreferences"
         }
       }
     },

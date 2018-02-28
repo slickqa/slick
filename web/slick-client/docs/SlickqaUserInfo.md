@@ -11,5 +11,6 @@ Name | Type | Description | Notes
 **avatarUrl** | **String** |  | [optional] 
 **jobTitle** | **String** |  | [optional] 
 **hashedPassword** | **String** |  | [optional] 
+**userPreferences** | [**SlickqaPreferences**](SlickqaPreferences.md) |  | [optional] 
 
 

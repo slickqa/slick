@@ -57,6 +57,20 @@ message SlickPermissionInfo {
   repeated CompanyPermissionInfo Companies = 2; //`bson:"companies"`
 }
 
+message Preferences {
+  string HomeUrl = 1; //`bson:"home"`
+  string Theme = 2; //`bson:"theme"`
+  string BackgroundUrl = 3; //`bson:"background"`
+  repeated string Favorites = 4; //`bson:"favorites"
+}
+
+message CompanySettings {
+  string CompanyName = 1; //`bson:"_id"`
+  Preferences UserPreferenceTemplate = 2; //`bson:"user-preferences"`
+  string CustomIconUrl = 3; //`bson:"icon-url"`
+  repeated Link Links = 4; //`bson:"links"`
+}
+
 message UserInfo {
   string EmailAddress = 1; //`bson:"_id"`
   SlickPermissionInfo Permissions = 2; //`bson:"permissions"`
@@ -66,6 +80,7 @@ message UserInfo {
   string AvatarUrl = 6; //`bson:"avatarUrl"`
   string JobTitle = 7; //`bson:"title"`
   string HashedPassword = 8; //`bson:"hashedPassword"`
+  Preferences UserPreferences = 9; //`bson:"preferences"`
 }
 
 message ApiTokenLoginRequest {
@@ -90,21 +105,31 @@ message VersionInfoResponse {
     string Version = 1; //
 }
 
+message CompanySettingsRequest {
+  string CompanyName = 1; //
+}
+
+message AddUserRequest {
+  string UserEmail = 1; //
+  string CompanyName = 2; //
+  CompanyPermissionInfo Permissions = 3; //
+}
+
 service Auth {
   rpc IsAuthorized(IsAuthorizedRequest) returns(IsAuthorizedResponse) {
     option (google.api.http) = {
-            get: "/api/auth/isAuthorized/{CompanyName}/{ProjectName}/{Permission}"
+      get: "/api/auth/isAuthorized/{CompanyName}/{ProjectName}/{Permission}"
     };
   }
   rpc LoginWithToken(ApiTokenLoginRequest) returns(LoginResponse) {
     option (google.api.http) = {
-            get: "/api/auth/login-with-token/{Token}"
+      get: "/api/auth/login-with-token/{Token}"
     };
   }
   rpc LoginWithCredentials(PlainUserLoginRequest) returns(LoginResponse) {
     option (google.api.http) = {
-            post: "/api/auth/login"
-            body: "*"
+      post: "/api/auth/login"
+      body: "*"
     };
   }
 }
@@ -112,22 +137,54 @@ service Auth {
 service Users {
   rpc GetCurrentUserInfo(CurrentUserRequest) returns(UserInfo) {
     option (google.api.http) = {
-            get: "/api/users/current"
+      get: "/api/users/current"
     };
   }
   rpc GetUserInfo(UserInfoRequest) returns(UserInfo) {
     option (google.api.http) = {
-            get: "/api/users/info/{EmailAddress}"
+      get: "/api/users/info/{EmailAddress}"
     };
   }
   rpc GetUsersForCompany(UsersForCompanyQueryRequest) returns(UsersQueryResponse) {
     option (google.api.http) = {
-            get: "/api/users/by-company/{CompanyName}"
+      get: "/api/users/by-company/{CompanyName}"
     };
   }
   rpc GetUsersForProject(UsersForProjectQueryRequest) returns (UsersQueryResponse) {
     option (google.api.http) = {
-            get: "/api/users/by-project/{CompanyName}/{ProjectName}"
+      get: "/api/users/by-project/{CompanyName}/{ProjectName}"
+    };
+  }
+  rpc UpdateUser(UserInfo) returns (UserInfo) {
+    option (google.api.http) = {
+      put: "/api/users/{EmailAddress}"
+      body: "*"
+    };
+  }
+  rpc AddUserToCompany(AddUserRequest) returns (UserInfo) {
+    option (google.api.http) = {
+      post: "/api/users/by-company/{CompanyName}"
+      body: "*"
+    };
+  }
+}
+
+service Company {
+  rpc GetCompanySettings(CompanySettingsRequest) returns (CompanySettings) {
+    option (google.api.http) = {
+      get: "/api/companies/{CompanyName}"
+    };
+  }
+  rpc UpdateCompanySettings(CompanySettings) returns (CompanySettings) {
+    option (google.api.http) = {
+      put: "/api/companies/{CompanyName}"
+      body: "*"
+    };
+  }
+  rpc CreateCompanySettings(CompanySettings) returns (CompanySettings) {
+    option (google.api.http) = {
+      post: "/api/companies"
+      body: "*"
     };
   }
 }
@@ -144,7 +201,8 @@ service Version {
 message Link {
   string Url = 1; //`bson:"url"`
   string Name = 2; //`bson:"name"`
-  string Category = 3; //`bson:"category"`
+  // to be used by UI, examples include iframe, video, picture, external, html-source, etc
+  string UIViewType = 3; //`bson:"ui-view"`
 }
 
 message ProjectIdentity {

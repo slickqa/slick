@@ -57,6 +57,22 @@ type SlickClaims struct {
 	jwt.StandardClaims
 }
 
+func (c *SlickClaims) HasReadPermissionForCompany(companyName string) bool {
+	if c.Permissions.SlickAdmin != 0 {
+		return true
+	}
+	for name := range c.Permissions.Companies {
+		if name == companyName {
+			return true
+		}
+	}
+	return false
+}
+
+func (c *SlickClaims) IsCompanyAdmin(companyName string) bool {
+
+}
+
 func initKeys() {
 	var err error
 	var ok bool
