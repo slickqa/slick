@@ -48,6 +48,16 @@
   }
 
   describe('UsersApi', function() {
+    describe('addUserToCompany', function() {
+      it('should call addUserToCompany successfully', function(done) {
+        //uncomment below and update the code to test addUserToCompany
+        //instance.addUserToCompany(pet, function(error) {
+        //  if (error) throw error;
+        //expect().to.be();
+        //});
+        done();
+      });
+    });
     describe('getCurrentUserInfo', function() {
       it('should call getCurrentUserInfo successfully', function(done) {
         //uncomment below and update the code to test getCurrentUserInfo
@@ -82,6 +92,16 @@
       it('should call getUsersForProject successfully', function(done) {
         //uncomment below and update the code to test getUsersForProject
         //instance.getUsersForProject(pet, function(error) {
+        //  if (error) throw error;
+        //expect().to.be();
+        //});
+        done();
+      });
+    });
+    describe('updateUser', function() {
+      it('should call updateUser successfully', function(done) {
+        //uncomment below and update the code to test updateUser
+        //instance.updateUser(pet, function(error) {
         //  if (error) throw error;
         //expect().to.be();
         //});

@@ -4,11 +4,60 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**addUserToCompany**](UsersApi.md#addUserToCompany) | **POST** /api/users/by-company/{CompanyName} | 
 [**getCurrentUserInfo**](UsersApi.md#getCurrentUserInfo) | **GET** /api/users/current | 
 [**getUserInfo**](UsersApi.md#getUserInfo) | **GET** /api/users/info/{EmailAddress} | 
 [**getUsersForCompany**](UsersApi.md#getUsersForCompany) | **GET** /api/users/by-company/{CompanyName} | 
 [**getUsersForProject**](UsersApi.md#getUsersForProject) | **GET** /api/users/by-project/{CompanyName}/{ProjectName} | 
+[**updateUser**](UsersApi.md#updateUser) | **PUT** /api/users/{EmailAddress} | 
 
+
+<a name="addUserToCompany"></a>
+# **addUserToCompany**
+> SlickqaUserInfo addUserToCompany(companyName, body)
+
+
+
+### Example
+```javascript
+var SlickClient = require('slick-client');
+
+var apiInstance = new SlickClient.UsersApi();
+
+var companyName = "companyName_example"; // String | 
+
+var body = new SlickClient.SlickqaAddUserRequest(); // SlickqaAddUserRequest | 
+
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+apiInstance.addUserToCompany(companyName, body, callback);
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **companyName** | **String**|  | 
+ **body** | [**SlickqaAddUserRequest**](SlickqaAddUserRequest.md)|  | 
+
+### Return type
+
+[**SlickqaUserInfo**](SlickqaUserInfo.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
 
 <a name="getCurrentUserInfo"></a>
 # **getCurrentUserInfo**
@@ -173,6 +222,53 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**SlickqaUsersQueryResponse**](SlickqaUsersQueryResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+<a name="updateUser"></a>
+# **updateUser**
+> SlickqaUserInfo updateUser(emailAddress, body)
+
+
+
+### Example
+```javascript
+var SlickClient = require('slick-client');
+
+var apiInstance = new SlickClient.UsersApi();
+
+var emailAddress = "emailAddress_example"; // String | 
+
+var body = new SlickClient.SlickqaUserInfo(); // SlickqaUserInfo | 
+
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+apiInstance.updateUser(emailAddress, body, callback);
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **emailAddress** | **String**|  | 
+ **body** | [**SlickqaUserInfo**](SlickqaUserInfo.md)|  | 
+
+### Return type
+
+[**SlickqaUserInfo**](SlickqaUserInfo.md)
 
 ### Authorization
 

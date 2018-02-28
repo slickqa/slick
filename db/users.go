@@ -30,3 +30,10 @@ func (u *userType) AddUser(user *slickqa.UserInfo) error {
 	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(UsersCollectionName).Insert(user)
 	return err
 }
+
+func (u *userType) UpdateUser(user *slickqa.UserInfo) error {
+	mongo := MongoSession.Copy()
+	defer mongo.Close()
+	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(UsersCollectionName).UpdateId(userIdQuery{Email: user.EmailAddress}, user)
+	return err
+}

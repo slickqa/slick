@@ -102,6 +102,12 @@
       //expect(instance).to.be();
     });
 
+    it('should have the property userPreferences (base name: "UserPreferences")', function() {
+      // uncomment below and update the code to test the property userPreferences
+      //var instane = new SlickClient.SlickqaUserInfo();
+      //expect(instance).to.be();
+    });
+
   });
 
 }));

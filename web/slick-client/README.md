@@ -81,19 +81,28 @@ Class | Method | HTTP request | Description
 *SlickClient.AuthApi* | [**isAuthorized**](docs/AuthApi.md#isAuthorized) | **GET** /api/auth/isAuthorized/{CompanyName}/{ProjectName}/{Permission} | 
 *SlickClient.AuthApi* | [**loginWithCredentials**](docs/AuthApi.md#loginWithCredentials) | **POST** /api/auth/login | 
 *SlickClient.AuthApi* | [**loginWithToken**](docs/AuthApi.md#loginWithToken) | **GET** /api/auth/login-with-token/{Token} | 
+*SlickClient.CompanyApi* | [**createCompanySettings**](docs/CompanyApi.md#createCompanySettings) | **POST** /api/companies | 
+*SlickClient.CompanyApi* | [**getCompanySettings**](docs/CompanyApi.md#getCompanySettings) | **GET** /api/companies/{CompanyName} | 
+*SlickClient.CompanyApi* | [**updateCompanySettings**](docs/CompanyApi.md#updateCompanySettings) | **PUT** /api/companies/{CompanyName} | 
+*SlickClient.UsersApi* | [**addUserToCompany**](docs/UsersApi.md#addUserToCompany) | **POST** /api/users/by-company/{CompanyName} | 
 *SlickClient.UsersApi* | [**getCurrentUserInfo**](docs/UsersApi.md#getCurrentUserInfo) | **GET** /api/users/current | 
 *SlickClient.UsersApi* | [**getUserInfo**](docs/UsersApi.md#getUserInfo) | **GET** /api/users/info/{EmailAddress} | 
 *SlickClient.UsersApi* | [**getUsersForCompany**](docs/UsersApi.md#getUsersForCompany) | **GET** /api/users/by-company/{CompanyName} | 
 *SlickClient.UsersApi* | [**getUsersForProject**](docs/UsersApi.md#getUsersForProject) | **GET** /api/users/by-project/{CompanyName}/{ProjectName} | 
+*SlickClient.UsersApi* | [**updateUser**](docs/UsersApi.md#updateUser) | **PUT** /api/users/{EmailAddress} | 
 *SlickClient.VersionApi* | [**getFullVersion**](docs/VersionApi.md#getFullVersion) | **GET** /api/version | 
 
 
 ## Documentation for Models
 
+ - [SlickClient.SlickqaAddUserRequest](docs/SlickqaAddUserRequest.md)
  - [SlickClient.SlickqaCompanyPermissionInfo](docs/SlickqaCompanyPermissionInfo.md)
+ - [SlickClient.SlickqaCompanySettings](docs/SlickqaCompanySettings.md)
  - [SlickClient.SlickqaIsAuthorizedResponse](docs/SlickqaIsAuthorizedResponse.md)
+ - [SlickClient.SlickqaLink](docs/SlickqaLink.md)
  - [SlickClient.SlickqaLoginResponse](docs/SlickqaLoginResponse.md)
  - [SlickClient.SlickqaPlainUserLoginRequest](docs/SlickqaPlainUserLoginRequest.md)
+ - [SlickClient.SlickqaPreferences](docs/SlickqaPreferences.md)
  - [SlickClient.SlickqaProjectPermissionInfo](docs/SlickqaProjectPermissionInfo.md)
  - [SlickClient.SlickqaSlickPermissionInfo](docs/SlickqaSlickPermissionInfo.md)
  - [SlickClient.SlickqaUserInfo](docs/SlickqaUserInfo.md)
