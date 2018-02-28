@@ -1,0 +1,18 @@
+
+/**
+ * @typedef {Object} RawHttpResponse
+ * @property {string} type
+ * @property {string} url
+ * @property {bool} redirected
+ * @property {number} status
+ * @property {bool} ok
+ * @property {string} statusText
+ * @property {bool} bodyUsed
+ */
+
+/**
+ * @typedef {Object} HttpResponse
+ * @template T
+ * @property {T} data
+ * @property {RawHttpResponse} raw
+ */

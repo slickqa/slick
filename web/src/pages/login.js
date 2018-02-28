@@ -5,7 +5,7 @@ import Footer from 'grommet/components/Footer';
 import PlatformGoogleIcon from 'grommet/components/icons/base/PlatformGoogle';
 import SlickLogo from '../components/slick-logo';
 import navigation from '../navigation';
-import VersionApi from "../../slick-client/src/api/VersionApi";
+import * as Version from '../slick-api/Version';
 
 export class SlickFooter extends Component {
   constructor(props) {
@@ -13,13 +13,13 @@ export class SlickFooter extends Component {
     this.state = {
       VersionString: "Version Unknown"
     };
-    this.vapi = new VersionApi();
-    this.vapi.apiClient.basePath = window.location.protocol + "//" + window.location.host;
-    this.vapi.getFullVersion(function (error, data, response) {
-      this.setState(function () {
-        return {VersionString: "Version " + data.Version};
+    let that = this;
+    Version.GetFullVersion().then((response) => {
+      window.response = response;
+      that.setState(function () {
+        return {VersionString: "Version " + response.data.Version};
       });
-    }.bind(this));
+    });
   }
 
   render() {
