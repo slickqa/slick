@@ -19,15 +19,16 @@ import User from 'grommet/components/icons/base/User';
 export class UserSettingsPage extends Component {
   constructor(props) {
     super(props);
+    this.user = JSON.parse(localStorage.user);
   }
 
   render() {
     return (
       <StandardPage nav="User">
-        <Heading><User size="medium"/> Lee Higginson</Heading>
+        <Heading><User size="medium"/> {this.user.FullName}</Heading>
         <Box pad="small">
           <Image size="small"
-                 src="https://s.gravatar.com/avatar/ba09e4305db32e5d791c29d8ccd2a36c"
+                 src={this.user.AvatarUrl}
           />
         </Box>
         <Box colorIndex="grey-2-a">
@@ -37,19 +38,16 @@ export class UserSettingsPage extends Component {
               <Form plain={true}>
                 <Columns masonry={true} maxCount={8}>
                   <FormField label="First Name" htmlFor="firstname">
-                    <TextInput id="firstname" value="Lee"/>
+                    <TextInput id="firstname" value={this.user.GivenName}/>
                   </FormField>
                   <FormField label="Last Name" htmlFor="lastname">
-                    <TextInput id="lastname" value="Higginson"/>
+                    <TextInput id="lastname" value={this.user.FamilyName}/>
                   </FormField>
                   <FormField label="Email" htmlFor="email">
-                    <TextInput id="email" value="leeard@gmail.com"/>
+                    <TextInput id="email" value={this.user.EmailAddress}/>
                   </FormField>
-                  <FormField label="Title" htmlFor="title">
-                    <TextInput id="title" value="Automation Engineer"/>
-                  </FormField>
-                  <FormField label="Photo URL" htmlFor="photourl">
-                    <TextInput id="photourl" value="https://s.gravatar.com/avatar/ba09e4305db32e5d791c29d8ccd2a36c"/>
+                  <FormField label="Avatar URL" htmlFor="avatarurl">
+                    <TextInput id="avitarurl" value={this.user.AvatarUrl}/>
                   </FormField>
                 </Columns>
                 <Box pad="small" align="center">
