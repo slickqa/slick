@@ -41,6 +41,6 @@ func (u *companySettingsType) UpdateCompanySettings(companyName string, companyS
 	}
 	mongo := MongoSession.Copy()
 	defer mongo.Close()
-	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(CompanySettingsCollectionName).UpdateId(companyIdQuery{CompanyName:companyName}, companySettings)
+	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(CompanySettingsCollectionName).Update(companyIdQuery{CompanyName:companyName}, companySettings)
 	return err
 }
