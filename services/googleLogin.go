@@ -13,6 +13,7 @@ import (
 	"github.com/slickqa/slick/slickconfig"
 	"github.com/slickqa/slick/db"
 	"github.com/serussell/logxi/v1"
+	"encoding/json"
 )
 
 func GoogleLoginHandlers(mux *http.ServeMux) {
@@ -80,6 +81,12 @@ func issueLoginSession() http.Handler {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		userJson, err :=  json.Marshal(*user)
+
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 		logger.Debug("Successful Login", "user", user)
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		w.Write([]byte(fmt.Sprintf(`
@@ -88,18 +95,14 @@ func issueLoginSession() http.Handler {
 		<title>Slick Authentication Callback</title>
 		<script lang="javascript">
 			localStorage.token="%s";
-			localStorage.userName="%s";
-			localStorage.userFirstName="%s";
-			localStorage.userFamilyName="%s";
-			localStorage.userGender="%s";
-			localStorage.userPicture="%s";
+            localStorage.user='%s';
 			window.location.replace("%s");
 		</script>
 	</head>
 	<body>
 	</body>
 </html>
-`, token, googleUser.Name, googleUser.GivenName, googleUser.FamilyName, googleUser.Gender, googleUser.Picture,
+`, token, string(userJson),
 	slickconfig.Configuration.Common.BaseUrl)))
 	}
 	return http.HandlerFunc(fn)
