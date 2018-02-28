@@ -17,38 +17,22 @@ import AccordianPanel from 'grommet/components/AccordionPanel';
 import Paragraph from 'grommet/components/Paragraph';
 import Select from 'grommet/components/Select';
 import Columns from 'grommet/components/Columns';
-import UsersApi from 'slick-client/src/api/UsersApi';
-import VersionApi from 'slick-client/src/api/VersionApi';
 import {NotificationCard, TextCard, TabCard, Charts} from './components/theme-demo';
+import {init as ApiInit} from './slick-api/gateway/index';
+import * as Users from './slick-api/Users';
 import './pages/*.js';
 import './sidebar/*.js';
 
+
 import navigation from './navigation';
+
+ApiInit({
+  url: window.location.protocol + "//" + window.location.host
+});
 
 function isLoggedIn() {
   return localStorage.token;
 }
-
-export class SlickFooter extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      VersionString: "Version Unknown"
-    };
-    this.vapi = new VersionApi();
-    this.vapi.apiClient.basePath = window.location.protocol + "//" + window.location.host;
-    this.vapi.getFullVersion(function (error, data, response) {
-      this.setState(function () {
-        return {VersionString: "Version " + data.Version};
-      });
-    }.bind(this));
-  }
-
-  render() {
-    return <Footer pad="small">{this.state.VersionString}</Footer>;
-  }
-}
-
 
 export class SlickLogo extends Component {
   constructor(props) {
@@ -81,18 +65,12 @@ function logout() {
 export class UserInfo extends Component {
   constructor(props) {
     super(props);
-    this.users = new UsersApi();
-    this.users.apiClient.basePath = window.location.protocol + "//" + window.location.host;
-    this.users.apiClient.defaultHeaders["Authorization"] = "Bearer " + localStorage.token;
     let that = this;
-    this.users.getCurrentUserInfo(function (error, data, response) {
+    Users.GetCurrentUserInfo().then((response) => {
       that.setState(function () {
-        return {"user": data};
+        return {"user": response.data};
       });
     });
-    this.state = {
-      "user": undefined
-    };
     window.users = this.users;
   }
 
@@ -197,7 +175,6 @@ export class ThemeDemo extends Component {
         </Columns>
         <Charts/>
       </Box>
-      <SlickFooter/>
     </Box>;
   }
 }

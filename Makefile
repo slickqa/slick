@@ -1,5 +1,5 @@
 
-all: slickqa/slick.pb.go slickqa/slick.pb.gw.go web/public/slick.swagger.json web/slick-client
+all: slickqa/slick.pb.go slickqa/slick.pb.gw.go web/public/slick.swagger.json web/src/slick-api
 
 slickqa/slick.pb.go:
 	protoc -I/usr/local/include -I. -I${GOPATH}/src -I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis --go_out=plugins=grpc+retag:slickqa/ slick.proto
@@ -10,11 +10,15 @@ slickqa/slick.pb.gw.go:
 web/public/slick.swagger.json:
 	protoc -I/usr/local/include -I. -I${GOPATH}/src -I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis --swagger_out=logtostderr=true:web/public/ slick.proto
 
-swagger-codegen-cli-2.3.1.jar:
-	wget http://repo1.maven.org/maven2/io/swagger/swagger-codegen-cli/2.3.1/swagger-codegen-cli-2.3.1.jar
+web/node_modules/.bin/openapi:
+	cd web; npm install
 
-web/slick-client: web/public/slick.swagger.json swagger-codegen-cli-2.3.1.jar
-	java -jar swagger-codegen-cli-2.3.1.jar generate -t web/webpack-swagger-template -i web/public/slick.swagger.json -c web/swagger-codegen-config.json -l javascript -o web/slick-client
+web/src/slick-api: web/public/slick.swagger.json web/node_modules/.bin/openapi
+	cd web; ./node_modules/.bin/openapi -s public/slick.swagger.json -o src/slick-api -l js
+	perl -pi -e 's/module:types.//' web/src/slick-api/*.js
+	perl -pi -e 's/typedef slickqa/typedef {Object} slickqa/' web/src/slick-api/types.js
+	cat web/additionalTypeDef.txt >> web/src/slick-api/types.js
+	perl -pi -e 's/Promise<slickqa(.*?)>/Promise<HttpResponse<slickqa\1>>/' web/src/slick-api/*.js
 
 clean:
-	rm -rf slickqa/slick.pb.go slickqa/slick.pb.gw.go web/public/slick.swagger.json web/slick-client
+	rm -rf slickqa/slick.pb.go slickqa/slick.pb.gw.go web/public/slick.swagger.json web/src/slick-api
