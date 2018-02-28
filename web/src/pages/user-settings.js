@@ -52,7 +52,9 @@ export class UserSettingsPage extends Component {
                     <TextInput id="photourl" value="https://s.gravatar.com/avatar/ba09e4305db32e5d791c29d8ccd2a36c"/>
                   </FormField>
                 </Columns>
-                <Box pad="small" align="center"><Button label="Save" type="submit"/></Box>
+                <Box pad="small" align="center">
+                  <Button label="Save" type="submit"/>
+                </Box>
               </Form>
             </AccordionPanel>
             <AccordionPanel heading="Favorites">
