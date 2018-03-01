@@ -22,13 +22,14 @@ import cloneDeep from 'lodash/cloneDeep';
 export class UserSettingsPage extends Component {
   constructor(props) {
     super(props);
-    this.browserStorage = new BrowserStorage();
     this.state = {
       dirty: false,
-      user: this.browserStorage.User
-    }
+      user: BrowserStorage.User
+    };
     this.onValueChange = this.onValueChange.bind(this);
     this.onBasicInfoSubmit = this.onBasicInfoSubmit.bind(this);
+    window.BrowserStorage = BrowserStorage;
+    window.cloneDeep = cloneDeep;
   }
 
   onValueChange(event) {
@@ -45,7 +46,7 @@ export class UserSettingsPage extends Component {
   onBasicInfoSubmit(event) {
     event.preventDefault();
     let that = this;
-    this.browserStorage.updateUserInfo(this.state.user).then((response) => {
+    BrowserStorage.updateUserInfo(this.state.user).then((response) => {
       console.log(response);
       that.setState(() => {
         return {user: response.data, dirty: false};

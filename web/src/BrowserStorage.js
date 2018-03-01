@@ -2,7 +2,10 @@
 import * as User from './slick-api/Users';
 import * as Auth from './slick-api/Auth';
 
-export default class BrowserStorage {
+export class BrowserStorage {
+  constructor() {
+    this.userUpdateCallbacks = [];
+  }
 
   /**
    * @return {slickqaUserInfo}
@@ -22,6 +25,10 @@ export default class BrowserStorage {
     return localStorage.token;
   }
 
+  onUpdateUserInfo(callback) {
+    this.userUpdateCallbacks.push(callback);
+  }
+
   /**
    *
    * @param {slickqaUserInfo} userInfo
@@ -32,8 +39,14 @@ export default class BrowserStorage {
       if(response.raw.ok) {
         localStorage.setItem('user', JSON.stringify(response.data));
       }
+      this.userUpdateCallbacks.forEach((callback) => {
+        callback(response.data);
+      });
       return response;
     });
   }
 
 }
+
+let browserStorageSingleton = new BrowserStorage();
+export default browserStorageSingleton;

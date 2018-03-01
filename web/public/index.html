@@ -54,6 +54,15 @@
       100% { background-color: #fff; }
   </style>
   <script src="/themes.js"></script>
+  <script>
+    if(localStorage.getItem('user')) {
+      user = JSON.parse(localStorage.getItem('user'));
+      el = window.document.getElementById("theme");
+      if(el.href !== SlickThemes[user.UserPreferences.Theme]) {
+        el.href = SlickThemes[user.UserPreferences.Theme];
+      }
+    }
+  </script>
 </head>
 <body class="loading">
   <div id="content" tabindex="-1" style="outline: none;">

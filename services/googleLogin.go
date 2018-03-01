@@ -46,6 +46,29 @@ func defaultAccessConfiguration() (*slickqa.SlickPermissionInfo) {
 	return &retval
 }
 
+// get preferences from company, if there are none, get default preferences
+
+func defaultPreferences() *slickqa.Preferences {
+	return &slickqa.Preferences{
+		Theme: "Red",
+		HomeUrl: "/user/settings",
+	}
+}
+
+func defaultPreferencesForUser(user *slickqa.UserInfo) *slickqa.Preferences {
+	if user.Permissions != nil && len(user.Permissions.Companies) > 0 {
+		for _, company := range user.Permissions.Companies {
+			settings, err := db.CompanySettings.Find(company.CompanyName)
+			if err != nil {
+				if settings.UserPreferenceTemplate != nil {
+					return settings.UserPreferenceTemplate
+				}
+			}
+		}
+	}
+	return defaultPreferences()
+}
+
 func slickUserFromGoogleUser(user *googleUser.Userinfoplus) *slickqa.UserInfo {
 	return &slickqa.UserInfo{
 		EmailAddress: user.Email,
@@ -74,6 +97,11 @@ func issueLoginSession() http.Handler {
 				logger.Error("Cannot store in database user, login can continue, but many things may not work.", "user", user, "error", err)
 			}
 		}
+		if user.UserPreferences == nil {
+			user.UserPreferences = defaultPreferencesForUser(user)
+			db.User.UpdateUser(user)
+		}
+
 		// 2. Implement a success handler to issue some form of session
 		token, err := jwtauth.CreateJWTForUser(*user)
 
