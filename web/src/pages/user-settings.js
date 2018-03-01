@@ -74,7 +74,7 @@ export class UserSettingsPage extends Component {
                   <FormField label="Last Name" htmlFor="lastname">
                     <TextInput id="FamilyName" onDOMChange={this.onValueChange} value={this.state.user.FamilyName}/>
                   </FormField>
-                  <FormField label="Email" htmlFor="email">
+                  <FormField label="Email (can't change)" htmlFor="EmailAddress">
                     <TextInput id="EmailAddress" value={this.state.user.EmailAddress}/>
                   </FormField>
                   <FormField label="Avatar URL" htmlFor="avatarurl">
