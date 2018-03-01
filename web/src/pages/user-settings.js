@@ -15,6 +15,7 @@ import {NotificationCard, TextCard, TabCard, Charts} from '../components/theme-d
 import StandardPage from './standard';
 import navigation from '../navigation';
 import User from 'grommet/components/icons/base/User';
+import Animate from 'grommet/components/Animate';
 import BrowserStorage from '../BrowserStorage';
 import cloneDeep from 'lodash/cloneDeep';
 
@@ -23,6 +24,7 @@ export class UserSettingsPage extends Component {
     super(props);
     this.browserStorage = new BrowserStorage();
     this.state = {
+      dirty: false,
       user: this.browserStorage.User
     }
     this.onValueChange = this.onValueChange.bind(this);
@@ -35,6 +37,7 @@ export class UserSettingsPage extends Component {
     this.setState((old) => {
       let blah = cloneDeep(old);
       blah.user[fieldName] = fieldValue;
+      blah.dirty = true;
       return blah;
     });
   }
@@ -45,7 +48,7 @@ export class UserSettingsPage extends Component {
     this.browserStorage.updateUserInfo(this.state.user).then((response) => {
       console.log(response);
       that.setState(() => {
-        return {user: response.data};
+        return {user: response.data, dirty: false};
       })
     })
   }
@@ -77,9 +80,14 @@ export class UserSettingsPage extends Component {
                   <FormField label="Avatar URL" htmlFor="avatarurl">
                     <TextInput id="AvatarUrl" onDOMChange={this.onValueChange} value={this.state.user.AvatarUrl}/>
                   </FormField>
+                  <FormField label="Job Title" htmlFor="JobTitle">
+                    <TextInput id="JobTitle" onDOMChange={this.onValueChange} value={this.state.user.JobTitle}/>
+                  </FormField>
                 </Columns>
                 <Box pad="small" align="center">
-                  <Button label="Save" type="submit"/>
+                  <Animate visible={this.state.dirty} keep={true}>
+                    <Button label="Save" type="submit"/>
+                  </Animate>
                 </Box>
               </Form>
             </AccordionPanel>
