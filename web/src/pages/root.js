@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Redirect} from 'react-router-dom';
 import navigation from '../navigation';
+import BrowserStorage from "../BrowserStorage";
 
 
 function isLoggedIn() {
@@ -10,7 +11,7 @@ function isLoggedIn() {
 export class RootPage extends Component {
   render() {
     if(isLoggedIn()) {
-      return <Redirect to="/user/settings"/>
+      return <Redirect to={BrowserStorage.User.UserPreferences.HomeUrl}/>
     } else {
       return <Redirect to="/login"/>;
     }
