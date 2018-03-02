@@ -70,7 +70,7 @@
  * @property {string} HomeUrl 
  * @property {string} Theme 
  * @property {string} BackgroundUrl 
- * @property {string[]} Favorites 
+ * @property {slickqaLink[]} Favorites 
  */
 
 /**

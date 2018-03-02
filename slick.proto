@@ -61,7 +61,7 @@ message Preferences {
   string HomeUrl = 1; //`bson:"home"`
   string Theme = 2; //`bson:"theme"`
   string BackgroundUrl = 3; //`bson:"background"`
-  repeated string Favorites = 4; //`bson:"favorites"
+  repeated Link Favorites = 4; //`bson:"favorites"`
 }
 
 message CompanySettings {
