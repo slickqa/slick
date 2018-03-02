@@ -51,7 +51,7 @@ export class LoginPage extends Component {
             <Box align="center">
               <SlickLogo size="xlarge"/>
             </Box>
-            <Box className="login-page-description" align="right">
+            <Box className="login-page-description">
               Test Management
             </Box>
             <Button icon={<PlatformGoogleIcon/>} href="/login/google" label="Login with Google"/>
