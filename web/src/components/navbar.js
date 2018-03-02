@@ -10,6 +10,7 @@ import LogoutIcon from 'grommet/components/icons/base/Logout';
 import Anchor from 'grommet/components/Anchor';
 import SidebarIcon from './SidebarIcon';
 import BookmarkIcon from 'grommet/components/icons/base/Bookmark';
+import HomeIcon from 'grommet/components/icons/base/Home';
 import Animate from 'grommet/components/Animate';
 import navigation from '../navigation';
 import PropTypes from "prop-types";
@@ -62,8 +63,14 @@ export default class Navbar extends Component {
       user.UserPreferences.Favorites = [];
     }
     user.UserPreferences.Favorites.push(link);
-    console.log(user);
-    BrowserStorage.updateUserInfo(user).then((userinfo) => {console.log(userinfo);});
+    BrowserStorage.updateUserInfo(user).then(() => {});
+  }
+
+  setLandingPage(e) {
+    e.preventDefault();
+    let user = cloneDeep(BrowserStorage.User);
+    user.UserPreferences.HomeUrl = document.location.href.substring(document.location.protocol.length + document.location.host.length + 2)
+    BrowserStorage.updateUserInfo(user).then(() => {});
   }
 
   render() {
@@ -85,6 +92,7 @@ export default class Navbar extends Component {
             <Menu icon={<UserIcon/>}>
               <Anchor path="/user/settings" icon={<UserSettingsIcon/>}>Settings</Anchor>
               <Anchor onClick={this.addToFavorites} icon={<BookmarkIcon/>}>Add to Favorites</Anchor>
+              <Anchor onClick={this.setLandingPage} icon={<HomeIcon/>}>Set Login Home</Anchor>
               <Anchor onClick={logout} icon={<LogoutIcon/>}>Logout</Anchor>
             </Menu>
           </Box>
