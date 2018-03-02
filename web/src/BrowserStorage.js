@@ -1,6 +1,6 @@
 
 import * as User from './slick-api/Users';
-import * as Auth from './slick-api/Auth';
+import remove from 'lodash/remove';
 
 export class BrowserStorage {
   constructor() {
@@ -27,6 +27,10 @@ export class BrowserStorage {
 
   onUpdateUserInfo(callback) {
     this.userUpdateCallbacks.push(callback);
+  }
+
+  removeOnUpdateUserInfo(callback) {
+    remove(this.userUpdateCallbacks, (value) => { return value === callback });
   }
 
   /**

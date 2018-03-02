@@ -9,10 +9,13 @@ import UserSettingsIcon from 'grommet/components/icons/base/UserSettings';
 import LogoutIcon from 'grommet/components/icons/base/Logout';
 import Anchor from 'grommet/components/Anchor';
 import SidebarIcon from './SidebarIcon';
+import BookmarkIcon from 'grommet/components/icons/base/Bookmark';
 import Animate from 'grommet/components/Animate';
 import navigation from '../navigation';
 import PropTypes from "prop-types";
 import findIndex from 'lodash/findIndex';
+import BrowserStorage from '../BrowserStorage';
+import cloneDeep from 'lodash/cloneDeep';
 
 function logout() {
   delete localStorage.token;
@@ -47,6 +50,22 @@ export default class Navbar extends Component {
     };
   }
 
+  addToFavorites(e) {
+    e.preventDefault();
+    let link = {
+      Name: document.title,
+      Url: document.location.href.substring(document.location.protocol.length + document.location.host.length + 2),
+      UIViewType: "favorite"
+    };
+    let user = cloneDeep(BrowserStorage.User);
+    if(!user.UserPreferences.Favorites) {
+      user.UserPreferences.Favorites = [];
+    }
+    user.UserPreferences.Favorites.push(link);
+    console.log(user);
+    BrowserStorage.updateUserInfo(user).then((userinfo) => {console.log(userinfo);});
+  }
+
   render() {
     let sidebar = null;
     let nav = this.state.nav;
@@ -65,6 +84,7 @@ export default class Navbar extends Component {
           <Box colorIndex={this.state.nav === "User" ? "grey-1-a" : "brand-a"}>
             <Menu icon={<UserIcon/>}>
               <Anchor path="/user/settings" icon={<UserSettingsIcon/>}>Settings</Anchor>
+              <Anchor onClick={this.addToFavorites} icon={<BookmarkIcon/>}>Add to Favorites</Anchor>
               <Anchor onClick={logout} icon={<LogoutIcon/>}>Logout</Anchor>
             </Menu>
           </Box>

@@ -9,6 +9,10 @@ export class ProjectPage extends Component {
     console.log(props);
   }
 
+  componentWillMount() {
+    document.title = this.props.match.params.project + " Project";
+  }
+
   render() {
     return (
       <StandardPage nav="Projects">
