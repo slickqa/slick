@@ -103,6 +103,20 @@
       }
     },
     "/api/companies": {
+      "get": {
+        "operationId": "GetAvailableCompanySettings",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/slickqaAvailableCompanySettings"
+            }
+          }
+        },
+        "tags": [
+          "Company"
+        ]
+      },
       "post": {
         "operationId": "CreateCompanySettings",
         "responses": {
@@ -367,6 +381,17 @@
         },
         "Permissions": {
           "$ref": "#/definitions/slickqaCompanyPermissionInfo"
+        }
+      }
+    },
+    "slickqaAvailableCompanySettings": {
+      "type": "object",
+      "properties": {
+        "Companies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/slickqaCompanySettings"
+          }
         }
       }
     },

@@ -115,6 +115,13 @@ message AddUserRequest {
   CompanyPermissionInfo Permissions = 3; //
 }
 
+message AvailableCompanySettingsRequest {
+}
+
+message AvailableCompanySettings {
+  repeated CompanySettings Companies = 1; //`json:"Companies"`
+}
+
 service Auth {
   rpc IsAuthorized(IsAuthorizedRequest) returns(IsAuthorizedResponse) {
     option (google.api.http) = {
@@ -175,6 +182,13 @@ service Company {
       get: "/api/companies/{CompanyName}"
     };
   }
+
+  rpc GetAvailableCompanySettings(AvailableCompanySettingsRequest) returns (AvailableCompanySettings) {
+    option (google.api.http) = {
+      get: "/api/companies"
+    };
+  }
+
   rpc UpdateCompanySettings(CompanySettings) returns (CompanySettings) {
     option (google.api.http) = {
       put: "/api/companies/{CompanyName}"

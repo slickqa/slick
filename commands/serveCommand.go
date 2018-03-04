@@ -96,6 +96,7 @@ func RunService(c *cli.Context) {
 	slickqa.RegisterAuthServer(grpcServer, &services.SlickAuthService{})
 	slickqa.RegisterUsersServer(grpcServer, &services.SlickUsersService{})
 	slickqa.RegisterVersionServer(grpcServer, &services.SlickVersionService{})
+	slickqa.RegisterCompanyServer(grpcServer, &services.SlickCompanyService{})
 	dialHostname := slickconfig.Configuration.Common.ListenIP
 	if dialHostname == "0.0.0.0" || dialHostname == "127.0.0.1" {
 		dialHostname = "localhost"
@@ -126,6 +127,13 @@ func RunService(c *cli.Context) {
 
 	if err != nil {
 		logger.Fatal("Error registering version grpc gateway", "error", err)
+		return
+	}
+
+	err = slickqa.RegisterCompanyHandlerFromEndpoint(ctx, restGatewayMux, fmt.Sprintf("%s:%d", dialHostname, slickconfig.Configuration.Common.ListenPort), dopts)
+
+	if err != nil {
+		logger.Fatal("Error registering company grpc gateway", "error", err)
 		return
 	}
 
