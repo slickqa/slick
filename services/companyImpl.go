@@ -13,6 +13,26 @@ import (
 
 type SlickCompanyService struct {}
 
+func (*SlickCompanyService) GetAvailableCompanySettings(ctx context.Context, req *slickqa.AvailableCompanySettingsRequest) (*slickqa.AvailableCompanySettings, error) {
+	claims, err := jwtauth.GetClaimsFromContext(ctx)
+	if err != nil {
+		return nil, status.Error(codes.PermissionDenied, err.Error())
+	}
+	companyNames := make([]string, 0, len(claims.Permissions.Companies))
+	for k := range claims.Permissions.Companies {
+		companyNames = append(companyNames, k)
+	}
+	settings, err := db.CompanySettings.FindAll(companyNames...)
+	if err != nil {
+		settings = make([]*slickqa.CompanySettings, 0)
+	}
+	return &slickqa.AvailableCompanySettings{
+		Companies: settings,
+	}, nil
+
+
+}
+
 func (*SlickCompanyService) GetCompanySettings(ctx context.Context, req *slickqa.CompanySettingsRequest) (*slickqa.CompanySettings, error) {
 	claims, err := jwtauth.GetClaimsFromContext(ctx)
 	if err != nil {

@@ -17,6 +17,9 @@ import PropTypes from "prop-types";
 import findIndex from 'lodash/findIndex';
 import BrowserStorage from '../BrowserStorage';
 import cloneDeep from 'lodash/cloneDeep';
+import * as CompanyService from '../slick-api/Company';
+import CompanyIcon from 'grommet/components/icons/base/Organization';
+import CompanySideBarComponent from '../sidebar/company';
 
 function logout() {
   delete localStorage.token;
@@ -32,12 +35,20 @@ export default class Navbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nav: this.props.nav
+      nav: this.props.nav,
+      companies: []
     };
     navigation.SidebarMappings.sort((a, b) => {
       if(a.order < b.order) { return -1; }
       if(a.order > b.order) { return 1; }
       return 0;
+    });
+    CompanyService.GetAvailableCompanySettings().then((response) => {
+      if(response.data.Companies) {
+        this.setState(() => {
+          return {companies: response.data.Companies};
+        });
+      }
     });
     this.changeNavAction = this.changeNavAction.bind(this);
   }
@@ -76,9 +87,17 @@ export default class Navbar extends Component {
   render() {
     let sidebar = null;
     let nav = this.state.nav;
-    let sideBarIndex = findIndex(navigation.SidebarMappings, (entry) => { return entry.name === nav; });
-    if(sideBarIndex >= 0) {
-      sidebar = React.createElement(navigation.SidebarMappings[sideBarIndex].comp, {});
+    if(nav === "Company") {
+      sidebar = <CompanySideBarComponent/>;
+    } else {
+      let sideBarIndex = findIndex(navigation.SidebarMappings, (entry) => { return entry.name === nav; });
+      if(sideBarIndex >= 0) {
+        sidebar = React.createElement(navigation.SidebarMappings[sideBarIndex].comp, {});
+      }
+    }
+    let companyIcon = <SidebarIcon name="Company" icon={<CompanyIcon />} selected={this.state.nav === "Company"} onSelect={this.changeNavAction("Company")}/>;
+    if(this.state.companies.length === 1 && this.state.companies[0].CustomIconUrl) {
+      companyIcon = <SidebarIcon name="Company" icon={<Image src={this.state.companies[0].CustomIconUrl} style={{maxWidth: "24px"}}/>} selected={this.state.nav === "Company"} onSelect={this.changeNavAction("Company")}/>;
     }
     return (
       <Box full="vertical" direction="row">
@@ -88,6 +107,7 @@ export default class Navbar extends Component {
             return <SidebarIcon key={entry.name} selected={this.state.nav === entry.name} name={entry.name} icon={React.createElement(entry.icon, {})} onSelect={this.changeNavAction(entry.name)}/>
           }, this)}
           <Box flex="grow" colorIndex="brand-a" onClick={this.changeNavAction(this.props.nav)} />
+          {companyIcon}
           <Box colorIndex={this.state.nav === "User" ? "grey-1-a" : "brand-a"}>
             <Menu icon={<UserIcon/>}>
               <Anchor path="/user/settings" icon={<UserSettingsIcon/>}>Settings</Anchor>

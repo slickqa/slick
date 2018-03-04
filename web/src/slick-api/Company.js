@@ -3,8 +3,15 @@
 import * as gateway from './gateway'
 
 /**
- * @param {slickqaCompanySettings} body 
- * @return {Promise<HttpResponse<slickqaCompanySettings>>} 
+ * @return {Promise<HttpResponse<slickqaAvailableCompanySettings>>}
+ */
+export function GetAvailableCompanySettings() {
+  return gateway.request(GetAvailableCompanySettingsOperation)
+}
+
+/**
+ * @param {slickqaCompanySettings} body
+ * @return {Promise<HttpResponse<slickqaCompanySettings>>}
  */
 export function CreateCompanySettings(body) {
   const parameters = {
@@ -16,8 +23,8 @@ export function CreateCompanySettings(body) {
 }
 
 /**
- * @param {string} CompanyName 
- * @return {Promise<HttpResponse<slickqaCompanySettings>>} 
+ * @param {string} CompanyName
+ * @return {Promise<HttpResponse<slickqaCompanySettings>>}
  */
 export function GetCompanySettings(CompanyName) {
   const parameters = {
@@ -29,9 +36,9 @@ export function GetCompanySettings(CompanyName) {
 }
 
 /**
- * @param {string} CompanyName 
- * @param {slickqaCompanySettings} body 
- * @return {Promise<HttpResponse<slickqaCompanySettings>>} 
+ * @param {string} CompanyName
+ * @param {slickqaCompanySettings} body
+ * @return {Promise<HttpResponse<slickqaCompanySettings>>}
  */
 export function UpdateCompanySettings(CompanyName, body) {
   const parameters = {
@@ -43,6 +50,11 @@ export function UpdateCompanySettings(CompanyName, body) {
     }
   }
   return gateway.request(UpdateCompanySettingsOperation, parameters)
+}
+
+const GetAvailableCompanySettingsOperation = {
+  path: '/api/companies',
+  method: 'get'
 }
 
 const CreateCompanySettingsOperation = {

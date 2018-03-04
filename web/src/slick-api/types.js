@@ -11,6 +11,13 @@
  */
 
 /**
+ * @typedef {Object} slickqaAvailableCompanySettings
+ * @memberof module:types
+ * 
+ * @property {slickqaCompanySettings[]} Companies 
+ */
+
+/**
  * @typedef {Object} slickqaCompanyPermissionInfo
  * @memberof module:types
  * 
