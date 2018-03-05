@@ -48,9 +48,9 @@ export class UserSettingsPage extends Component {
     let yomama = cloneDeep(this.state.user);
     yomama.UserPreferences.Theme = fieldValue;
     BrowserStorage.updateUserInfo(yomama).then((response) => {
-     this.setState(() => {
-       return {user: response.data}
-     })
+      this.setState(() => {
+        return {user: response.data}
+      })
     })
   }
 
@@ -68,7 +68,13 @@ export class UserSettingsPage extends Component {
   render() {
     return (
       <StandardPage nav="User">
-        <Heading><User size="medium"/> {this.state.user.FullName}</Heading>
+        <Columns>
+          <Box colorIndex="grey-1-a">
+            <Heading>
+              <User size="medium"/> {this.state.user.FullName}
+            </Heading>
+          </Box>
+        </Columns>
         <Box pad="small">
           <Image size="small"
                  src={this.state.user.AvatarUrl}
@@ -84,11 +90,11 @@ export class UserSettingsPage extends Component {
 
             {Object.keys(SlickThemes).map((theme) => {
               return (
-              <Anchor
-                className='active'
-                onClick={this.onThemeChange}>
-                {theme}
-              </Anchor>
+                <Anchor
+                  className='active'
+                  onClick={this.onThemeChange}>
+                  {theme}
+                </Anchor>
               );
 
             })}
