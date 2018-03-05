@@ -42,7 +42,9 @@ export class FavoriteSideBarComponent extends Component {
     }
     return (
       <Box>
-        <Heading tag="h3">Favorites</Heading>
+        <Box separator="bottom">
+          <Heading tag="h3" align="center">Favorites</Heading>
+        </Box>
         {favoritesList}
       </Box>
     );

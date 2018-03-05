@@ -35,7 +35,9 @@ export default class CompanySideBarComponent extends Component {
   render() {
     return (
       <Box>
-        <Heading tag="h3">Company Links</Heading>
+        <Box separator="bottom">
+          <Heading tag="h3" align="center">Company Links</Heading>
+        </Box>
         {
           this.state.companies.map((company) => {
             return <Box key={company.CompanyName}>

@@ -10,7 +10,9 @@ export class ProjectSideBarComponent extends Component {
   render() {
     return (
       <Box>
-        <Heading tag="h3">Projects for SlickQA</Heading>
+        <Box separator="bottom">
+          <Heading tag="h3" align="center">Projects for SlickQA</Heading>
+        </Box>
           <Anchor label="Slick" path="/projects/SlickQA/Slick"/>
       </Box>
     );

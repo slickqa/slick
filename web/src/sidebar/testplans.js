@@ -9,7 +9,9 @@ export class TestplanSideBarComponent extends Component {
   render() {
     return (
       <Box>
-        <Heading tag="h3">Testplans</Heading>
+        <Box separator="bottom">
+          <Heading tag="h3" align="center">Testplans</Heading>
+        </Box>
       </Box>
     );
   }
