@@ -118,7 +118,7 @@ export default class Navbar extends Component {
           </Box>
         </Box>
         <Animate visible={sidebar !== null} enter={{"animation": "slide-right", "duration": 300}} keep={false}>
-          <Box full="vertical" pad="small" colorIndex="grey-1-a">
+          <Box full="vertical" pad="small" colorIndex="grey-1-a" className="slick-sidebar">
             {sidebar}
           </Box>
         </Animate>
