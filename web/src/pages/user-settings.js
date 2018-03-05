@@ -37,7 +37,11 @@ export class UserSettingsPage extends Component {
     let fieldValue = event.target.value;
     this.setState((old) => {
       let blah = cloneDeep(old);
-      blah.user[fieldName] = fieldValue;
+      if(fieldName === "BackgroundUrl"){
+        blah.user.UserPreferences[fieldName] = fieldValue;
+      } else {
+        blah.user[fieldName] = fieldValue;
+      }
       blah.dirty = true;
       return blah;
     });
@@ -119,6 +123,9 @@ export class UserSettingsPage extends Component {
               </FormField>
               <FormField label="Job Title" htmlFor="JobTitle">
                 <TextInput id="JobTitle" onDOMChange={this.onUserValueChange} value={this.state.user.JobTitle}/>
+              </FormField>
+              <FormField label="Background URL" htmlFor="BackgroundUrl">
+                <TextInput id="BackgroundUrl" onDOMChange={this.onUserValueChange} value={this.state.user.UserPreferences.BackgroundUrl}/>
               </FormField>
               <Box pad="small" align="center">
                 <Animate visible={this.state.dirty} keep={true}>
