@@ -37,7 +37,11 @@ export class UserSettingsPage extends Component {
     let fieldValue = event.target.value;
     this.setState((old) => {
       let blah = cloneDeep(old);
-      blah.user[fieldName] = fieldValue;
+      if(fieldName === "BackgroundUrl"){
+        blah.user.UserPreferences[fieldName] = fieldValue;
+      } else {
+        blah.user[fieldName] = fieldValue;
+      }
       blah.dirty = true;
       return blah;
     });
@@ -48,9 +52,9 @@ export class UserSettingsPage extends Component {
     let yomama = cloneDeep(this.state.user);
     yomama.UserPreferences.Theme = fieldValue;
     BrowserStorage.updateUserInfo(yomama).then((response) => {
-     this.setState(() => {
-       return {user: response.data}
-     })
+      this.setState(() => {
+        return {user: response.data}
+      })
     })
   }
 
@@ -68,7 +72,13 @@ export class UserSettingsPage extends Component {
   render() {
     return (
       <StandardPage nav="User">
-        <Heading><User size="medium"/> {this.state.user.FullName}</Heading>
+        <Columns>
+          <Box colorIndex="grey-1-a">
+            <Heading>
+              <User size="medium"/> {this.state.user.FullName}
+            </Heading>
+          </Box>
+        </Columns>
         <Box pad="small">
           <Image size="small"
                  src={this.state.user.AvatarUrl}
@@ -84,11 +94,11 @@ export class UserSettingsPage extends Component {
 
             {Object.keys(SlickThemes).map((theme) => {
               return (
-              <Anchor
-                className='active'
-                onClick={this.onThemeChange}>
-                {theme}
-              </Anchor>
+                <Anchor
+                  className='active'
+                  onClick={this.onThemeChange}>
+                  {theme}
+                </Anchor>
               );
 
             })}
@@ -113,6 +123,9 @@ export class UserSettingsPage extends Component {
               </FormField>
               <FormField label="Job Title" htmlFor="JobTitle">
                 <TextInput id="JobTitle" onDOMChange={this.onUserValueChange} value={this.state.user.JobTitle}/>
+              </FormField>
+              <FormField label="Background URL" htmlFor="BackgroundUrl">
+                <TextInput id="BackgroundUrl" onDOMChange={this.onUserValueChange} value={this.state.user.UserPreferences.BackgroundUrl}/>
               </FormField>
               <Box pad="small" align="center">
                 <Animate visible={this.state.dirty} keep={true}>
