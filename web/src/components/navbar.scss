@@ -4,3 +4,25 @@
   font-size: 2em;
   text-decoration: none;
 }
+
+
+.slick-navbar div.grommetux-box.grommetux-background-color-index--light {
+  color: rgba(255, 255, 255, .85);
+}
+
+.slick-navbar div.grommetux-box.grommetux-background-color-index--light a:hover {
+  color: #fff;
+}
+.slick-navbar div.grommetux-box.grommetux-background-color-index--light button.grommetux-button--plain svg {
+  fill: rgba(255, 255, 255, .85);
+  stroke: rgba(255, 255, 255, .85);
+}
+
+.slick-navbar div.grommetux-box.grommetux-background-color-index--light button.grommetux-button--plain svg:hover {
+  fill: #fff;
+  stroke: #fff;
+}
+
+.slick-sidebar {
+  min-width: 3in;
+}

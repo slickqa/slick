@@ -101,7 +101,7 @@ export default class Navbar extends Component {
     }
     return (
       <Box full="vertical" direction="row">
-        <Box full="vertical">
+        <Box full="vertical" className="slick-navbar">
           <Box align="center" colorIndex="brand-a"><Anchor className="slick-nav-logo-icon" path="/">S</Anchor></Box>
           {navigation.SidebarMappings.map((entry) => {
             return <SidebarIcon key={entry.name} selected={this.state.nav === entry.name} name={entry.name} icon={React.createElement(entry.icon, {})} onSelect={this.changeNavAction(entry.name)}/>
@@ -118,7 +118,7 @@ export default class Navbar extends Component {
           </Box>
         </Box>
         <Animate visible={sidebar !== null} enter={{"animation": "slide-right", "duration": 300}} keep={false}>
-          <Box full="vertical" pad="small" colorIndex="grey-1-a">
+          <Box full="vertical" pad="small" colorIndex="grey-1-a" className="slick-sidebar">
             {sidebar}
           </Box>
         </Animate>

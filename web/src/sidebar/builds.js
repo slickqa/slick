@@ -9,7 +9,9 @@ export class BuildSideBarComponent extends Component {
   render() {
     return (
       <Box>
-        <Heading tag="h3">Builds</Heading>
+        <Box separator="bottom">
+          <Heading tag="h3" align="center">Builds</Heading>
+        </Box>
       </Box>
     );
   }
