@@ -93,13 +93,14 @@ export class UserSettingsPage extends Component {
                 size='medium'>
 
             {Object.keys(SlickThemes).map((theme) => {
+              if(this.state.user.UserPreferences.Theme !== theme){
               return (
                 <Anchor
                   className='active'
                   onClick={this.onThemeChange}>
                   {theme}
                 </Anchor>
-              );
+              );}
 
             })}
           </Menu>
