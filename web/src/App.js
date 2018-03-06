@@ -6,9 +6,12 @@ import {init as ApiInit} from './slick-api/gateway/index';
 import './pages/*.js';
 import './sidebar/*.js';
 import BrowserStorage from './BrowserStorage';
+import tokenapi from './token-api';
 
 
 import navigation from './navigation';
+
+window.tokenapi = tokenapi;
 
 ApiInit({
   url: window.location.protocol + "//" + window.location.host,
