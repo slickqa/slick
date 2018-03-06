@@ -6,6 +6,7 @@ import './theme-blue.scss';
 import './theme-light-blue.scss';
 import './theme-orange.scss';
 import './theme-green.scss';
+import './theme-teal.scss'
 
 import App from './App';
 
