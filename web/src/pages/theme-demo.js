@@ -124,8 +124,8 @@ export class ThemeUserSettingsPage extends Component {
           <NotificationCard/>
           <TextCard/>
           <TabCard/>
+          <Charts/>
         </Columns>
-        <Charts/>
       </StandardPage>
     );
   }
