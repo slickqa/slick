@@ -55,12 +55,11 @@ class TokenApi {
   }
 
   /**
-   * Does the token expire within a certain period of time.
-   * @param {Number} seconds
+   * Is the token expired?
    * @returns {boolean}
    */
-  expiresWithin(seconds) {
-
+  isExpired() {
+    return this.DecodedJwt.exp <= Math.floor(Date.now() / 1000);
   }
 
   /**
@@ -69,7 +68,7 @@ class TokenApi {
    * @returns {boolean}
    */
   expiresWithin(seconds) {
-
+    return this.DecodedJwt.exp <= (Math.floor(Date.now() / 1000) + seconds);
   }
 }
 
