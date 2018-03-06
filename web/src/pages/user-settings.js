@@ -93,13 +93,14 @@ export class UserSettingsPage extends Component {
                 size='medium'>
 
             {Object.keys(SlickThemes).map((theme) => {
+              if(this.state.user.UserPreferences.Theme !== theme){
               return (
                 <Anchor
                   className='active'
                   onClick={this.onThemeChange}>
                   {theme}
                 </Anchor>
-              );
+              );}
 
             })}
           </Menu>
@@ -109,6 +110,9 @@ export class UserSettingsPage extends Component {
           <Box colorIndex="grey-1-a">
 
             <Form plain={true} onSubmit={this.onBasicInfoSubmit}>
+              <FormField label="Current Theme" htmlFor="Theme">
+                <TextInput value={this.state.user.UserPreferences.Theme}/>
+              </FormField>
               <FormField label="First Name" htmlFor="firstname">
                 <TextInput id="GivenName" onDOMChange={this.onUserValueChange} value={this.state.user.GivenName}/>
               </FormField>
