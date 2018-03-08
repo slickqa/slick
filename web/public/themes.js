@@ -5,4 +5,5 @@ var SlickThemes = {
   "Orange": "/theme-orange.css",
   "Green": "/theme-green.css",
   "Teal": "/theme-teal.css",
+  "Yellow": "/theme-yellow.css"
 };
