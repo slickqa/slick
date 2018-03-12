@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { inject, observer } from 'mobx-react';
 import Heading from 'grommet/components/Heading';
 import Columns from 'grommet/components/Columns';
 import Image from 'grommet/components/Image';
@@ -18,70 +19,29 @@ import Animate from 'grommet/components/Animate';
 import BrowserStorage from '../BrowserStorage';
 import cloneDeep from 'lodash/cloneDeep';
 
+/**
+ * @property {UserState} props.UserState
+ */
+@inject("UserState") @observer
 export class UserSettingsPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      dirty: false,
-      user: BrowserStorage.User
-    };
-    this.onUserValueChange = this.onUserValueChange.bind(this);
-    this.onBasicInfoSubmit = this.onBasicInfoSubmit.bind(this);
-    this.onThemeChange = this.onThemeChange.bind(this);
-    window.BrowserStorage = BrowserStorage;
-    window.cloneDeep = cloneDeep;
-  }
-
-  onUserValueChange(event) {
-    let fieldName = event.target.id;
-    let fieldValue = event.target.value;
-    this.setState((old) => {
-      let blah = cloneDeep(old);
-      if(fieldName === "BackgroundUrl"){
-        blah.user.UserPreferences[fieldName] = fieldValue;
-      } else {
-        blah.user[fieldName] = fieldValue;
-      }
-      blah.dirty = true;
-      return blah;
-    });
-  }
-
-  onThemeChange(event) {
-    let fieldValue = event.target.innerText;
-    let yomama = cloneDeep(this.state.user);
-    yomama.UserPreferences.Theme = fieldValue;
-    BrowserStorage.updateUserInfo(yomama).then((response) => {
-      this.setState(() => {
-        return {user: response.data}
-      })
-    })
-  }
-
-  onBasicInfoSubmit(event) {
-    event.preventDefault();
-    let that = this;
-    BrowserStorage.updateUserInfo(this.state.user).then((response) => {
-      console.log(response);
-      that.setState(() => {
-        return {user: response.data, dirty: false};
-      })
-    })
   }
 
   render() {
+    const { UserState } = this.props;
     return (
       <StandardPage nav="User">
         <Columns>
           <Box colorIndex="grey-1-a">
             <Heading>
-              <User size="medium"/> {this.state.user.FullName}
+              <User size="medium"/> {UserState.User.FullName}
             </Heading>
           </Box>
         </Columns>
         <Box pad="small">
           <Image size="small"
-                 src={this.state.user.AvatarUrl}
+                 src={UserState.User.AvatarUrl}
           />
         </Box>
         <Columns size="small">
@@ -93,11 +53,11 @@ export class UserSettingsPage extends Component {
                 size='medium'>
 
             {Object.keys(SlickThemes).map((theme) => {
-              if(this.state.user.UserPreferences.Theme !== theme){
+              if(UserState.User.UserPreferences.Theme !== theme){
               return (
                 <Anchor
                   className='active'
-                  onClick={this.onThemeChange}>
+                  onClick={() => {UserState.User.UserPreferences.Theme = theme;}}>
                   {theme}
                 </Anchor>
               );}
@@ -109,30 +69,30 @@ export class UserSettingsPage extends Component {
         <Columns>
           <Box colorIndex="grey-1-a">
 
-            <Form plain={true} onSubmit={this.onBasicInfoSubmit}>
+            <Form plain={true} onSubmit={(e) => {e.preventDefault(); UserState.submit();}}>
               <FormField label="Current Theme" htmlFor="Theme">
-                <TextInput value={this.state.user.UserPreferences.Theme}/>
+                <TextInput value={UserState.User.UserPreferences.Theme}/>
               </FormField>
               <FormField label="First Name" htmlFor="firstname">
-                <TextInput id="GivenName" onDOMChange={this.onUserValueChange} value={this.state.user.GivenName}/>
+                <TextInput id="GivenName" onDOMChange={(e) => {UserState.User.GivenName = e.target.value}} value={UserState.User.GivenName}/>
               </FormField>
               <FormField label="Last Name" htmlFor="lastname">
-                <TextInput id="FamilyName" onDOMChange={this.onUserValueChange} value={this.state.user.FamilyName}/>
+                <TextInput id="FamilyName" onDOMChange={(e) => {UserState.User.FamilyName = e.target.value}} value={UserState.User.FamilyName}/>
               </FormField>
               <FormField label="Email (can't change)" htmlFor="EmailAddress">
-                <TextInput id="EmailAddress" value={this.state.user.EmailAddress}/>
+                <TextInput id="EmailAddress" value={UserState.User.EmailAddress}/>
               </FormField>
               <FormField label="Avatar URL" htmlFor="avatarurl">
-                <TextInput id="AvatarUrl" onDOMChange={this.onUserValueChange} value={this.state.user.AvatarUrl}/>
+                <TextInput id="AvatarUrl" onDOMChange={(e) => {UserState.User.AvatarUrl = e.target.value}} value={UserState.User.AvatarUrl}/>
               </FormField>
               <FormField label="Job Title" htmlFor="JobTitle">
-                <TextInput id="JobTitle" onDOMChange={this.onUserValueChange} value={this.state.user.JobTitle}/>
+                <TextInput id="JobTitle" onDOMChange={(e) => {UserState.User.JobTitle = e.target.value}} value={UserState.User.JobTitle}/>
               </FormField>
               <FormField label="Background URL" htmlFor="BackgroundUrl">
-                <TextInput id="BackgroundUrl" onDOMChange={this.onUserValueChange} value={this.state.user.UserPreferences.BackgroundUrl}/>
+                <TextInput id="BackgroundUrl" onDOMChange={(e) => {UserState.User.UserPreferences.BackgroundUrl = e.target.Value}} value={UserState.User.UserPreferences.BackgroundUrl}/>
               </FormField>
               <Box pad="small" align="center">
-                <Animate visible={this.state.dirty} keep={true}>
+                <Animate visible={UserState.Dirty} keep={true}>
                   <Button label="Save" type="submit"/>
                 </Animate>
               </Box>
