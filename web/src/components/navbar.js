@@ -20,20 +20,10 @@ import CompanyIcon from 'grommet/components/icons/base/Organization';
 import CompanySideBarComponent from '../sidebar/company';
 import {observer, inject} from 'mobx-react';
 
-function logout() {
-  delete localStorage.token;
-  delete localStorage.userName;
-  delete localStorage.userFirstName;
-  delete localStorage.userFamilyName;
-  delete localStorage.userGender;
-  delete localStorage.userPicture;
-  window.location.reload();
-}
-
 /**
  * @property {UserState} props.UserState
  */
-@inject("UserState") @observer
+@inject("UserState", "LoginState") @observer
 export default class Navbar extends Component {
   constructor(props) {
     super(props);
@@ -118,7 +108,7 @@ export default class Navbar extends Component {
               <Anchor path="/user/settings" icon={<UserSettingsIcon/>}>Settings</Anchor>
               <Anchor onClick={this.addToFavorites} icon={<BookmarkIcon/>}>Add to Favorites</Anchor>
               <Anchor onClick={this.setLandingPage} icon={<HomeIcon/>}>Set Login Home</Anchor>
-              <Anchor onClick={logout} icon={<LogoutIcon/>}>Logout</Anchor>
+              <Anchor onClick={(e) => {e.preventDefault(); this.props.LoginState.logout();}} icon={<LogoutIcon/>}>Logout</Anchor>
             </Menu>
           </Box>
         </Box>
