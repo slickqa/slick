@@ -99,7 +99,7 @@ export default Object.assign({
         exclude: /node_modules/,
         loader: 'babel-loader',
         options: {
-          "plugins": ["import-glob"]
+          "plugins": ["transform-decorators-legacy", "transform-class-properties", "import-glob"]
         }
       },
       {

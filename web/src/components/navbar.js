@@ -15,22 +15,15 @@ import Animate from 'grommet/components/Animate';
 import navigation from '../navigation';
 import PropTypes from "prop-types";
 import findIndex from 'lodash/findIndex';
-import BrowserStorage from '../BrowserStorage';
-import cloneDeep from 'lodash/cloneDeep';
 import * as CompanyService from '../slick-api/Company';
 import CompanyIcon from 'grommet/components/icons/base/Organization';
 import CompanySideBarComponent from '../sidebar/company';
+import {observer, inject} from 'mobx-react';
 
-function logout() {
-  delete localStorage.token;
-  delete localStorage.userName;
-  delete localStorage.userFirstName;
-  delete localStorage.userFamilyName;
-  delete localStorage.userGender;
-  delete localStorage.userPicture;
-  window.location.reload();
-}
-
+/**
+ * @property {UserState} props.UserState
+ */
+@inject("UserState", "LoginState") @observer
 export default class Navbar extends Component {
   constructor(props) {
     super(props);
@@ -51,6 +44,7 @@ export default class Navbar extends Component {
       }
     });
     this.changeNavAction = this.changeNavAction.bind(this);
+    this.addToFavorites = this.addToFavorites.bind(this);
   }
 
   changeNavAction(to) {
@@ -64,24 +58,25 @@ export default class Navbar extends Component {
 
   addToFavorites(e) {
     e.preventDefault();
+    const {UserState} = this.props;
     let link = {
       Name: document.title,
       Url: document.location.href.substring(document.location.protocol.length + document.location.host.length + 2),
       UIViewType: "favorite"
     };
-    let user = cloneDeep(BrowserStorage.User);
-    if(!user.UserPreferences.Favorites) {
-      user.UserPreferences.Favorites = [];
+
+    if(!UserState.User.UserPreferences.Favorites) {
+      UserState.User.UserPreferences.Favorites = [];
     }
-    user.UserPreferences.Favorites.push(link);
-    BrowserStorage.updateUserInfo(user).then(() => {});
+    UserState.User.UserPreferences.Favorites.push(link);
+    UserState.submit();
   }
 
   setLandingPage(e) {
     e.preventDefault();
-    let user = cloneDeep(BrowserStorage.User);
-    user.UserPreferences.HomeUrl = document.location.href.substring(document.location.protocol.length + document.location.host.length + 2)
-    BrowserStorage.updateUserInfo(user).then(() => {});
+    const {UserState} = this.props;
+    UserState.User.UserPreferences.HomeUrl = document.location.href.substring(document.location.protocol.length + document.location.host.length + 2)
+    UserState.submit();
   }
 
   render() {
@@ -113,7 +108,7 @@ export default class Navbar extends Component {
               <Anchor path="/user/settings" icon={<UserSettingsIcon/>}>Settings</Anchor>
               <Anchor onClick={this.addToFavorites} icon={<BookmarkIcon/>}>Add to Favorites</Anchor>
               <Anchor onClick={this.setLandingPage} icon={<HomeIcon/>}>Set Login Home</Anchor>
-              <Anchor onClick={logout} icon={<LogoutIcon/>}>Logout</Anchor>
+              <Anchor onClick={(e) => {e.preventDefault(); this.props.LoginState.logout();}} icon={<LogoutIcon/>}>Logout</Anchor>
             </Menu>
           </Box>
         </Box>
