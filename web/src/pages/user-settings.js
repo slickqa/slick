@@ -4,20 +4,16 @@ import Heading from 'grommet/components/Heading';
 import Columns from 'grommet/components/Columns';
 import Image from 'grommet/components/Image';
 import Box from 'grommet/components/Box';
-import Label from 'grommet/components/Label';
 import Form from 'grommet/components/Form';
 import FormField from 'grommet/components/FormField';
 import TextInput from 'grommet/components/TextInput';
 import Button from 'grommet/components/Button';
 import Anchor from 'grommet/components/Anchor';
 import Menu from 'grommet/components/Menu';
-import {NotificationCard, TextCard, TabCard, Charts} from '../components/theme-demo';
 import StandardPage from './standard';
 import navigation from '../navigation';
 import User from 'grommet/components/icons/base/User';
 import Animate from 'grommet/components/Animate';
-import BrowserStorage from '../BrowserStorage';
-import cloneDeep from 'lodash/cloneDeep';
 
 /**
  * @property {UserState} props.UserState
@@ -56,6 +52,7 @@ export class UserSettingsPage extends Component {
               if(UserState.User.UserPreferences.Theme !== theme){
               return (
                 <Anchor
+                  key={theme}
                   className='active'
                   onClick={() => {UserState.User.UserPreferences.Theme = theme;}}>
                   {theme}

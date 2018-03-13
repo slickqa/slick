@@ -5,15 +5,14 @@ import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
 import {init as ApiInit} from './slick-api/gateway/index';
 import './pages/*.js';
 import './sidebar/*.js';
-import tokenapi from './token-api';
 import UserState from './state/user';
+import LoginState from './state/login';
 import { Provider } from 'mobx-react';
 import {reaction} from 'mobx';
 import DevTools from 'mobx-react-devtools';
 
 import navigation from './navigation';
 
-window.tokenapi = tokenapi;
 
 ApiInit({
   url: window.location.protocol + "//" + window.location.host,
@@ -28,6 +27,7 @@ export default class BasicApp extends Component {
   constructor(props) {
     super(props);
     this.UserState = new UserState();
+    this.LoginState = new LoginState();
     reaction(() => this.UserState.User.UserPreferences.Theme, () => {
       this.componentDidMount();
     });
@@ -48,7 +48,7 @@ export default class BasicApp extends Component {
       devtools = <DevTools/>;
     }
     return (
-      <Provider UserState={this.UserState}>
+      <Provider UserState={this.UserState} LoginState={this.LoginState}>
       <App centered={false}>
         {devtools}
         <Router>
