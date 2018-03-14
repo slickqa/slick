@@ -78,7 +78,27 @@ export default class LoginState {
       if((typeof(this.DecodedJwt.sp.co[companyName].a) !== 'undefined') && this.DecodedJwt.sp.co[companyName].a !== 0) {
         return companyName;
       }
+    }).filter(item => item !== undefined);
+  }
+
+  /**
+   *
+   * @returns {Object<string, Array<string>>}
+   */
+  @computed get ProjectAdminObject() {
+    let projectAdminObject = {};
+    Object.keys(this.DecodedJwt.sp.co).forEach(companyName => {
+      Object.keys(this.DecodedJwt.sp.co[companyName].proj).forEach(projectName => {
+        // they have the project admin "bit" if it's an odd number for the permission
+        if((this.DecodedJwt.sp.co[companyName].proj[projectName] % 2) !== 0) {
+          if(projectAdminObject[companyName] === undefined) {
+            projectAdminObject[companyName] = [];
+          }
+          projectAdminObject[companyName].push(projectName);
+        }
+      });
     });
+    return projectAdminObject;
   }
 
   /**

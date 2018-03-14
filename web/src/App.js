@@ -28,6 +28,8 @@ export default class BasicApp extends Component {
     super(props);
     this.UserState = new UserState();
     this.LoginState = new LoginState();
+    window.UserSTate = this.UserState;
+    window.LoginState = this.LoginState;
     reaction(() => this.UserState.User.UserPreferences.Theme, () => {
       this.componentDidMount();
     });

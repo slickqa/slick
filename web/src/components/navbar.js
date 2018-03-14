@@ -17,7 +17,9 @@ import PropTypes from "prop-types";
 import findIndex from 'lodash/findIndex';
 import * as CompanyService from '../slick-api/Company';
 import CompanyIcon from 'grommet/components/icons/base/Organization';
+import AdminIcon from 'grommet/components/icons/base/License';
 import CompanySideBarComponent from '../sidebar/company';
+import AdminSideBarComponent from '../sidebar/admin';
 import {observer, inject} from 'mobx-react';
 
 /**
@@ -84,6 +86,8 @@ export default class Navbar extends Component {
     let nav = this.state.nav;
     if(nav === "Company") {
       sidebar = <CompanySideBarComponent/>;
+    } else if(nav === "Administration") {
+      sidebar = <AdminSideBarComponent/>;
     } else {
       let sideBarIndex = findIndex(navigation.SidebarMappings, (entry) => { return entry.name === nav; });
       if(sideBarIndex >= 0) {
@@ -94,6 +98,10 @@ export default class Navbar extends Component {
     if(this.state.companies.length === 1 && this.state.companies[0].CustomIconUrl) {
       companyIcon = <SidebarIcon name="Company" icon={<Image src={this.state.companies[0].CustomIconUrl} style={{maxWidth: "24px"}}/>} selected={this.state.nav === "Company"} onSelect={this.changeNavAction("Company")}/>;
     }
+    let admin = null;
+    if(this.props.LoginState.IsSlickAdmin || this.props.LoginState.CompanyAdminList.length > 0 || Object.keys(this.props.LoginState.ProjectAdminObject).length > 0) {
+      admin = <SidebarIcon key="Administration" selected={this.state.nav === "Administration"} name="Administration" icon={<AdminIcon />} onSelect={this.changeNavAction("Administration")}/>
+    }
     return (
       <Box full="vertical" direction="row">
         <Box full="vertical" className="slick-navbar">
@@ -101,6 +109,7 @@ export default class Navbar extends Component {
           {navigation.SidebarMappings.map((entry) => {
             return <SidebarIcon key={entry.name} selected={this.state.nav === entry.name} name={entry.name} icon={React.createElement(entry.icon, {})} onSelect={this.changeNavAction(entry.name)}/>
           }, this)}
+          {admin}
           <Box flex="grow" colorIndex="brand-a" onClick={this.changeNavAction(this.props.nav)} />
           {companyIcon}
           <Box colorIndex={this.state.nav === "User" ? "grey-1-a" : "brand-a"}>
