@@ -10,6 +10,9 @@ import LoginState from './state/login';
 import { Provider } from 'mobx-react';
 import {reaction} from 'mobx';
 import DevTools from 'mobx-react-devtools';
+import * as CompanyApi from './slick-api/Company';
+
+window.CompanyApi = CompanyApi;
 
 import navigation from './navigation';
 

@@ -18,19 +18,22 @@ func (*SlickCompanyService) GetAvailableCompanySettings(ctx context.Context, req
 	if err != nil {
 		return nil, status.Error(codes.PermissionDenied, err.Error())
 	}
-	companyNames := make([]string, 0, len(claims.Permissions.Companies))
-	for k := range claims.Permissions.Companies {
-		companyNames = append(companyNames, k)
+	var settings []*slickqa.CompanySettings
+	if claims.Permissions.SlickAdmin != 0 {
+		settings, err = db.CompanySettings.FindAll()
+	} else {
+		companyNames := make([]string, 0, len(claims.Permissions.Companies))
+		for k := range claims.Permissions.Companies {
+			companyNames = append(companyNames, k)
+		}
+		settings, err = db.CompanySettings.FindAllIn(companyNames...)
 	}
-	settings, err := db.CompanySettings.FindAll(companyNames...)
 	if err != nil {
 		settings = make([]*slickqa.CompanySettings, 0)
 	}
 	return &slickqa.AvailableCompanySettings{
 		Companies: settings,
 	}, nil
-
-
 }
 
 func (*SlickCompanyService) GetCompanySettings(ctx context.Context, req *slickqa.CompanySettingsRequest) (*slickqa.CompanySettings, error) {

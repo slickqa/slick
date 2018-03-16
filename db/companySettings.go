@@ -30,7 +30,15 @@ func (u *companySettingsType) Find(CompanyName string) (*slickqa.CompanySettings
 	return &result, err
 }
 
-func (u *companySettingsType) FindAll(companies ...string) ([]*slickqa.CompanySettings, error) {
+func (u *companySettingsType) FindAll() ([]*slickqa.CompanySettings, error) {
+	mongo := MongoSession.Copy()
+	defer mongo.Close()
+	result := make([]*slickqa.CompanySettings, 0)
+	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(CompanySettingsCollectionName).Find(nil).All(&result)
+	return result, err
+}
+
+func (u *companySettingsType) FindAllIn(companies ...string) ([]*slickqa.CompanySettings, error) {
 	mongo := MongoSession.Copy()
 	defer mongo.Close()
 	result := make([]*slickqa.CompanySettings, 0)
