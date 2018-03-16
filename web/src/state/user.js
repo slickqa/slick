@@ -20,7 +20,11 @@ export default class UserState {
   }
 
   reset() {
-    this.User = JSON.parse(localStorage.user);
+    if(localStorage.token) {
+    	this.User = JSON.parse(localStorage.user);
+    } else {
+        this.User = {};
+    }
     this.Dirty = false;
   }
 

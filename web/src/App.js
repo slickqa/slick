@@ -30,17 +30,20 @@ export default class BasicApp extends Component {
     this.LoginState = new LoginState();
     window.UserSTate = this.UserState;
     window.LoginState = this.LoginState;
-    reaction(() => this.UserState.User.UserPreferences.Theme, () => {
-      this.componentDidMount();
-    });
-
+    if(Object.keys(this.UserState.User).length !== 0) {
+      reaction(() => this.UserState.User.UserPreferences.Theme, () => {
+        this.componentDidMount();
+      });
+    }
   }
 
   componentDidMount() {
-    let theme = this.UserState.User.UserPreferences.Theme;
-    let el = window.document.getElementById("theme");
-    if(el.href !== SlickThemes[theme]) {
-      setTimeout(() => {el.href = SlickThemes[theme];}, 100);
+    if(Object.keys(this.UserState.User).length !== 0) {
+      let theme = this.UserState.User.UserPreferences.Theme;
+      let el = window.document.getElementById("theme");
+      if(el.href !== SlickThemes[theme]) {
+        setTimeout(() => {el.href = SlickThemes[theme];}, 100);
+      }
     }
   }
 
