@@ -34,6 +34,7 @@
  * @property {slickqaPreferences} UserPreferenceTemplate 
  * @property {string} CustomIconUrl 
  * @property {slickqaLink[]} Links 
+ * @property {string} CompanyBannerUrl 
  */
 
 /**
