@@ -11,6 +11,9 @@ export default class UserState {
 
   constructor() {
     this.reset();
+    if(localStorage.user) {
+      this.User = JSON.parse(localStorage.user);
+    }
     reaction(() => toJS(this.User), () => {
       if(this.Dirty === false) {
         this.Dirty = true;
@@ -20,7 +23,10 @@ export default class UserState {
   }
 
   reset() {
-    this.User = JSON.parse(localStorage.user);
+    //this.User = JSON.parse(localStorage.user);
+    UserApi.GetCurrentUserInfo().then((response) => {
+      this.User = response.data;
+    });
     this.Dirty = false;
   }
 

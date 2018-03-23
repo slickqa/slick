@@ -10,6 +10,11 @@ import TextInput from 'grommet/components/TextInput';
 import Button from 'grommet/components/Button';
 import Anchor from 'grommet/components/Anchor';
 import Menu from 'grommet/components/Menu';
+import Card from 'grommet/components/Card';
+import Label from 'grommet/components/Label';
+import Paragraph from 'grommet/components/Paragraph';
+import Accordian from 'grommet/components/Accordion';
+import AccordianPanel from 'grommet/components/AccordionPanel';
 import StandardPage from './standard';
 import navigation from '../navigation';
 import User from 'grommet/components/icons/base/User';
@@ -22,6 +27,7 @@ import Animate from 'grommet/components/Animate';
 export class UserSettingsPage extends Component {
   constructor(props) {
     super(props);
+    this.props.UserState.reset();
   }
 
   render() {
@@ -63,7 +69,7 @@ export class UserSettingsPage extends Component {
           </Menu>
 
         </Columns>
-        <Columns>
+        <Columns pad='medium'>
           <Box colorIndex="grey-1-a">
 
             <Form plain={true} onSubmit={(e) => {e.preventDefault(); UserState.submit();}}>
@@ -95,6 +101,27 @@ export class UserSettingsPage extends Component {
               </Box>
             </Form>
           </Box>
+          {UserState.User.Permissions.Companies.map((company) => {
+            return (
+                <Box colorIndex="grey-1-a" margin='small'>
+              <Card
+                label='Company'
+                heading={company.CompanyName}
+                description="Permissions"
+                contentPad='small'
+              >
+                  {company.Projects.map(((project) => {
+                    return (
+                      <Box pad='none' >
+                      <Label size='large' margin='small' >{project.ProjectName}</Label>
+                        <Box margin={'small'}>Roles: {project.Roles.join(', ')}</Box>
+                      </Box>
+                    );
+                  }))}
+              </Card>
+              </Box>
+            );
+          })}
         </Columns>
       </StandardPage>
     );
