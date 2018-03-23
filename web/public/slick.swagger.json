@@ -433,6 +433,9 @@
         },
         "CompanyBannerUrl": {
           "type": "string"
+        },
+        "StorageSettings": {
+          "$ref": "#/definitions/slickqaS3StorageSettings"
         }
       }
     },
@@ -460,6 +463,14 @@
         "UIViewType": {
           "type": "string",
           "title": "to be used by UI, examples include iframe, video, picture, external, html-source, etc"
+        },
+        "FileId": {
+          "type": "string",
+          "format": "byte"
+        },
+        "DocumentId": {
+          "type": "string",
+          "format": "byte"
         }
       }
     },
@@ -520,6 +531,26 @@
           "items": {
             "type": "string"
           }
+        }
+      }
+    },
+    "slickqaS3StorageSettings": {
+      "type": "object",
+      "properties": {
+        "BaseUrl": {
+          "type": "string"
+        },
+        "AccessKey": {
+          "type": "string"
+        },
+        "SecretKey": {
+          "type": "string"
+        },
+        "Bucket": {
+          "type": "string"
+        },
+        "Prefix": {
+          "type": "string"
         }
       }
     },

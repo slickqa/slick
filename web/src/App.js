@@ -7,6 +7,7 @@ import './pages/*.js';
 import './sidebar/*.js';
 import UserState from './state/user';
 import LoginState from './state/login';
+import CompaniesState from './state/companies';
 import { Provider } from 'mobx-react';
 import {reaction} from 'mobx';
 import DevTools from 'mobx-react-devtools';
@@ -31,8 +32,10 @@ export default class BasicApp extends Component {
     super(props);
     this.UserState = new UserState();
     this.LoginState = new LoginState();
+    this.CompaniesState = new CompaniesState();
     window.UserSTate = this.UserState;
     window.LoginState = this.LoginState;
+    window.CompaniesState = this.CompaniesState;
     if(Object.keys(this.UserState.User).length !== 0) {
       reaction(() => this.UserState.User.UserPreferences.Theme, () => {
         this.componentDidMount();
@@ -56,7 +59,7 @@ export default class BasicApp extends Component {
       devtools = <DevTools/>;
     }
     return (
-      <Provider UserState={this.UserState} LoginState={this.LoginState}>
+      <Provider UserState={this.UserState} LoginState={this.LoginState} CompaniesState={this.CompaniesState}>
       <App centered={false}>
         {devtools}
         <Router>

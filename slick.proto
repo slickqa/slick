@@ -64,12 +64,21 @@ message Preferences {
   repeated Link Favorites = 4; //`bson:"favorites"`
 }
 
+message S3StorageSettings {
+  string BaseUrl = 1; //`bson:"baseUrl"`
+  string AccessKey = 2; //`bson:"accessKey"`
+  string SecretKey = 3; //`bson:"secretKey"`
+  string Bucket = 4; //`bson:"bucket"`
+  string Prefix = 5; //`bson:"prefix"`
+}
+
 message CompanySettings {
   string CompanyName = 1; //`bson:"_id"`
   Preferences UserPreferenceTemplate = 2; //`bson:"user-preferences"`
   string CustomIconUrl = 3; //`bson:"icon-url"`
   repeated Link Links = 4; //`bson:"links"`
   string CompanyBannerUrl = 5; //`bson:"company-banner"`
+  S3StorageSettings StorageSettings = 6; //`bson:"storage-settings"`
 }
 
 message UserInfo {
@@ -121,6 +130,24 @@ message AvailableCompanySettingsRequest {
 
 message AvailableCompanySettings {
   repeated CompanySettings Companies = 1; //`json:"Companies"`
+}
+
+message UploadedFile {
+  bytes Id = 1; //`bson:"_id,omitempty"`
+  string Prefix = 2; //`bson:"prefix"`
+  string Name = 3; //`bson:"name"`
+  string ContentType = 4; //`bson:"contentType"`
+  ProjectIdentity Project = 5; //`bson:"project"`
+  int32 Size = 6; //`bson:"size"`
+  string User = 7; //`bson:"user"`
+}
+
+message MarkdownDocument {
+  bytes Id = 1; //`bson:"_id,omitempty"`
+  string Name = 2; //`bson:"name"`
+  string Description = 3; //`bson:"description"`
+  string Content = 4; //`bson:"content"`
+  repeated Link Files = 5; //`bson:"files"`
 }
 
 service Auth {
@@ -218,6 +245,8 @@ message Link {
   string Name = 2; //`bson:"name"`
   // to be used by UI, examples include iframe, video, picture, external, html-source, etc
   string UIViewType = 3; //`bson:"ui-view"`
+  bytes FileId = 4; //`bson:"fileId"`
+  bytes DocumentId = 5; //`bson:"documentId"`
 }
 
 message ProjectIdentity {
@@ -227,11 +256,11 @@ message ProjectIdentity {
 
 message Project {
   ProjectIdentity Id = 1; //`bson:"_id"`
+  repeated Link Links = 2; //`bson:"links"`
   repeated string AutomationTools = 3; //`bson:"automationTools"`
   repeated string Tags = 4; //`bson:"tags"`
   map<string, string> Attributes = 5; //`bson:"attributes"`
   google.protobuf.Timestamp LastUpdated = 6; //`bson:"lastUpdated"`
-
 }
 
 message ComponentIdentity {

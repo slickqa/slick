@@ -35,6 +35,7 @@
  * @property {string} CustomIconUrl 
  * @property {slickqaLink[]} Links 
  * @property {string} CompanyBannerUrl 
+ * @property {slickqaS3StorageSettings} StorageSettings 
  */
 
 /**
@@ -52,6 +53,8 @@
  * @property {string} Url 
  * @property {string} Name 
  * @property {string} UIViewType 
+ * @property {string} FileId 
+ * @property {string} DocumentId 
  */
 
 /**
@@ -87,6 +90,17 @@
  * 
  * @property {string} ProjectName 
  * @property {string[]} Roles 
+ */
+
+/**
+ * @typedef {Object} slickqaS3StorageSettings
+ * @memberof module:types
+ * 
+ * @property {string} BaseUrl 
+ * @property {string} AccessKey 
+ * @property {string} SecretKey 
+ * @property {string} Bucket 
+ * @property {string} Prefix 
  */
 
 /**
