@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { inject, observer } from 'mobx-react';
+import { set } from 'mobx';
 import Heading from 'grommet/components/Heading';
 import Columns from 'grommet/components/Columns';
 import Image from 'grommet/components/Image';
@@ -77,22 +78,22 @@ export class UserSettingsPage extends Component {
                 <TextInput value={UserState.User.UserPreferences.Theme}/>
               </FormField>
               <FormField label="First Name" htmlFor="firstname">
-                <TextInput id="GivenName" onDOMChange={(e) => {UserState.User.GivenName = e.target.value}} value={UserState.User.GivenName}/>
+                <TextInput id="GivenName" onDOMChange={(e) => {set(UserState.User, "GivenName", e.target.value)}} value={UserState.User.GivenName}/>
               </FormField>
               <FormField label="Last Name" htmlFor="lastname">
-                <TextInput id="FamilyName" onDOMChange={(e) => {UserState.User.FamilyName = e.target.value}} value={UserState.User.FamilyName}/>
+                <TextInput id="FamilyName" onDOMChange={(e) => {set(UserState.User, "FamilyName", e.target.value)}} value={UserState.User.FamilyName}/>
               </FormField>
               <FormField label="Email (can't change)" htmlFor="EmailAddress">
                 <TextInput id="EmailAddress" value={UserState.User.EmailAddress}/>
               </FormField>
               <FormField label="Avatar URL" htmlFor="avatarurl">
-                <TextInput id="AvatarUrl" onDOMChange={(e) => {UserState.User.AvatarUrl = e.target.value}} value={UserState.User.AvatarUrl}/>
+                <TextInput id="AvatarUrl" onDOMChange={(e) => {set(UserState.User, "AvatarUrl", e.target.value)}} value={UserState.User.AvatarUrl}/>
               </FormField>
               <FormField label="Job Title" htmlFor="JobTitle">
-                <TextInput id="JobTitle" onDOMChange={(e) => {UserState.User.JobTitle = e.target.value}} value={UserState.User.JobTitle}/>
+                <TextInput id="JobTitle" onDOMChange={(e) => {set(UserState.User, "JobTitle", e.target.value)}} value={UserState.User.JobTitle}/>
               </FormField>
               <FormField label="Background URL" htmlFor="BackgroundUrl">
-                <TextInput id="BackgroundUrl" onDOMChange={(e) => {UserState.User.UserPreferences.BackgroundUrl = e.target.Value}} value={UserState.User.UserPreferences.BackgroundUrl}/>
+                <TextInput id="BackgroundUrl" onDOMChange={(e) => {set(UserState.User.UserPreferences, "BackgroundUrl", e.target.value)}} value={UserState.User.UserPreferences.BackgroundUrl}/>
               </FormField>
               <Box pad="small" align="center">
                 <Animate visible={UserState.Dirty} keep={true}>

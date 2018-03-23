@@ -69,6 +69,7 @@ message CompanySettings {
   Preferences UserPreferenceTemplate = 2; //`bson:"user-preferences"`
   string CustomIconUrl = 3; //`bson:"icon-url"`
   repeated Link Links = 4; //`bson:"links"`
+  string CompanyBannerUrl = 5; //`bson:"company-banner"`
 }
 
 message UserInfo {

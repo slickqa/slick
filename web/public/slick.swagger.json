@@ -430,6 +430,9 @@
           "items": {
             "$ref": "#/definitions/slickqaLink"
           }
+        },
+        "CompanyBannerUrl": {
+          "type": "string"
         }
       }
     },

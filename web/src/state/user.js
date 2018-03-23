@@ -23,10 +23,13 @@ export default class UserState {
   }
 
   reset() {
-    //this.User = JSON.parse(localStorage.user);
-    UserApi.GetCurrentUserInfo().then((response) => {
-      this.User = response.data;
-    });
+    if(localStorage.token) {
+      UserApi.GetCurrentUserInfo().then((response) => {
+        this.User = response.data;
+      });
+    } else {
+        this.User = {};
+    }
     this.Dirty = false;
   }
 
