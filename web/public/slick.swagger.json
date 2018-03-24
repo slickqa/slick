@@ -102,6 +102,22 @@
         ]
       }
     },
+    "/api/auth/refresh-token": {
+      "get": {
+        "operationId": "RefreshToken",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/slickqaLoginResponse"
+            }
+          }
+        },
+        "tags": [
+          "Auth"
+        ]
+      }
+    },
     "/api/companies": {
       "get": {
         "operationId": "GetAvailableCompanySettings",

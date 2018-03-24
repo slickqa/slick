@@ -45,6 +45,12 @@ export function LoginWithToken(Token) {
   return gateway.request(LoginWithTokenOperation, parameters)
 }
 
+/**
+ */
+export function RefreshToken() {
+  return gateway.request(RefreshTokenOperation)
+}
+
 const IsAuthorizedOperation = {
   path: '/api/auth/isAuthorized/{CompanyName}/{ProjectName}/{Permission}',
   method: 'get'
@@ -58,5 +64,10 @@ const LoginWithCredentialsOperation = {
 
 const LoginWithTokenOperation = {
   path: '/api/auth/login-with-token/{Token}',
+  method: 'get'
+}
+
+const RefreshTokenOperation = {
+  path: '/api/auth/refresh-token',
   method: 'get'
 }
