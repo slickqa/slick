@@ -85,11 +85,38 @@
  */
 
 /**
+ * @typedef {Object} slickqaProject
+ * @memberof module:types
+ * 
+ * @property {slickqaProjectIdentity} Id 
+ * @property {slickqaLink[]} Links 
+ * @property {string[]} AutomationTools 
+ * @property {string[]} Tags 
+ * @property {object} Attributes 
+ * @property {date} LastUpdated 
+ */
+
+/**
+ * @typedef {Object} slickqaProjectIdentity
+ * @memberof module:types
+ * 
+ * @property {string} Company 
+ * @property {string} Name 
+ */
+
+/**
  * @typedef {Object} slickqaProjectPermissionInfo
  * @memberof module:types
  * 
  * @property {string} ProjectName 
  * @property {string[]} Roles 
+ */
+
+/**
+ * @typedef {Object} slickqaProjectsListResponse
+ * @memberof module:types
+ * 
+ * @property {slickqaProject[]} Projects 
  */
 
 /**

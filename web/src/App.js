@@ -11,9 +11,11 @@ import CompaniesState from './state/companies';
 import { Provider } from 'mobx-react';
 import {reaction} from 'mobx';
 import DevTools from 'mobx-react-devtools';
+import * as ProjectsApi from './slick-api/Projects';
 import * as CompanyApi from './slick-api/Company';
 
 window.CompanyApi = CompanyApi;
+window.ProjectsApi = ProjectsApi;
 
 import navigation from './navigation';
 
