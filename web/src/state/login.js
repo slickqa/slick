@@ -1,4 +1,5 @@
 import {observable, computed, action} from 'mobx';
+import * as AuthService from '../slick-api/Auth';
 
 /**
  * @typedef {Object} SlickCompany
@@ -37,9 +38,14 @@ export default class LoginState {
     // every 5 seconds update the LastCheck time.
     this.interval = setInterval(() => {
       this.LastCheck = Date.now();
-      if(this.expiresWithin(5)) {
-        //TODO: refresh token
-        console.log("Token about to expire");
+      if(this.expiresWithin(10)) {
+        AuthService.RefreshToken().then(response => {
+          if(response.raw.ok && response.data.Success) {
+            localStorage.token = response.data.Token;
+            localStorage.user = response.data.User;
+            this.reload();
+          }
+        });
       }
     }, 5000);
   }
