@@ -3,16 +3,15 @@
 import * as gateway from './gateway'
 
 /**
- * @return {Promise<HttpResponse<slickqaProjectsListResponse>>}
  */
 export function GetProjects() {
   return gateway.request(GetProjectsOperation)
 }
 
 /**
- * @param {string} Company
- * @param {string} Name
- * @return {Promise<HttpResponse<slickqaProject>>}
+ * @param {string} Company 
+ * @param {string} Name 
+ * @return {Promise<HttpResponse<slickqaProject>>} 
  */
 export function GetProjectByName(Company, Name) {
   const parameters = {
