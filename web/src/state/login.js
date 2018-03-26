@@ -40,7 +40,7 @@ export default class LoginState {
     // every 5 seconds update the LastCheck time.
     this.interval = setInterval(() => {
       this.LastCheck = Date.now();
-      if(this.expiresWithin(10)) {
+      if(this.expiresWithin(60)) {
         AuthService.RefreshToken().then(response => {
           if(response.raw.ok && response.data.Success) {
             localStorage.token = response.data.Token;
