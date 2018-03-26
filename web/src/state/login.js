@@ -1,5 +1,7 @@
 import {observable, computed, action} from 'mobx';
 import * as AuthService from '../slick-api/Auth';
+import {init as ApiInit} from '../slick-api/gateway/index';
+
 
 /**
  * @typedef {Object} SlickCompany
@@ -44,6 +46,14 @@ export default class LoginState {
             localStorage.token = response.data.Token;
             localStorage.user = response.data.User;
             this.reload();
+            ApiInit({
+              url: window.location.protocol + "//" + window.location.host,
+              fetchOptions: {
+                headers: {
+                  Authorization: 'Bearer ' + localStorage.token
+                }
+              }
+            });
           }
         });
       }
