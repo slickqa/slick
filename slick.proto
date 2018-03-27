@@ -153,6 +153,13 @@ message MarkdownDocument {
 message RefreshTokenRequest {
 }
 
+message ProjectsRequest {
+}
+
+message ProjectsListResponse {
+  repeated Project Projects = 1; //
+}
+
 service Auth {
   rpc IsAuthorized(IsAuthorizedRequest) returns(IsAuthorizedResponse) {
     option (google.api.http) = {
@@ -239,6 +246,36 @@ service Company {
   }
 }
 
+service Projects {
+  rpc GetProjects(ProjectsRequest) returns (ProjectsListResponse) {
+    option (google.api.http) = {
+      get: "/api/projects"
+    };
+  }
+
+  rpc GetProjectByName(ProjectIdentity) returns (Project) {
+    option (google.api.http) = {
+      get: "/api/projects/{Company}/{Name}"
+    };
+  }
+
+ /*
+    rpc AddProject(Project) returns (Project) {
+      option (google.api.http) = {
+        post: "/api/projects"
+        body: "*"
+      };
+    }
+
+    rpc UpdateProject(Project) returns (Project) {
+      option (google.api.http) = {
+        put: "/api/projects/{Id.Company}/{Id.Name}"
+        body: "*"
+      };
+    }
+  */
+}
+
 service Version {
   rpc GetFullVersion(VersionRequest) returns(VersionInfoResponse) {
     option (google.api.http) = {
@@ -282,7 +319,7 @@ message Component{
 
 }
 
-message Feature{
+message Feature {
   bytes Id = 1; //`bson:"_id,omitempty"`
   string Name = 2; //`bson:"name"`
   bytes ComponentId= 3; //`bson:"componentId,omitempty"` 

@@ -44,7 +44,7 @@ export default class LoginState {
         AuthService.RefreshToken().then(response => {
           if(response.raw.ok && response.data.Success) {
             localStorage.token = response.data.Token;
-            localStorage.user = response.data.User;
+            localStorage.user = JSON.stringify(response.data.User);
             this.reload();
             ApiInit({
               url: window.location.protocol + "//" + window.location.host,

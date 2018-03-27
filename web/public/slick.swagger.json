@@ -212,6 +212,52 @@
         ]
       }
     },
+    "/api/projects": {
+      "get": {
+        "operationId": "GetProjects",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/slickqaProjectsListResponse"
+            }
+          }
+        },
+        "tags": [
+          "Projects"
+        ]
+      }
+    },
+    "/api/projects/{Company}/{Name}": {
+      "get": {
+        "operationId": "GetProjectByName",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/slickqaProject"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Company",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Projects"
+        ]
+      }
+    },
     "/api/users/by-company/{CompanyName}": {
       "get": {
         "operationId": "GetUsersForCompany",
@@ -536,6 +582,53 @@
         }
       }
     },
+    "slickqaProject": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "$ref": "#/definitions/slickqaProjectIdentity"
+        },
+        "Links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/slickqaLink"
+          }
+        },
+        "AutomationTools": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Attributes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "LastUpdated": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "slickqaProjectIdentity": {
+      "type": "object",
+      "properties": {
+        "Company": {
+          "type": "string"
+        },
+        "Name": {
+          "type": "string"
+        }
+      }
+    },
     "slickqaProjectPermissionInfo": {
       "type": "object",
       "properties": {
@@ -546,6 +639,17 @@
           "type": "array",
           "items": {
             "type": "string"
+          }
+        }
+      }
+    },
+    "slickqaProjectsListResponse": {
+      "type": "object",
+      "properties": {
+        "Projects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/slickqaProject"
           }
         }
       }
