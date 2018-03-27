@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { inject, observer } from 'mobx-react';
-import { set } from 'mobx';
+import { set, observable } from 'mobx';
 import Heading from 'grommet/components/Heading';
 import Columns from 'grommet/components/Columns';
 import Image from 'grommet/components/Image';
@@ -26,10 +26,21 @@ import Animate from 'grommet/components/Animate';
  */
 @inject("UserState") @observer
 export class UserSettingsPage extends Component {
+  @observable editedFields = [];
   constructor(props) {
     super(props);
     this.props.UserState.reset();
   }
+
+  fieldIsEdited(fieldName)
+  {
+    if(this.editedFields.indexOf(fieldName) > -1)
+    {
+      return('Edited')
+    }
+    return(NaN)
+  }
+
 
   render() {
     const { UserState } = this.props;
@@ -77,27 +88,27 @@ export class UserSettingsPage extends Component {
               <FormField label="Current Theme" htmlFor="Theme">
                 <TextInput value={UserState.User.UserPreferences.Theme}/>
               </FormField>
-              <FormField label="First Name" htmlFor="firstname">
-                <TextInput id="GivenName" onDOMChange={(e) => {set(UserState.User, "GivenName", e.target.value)}} value={UserState.User.GivenName}/>
+              <FormField label="First Name" htmlFor="firstname" error={this.fieldIsEdited('givenname')}>
+                <TextInput id="GivenName" onDOMChange={(e) => {set(UserState.User, "GivenName", e.target.value); this.editedFields.push('givenname')}} value={UserState.User.GivenName}/>
               </FormField>
-              <FormField label="Last Name" htmlFor="lastname">
-                <TextInput id="FamilyName" onDOMChange={(e) => {set(UserState.User, "FamilyName", e.target.value)}} value={UserState.User.FamilyName}/>
+              <FormField label="Last Name" htmlFor="lastname" error={this.fieldIsEdited('lastname')}>
+                <TextInput id="FamilyName" onDOMChange={(e) => {set(UserState.User, "FamilyName", e.target.value); this.editedFields.push('lastname')}} value={UserState.User.FamilyName}/>
               </FormField>
               <FormField label="Email (can't change)" htmlFor="EmailAddress">
                 <TextInput id="EmailAddress" value={UserState.User.EmailAddress}/>
               </FormField>
-              <FormField label="Avatar URL" htmlFor="avatarurl">
-                <TextInput id="AvatarUrl" onDOMChange={(e) => {set(UserState.User, "AvatarUrl", e.target.value)}} value={UserState.User.AvatarUrl}/>
+              <FormField label="Avatar URL" htmlFor="avatarurl" error={this.fieldIsEdited('avatarurl')}>
+                <TextInput id="AvatarUrl" onDOMChange={(e) => {set(UserState.User, "AvatarUrl", e.target.value); this.editedFields.push('avatarurl')}} value={UserState.User.AvatarUrl}/>
               </FormField>
-              <FormField label="Job Title" htmlFor="JobTitle">
-                <TextInput id="JobTitle" onDOMChange={(e) => {set(UserState.User, "JobTitle", e.target.value)}} value={UserState.User.JobTitle}/>
+              <FormField label="Job Title" htmlFor="JobTitle" error={this.fieldIsEdited('jobtitle')}>
+                <TextInput id="JobTitle" onDOMChange={(e) => {set(UserState.User, "JobTitle", e.target.value); this.editedFields.push('jobtitle')}} value={UserState.User.JobTitle}/>
               </FormField>
-              <FormField label="Background URL" htmlFor="BackgroundUrl">
-                <TextInput id="BackgroundUrl" onDOMChange={(e) => {set(UserState.User.UserPreferences, "BackgroundUrl", e.target.value)}} value={UserState.User.UserPreferences.BackgroundUrl}/>
+              <FormField label="Background URL" htmlFor="BackgroundUrl" error={this.fieldIsEdited('backgroundurl')}>
+                <TextInput id="BackgroundUrl" onDOMChange={(e) => {set(UserState.User.UserPreferences, "BackgroundUrl", e.target.value); this.editedFields.push('backgroundurl')}} value={UserState.User.UserPreferences.BackgroundUrl}/>
               </FormField>
               <Box pad="small" align="center">
-                <Animate visible={UserState.Dirty} keep={true}>
-                  <Button label="Save" type="submit"/>
+                <Animate visible={this.editedFields.length > 0} keep={true}>
+                  <Button label="Save" type="submit" onClick={() => {this.editedFields = []}}/>
                 </Animate>
               </Box>
             </Form>

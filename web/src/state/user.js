@@ -7,18 +7,12 @@ export default class UserState {
    * @type {slickqaUserInfo}
    */
   @observable User = {};
-  @observable Dirty = false;
 
   constructor() {
     this.reset();
     if(localStorage.user) {
       this.User = JSON.parse(localStorage.user);
     }
-    reaction(() => toJS(this.User), () => {
-      if(this.Dirty === false) {
-        this.Dirty = true;
-      }
-    });
     window.UserState = this;
   }
 
@@ -30,7 +24,6 @@ export default class UserState {
     } else {
         this.User = {};
     }
-    this.Dirty = false;
   }
 
   submit() {
