@@ -134,7 +134,7 @@
         ]
       },
       "post": {
-        "operationId": "CreateCompanySettings",
+        "operationId": "AddCompanySettings",
         "responses": {
           "200": {
             "description": "",
@@ -149,7 +149,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/slickqaCompanySettings"
+              "$ref": "#/definitions/slickqaCompanySettingsRequest"
             }
           }
         ],
@@ -223,6 +223,30 @@
             }
           }
         },
+        "tags": [
+          "Projects"
+        ]
+      },
+      "post": {
+        "operationId": "AddProject",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/slickqaProject"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/slickqaProjectIdentity"
+            }
+          }
+        ],
         "tags": [
           "Projects"
         ]
@@ -498,6 +522,14 @@
         },
         "StorageSettings": {
           "$ref": "#/definitions/slickqaS3StorageSettings"
+        }
+      }
+    },
+    "slickqaCompanySettingsRequest": {
+      "type": "object",
+      "properties": {
+        "CompanyName": {
+          "type": "string"
         }
       }
     },

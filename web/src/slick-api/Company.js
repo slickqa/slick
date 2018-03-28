@@ -10,16 +10,16 @@ export function GetAvailableCompanySettings() {
 }
 
 /**
- * @param {slickqaCompanySettings} body
+ * @param {slickqaCompanySettingsRequest} body
  * @return {Promise<HttpResponse<slickqaCompanySettings>>}
  */
-export function CreateCompanySettings(body) {
+export function AddCompanySettings(body) {
   const parameters = {
     body: {
       body
     }
   }
-  return gateway.request(CreateCompanySettingsOperation, parameters)
+  return gateway.request(AddCompanySettingsOperation, parameters)
 }
 
 /**
@@ -57,7 +57,7 @@ const GetAvailableCompanySettingsOperation = {
   method: 'get'
 }
 
-const CreateCompanySettingsOperation = {
+const AddCompanySettingsOperation = {
   path: '/api/companies',
   contentTypes: ['application/json'],
   method: 'post'

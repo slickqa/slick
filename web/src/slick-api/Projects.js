@@ -10,6 +10,19 @@ export function GetProjects() {
 }
 
 /**
+ * @param {slickqaProjectIdentity} body
+ * @return {Promise<HttpResponse<slickqaProject>>}
+ */
+export function AddProject(body) {
+  const parameters = {
+    body: {
+      body
+    }
+  }
+  return gateway.request(AddProjectOperation, parameters)
+}
+
+/**
  * @param {string} Company
  * @param {string} Name
  * @return {Promise<HttpResponse<slickqaProject>>}
@@ -27,6 +40,12 @@ export function GetProjectByName(Company, Name) {
 const GetProjectsOperation = {
   path: '/api/projects',
   method: 'get'
+}
+
+const AddProjectOperation = {
+  path: '/api/projects',
+  contentTypes: ['application/json'],
+  method: 'post'
 }
 
 const GetProjectByNameOperation = {

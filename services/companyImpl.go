@@ -13,6 +13,22 @@ import (
 
 type SlickCompanyService struct {}
 
+func (*SlickCompanyService) AddCompanySettings(ctx context.Context, req *slickqa.CompanySettingsRequest) (*slickqa.CompanySettings, error) {
+	claims, err := jwtauth.GetClaimsFromContext(ctx)
+	if err != nil {
+		return nil, status.Error(codes.PermissionDenied, err.Error())
+	}
+	if ! claims.IsCompanyAdmin(req.CompanyName) && claims.Permissions.SlickAdmin == 0 {
+		return nil, status.Error(codes.PermissionDenied, "User is not company admin")
+	}
+	settings := db.EmptyCompanySettingsFor(req.CompanyName)
+	err = db.CompanySettings.AddCompanySettings(settings)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+	return settings, nil
+}
+
 func (*SlickCompanyService) GetAvailableCompanySettings(ctx context.Context, req *slickqa.AvailableCompanySettingsRequest) (*slickqa.AvailableCompanySettings, error) {
 	claims, err := jwtauth.GetClaimsFromContext(ctx)
 	if err != nil {
@@ -65,22 +81,6 @@ func (*SlickCompanyService) UpdateCompanySettings(ctx context.Context, req *slic
 	}
 	return req, nil
 }
-
-func (*SlickCompanyService) CreateCompanySettings(ctx context.Context, req *slickqa.CompanySettings) (*slickqa.CompanySettings, error) {
-	claims, err := jwtauth.GetClaimsFromContext(ctx)
-	if err != nil {
-		return nil, status.Error(codes.PermissionDenied, err.Error())
-	}
-	if ! claims.IsCompanyAdmin(req.CompanyName) {
-		return nil, status.Error(codes.PermissionDenied, "User is not company admin")
-	}
-	err = db.CompanySettings.AddCompanySettings(req)
-	if err != nil {
-		return nil, status.Error(codes.Internal, err.Error())
-	}
-	return req, nil
-}
-
 
 
 

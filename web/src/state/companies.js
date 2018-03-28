@@ -19,6 +19,20 @@ export default class CompaniesState {
   }
 
   /**
+   * Add company settings.
+   * @param {string} companyName
+   * @returns {Promise<HttpResponse<slickqaCompanySettings>>}
+   */
+  @action addCompanySettings(companyName) {
+    return CompanyApi.AddCompanySettings({CompanyName: companyName}).then(response => {
+      if(response.raw.ok) {
+        this.load();
+      }
+      return response;
+    });
+  }
+
+  /**
    * @param {slickqaCompanySettings} companySettings
    * @returns {Promise<HttpResponse<slickqaCompanySettings>>}
    */

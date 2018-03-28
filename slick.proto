@@ -238,7 +238,7 @@ service Company {
       body: "*"
     };
   }
-  rpc CreateCompanySettings(CompanySettings) returns (CompanySettings) {
+  rpc AddCompanySettings(CompanySettingsRequest) returns (CompanySettings) {
     option (google.api.http) = {
       post: "/api/companies"
       body: "*"
@@ -259,21 +259,21 @@ service Projects {
     };
   }
 
- /*
-    rpc AddProject(Project) returns (Project) {
-      option (google.api.http) = {
-        post: "/api/projects"
-        body: "*"
-      };
-    }
+  rpc AddProject(ProjectIdentity) returns (Project) {
+    option (google.api.http) = {
+      post: "/api/projects"
+      body: "*"
+    };
+  }
 
-    rpc UpdateProject(Project) returns (Project) {
-      option (google.api.http) = {
-        put: "/api/projects/{Id.Company}/{Id.Name}"
-        body: "*"
-      };
-    }
-  */
+  /*
+     rpc UpdateProject(Project) returns (Project) {
+       option (google.api.http) = {
+         put: "/api/projects/{Id.Company}/{Id.Name}"
+         body: "*"
+       };
+     }
+   */
 }
 
 service Version {

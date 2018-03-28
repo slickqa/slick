@@ -22,6 +22,19 @@ type companyListQuery struct {
 	CompanyName inStringList `bson:"_id"`
 }
 
+func EmptyCompanySettingsFor(name string) *slickqa.CompanySettings {
+	return &slickqa.CompanySettings{
+		CompanyName: name,
+		StorageSettings: &slickqa.S3StorageSettings{},
+		Links: make([]*slickqa.Link, 0),
+		UserPreferenceTemplate: &slickqa.Preferences{
+			Favorites: make([]*slickqa.Link, 0),
+			HomeUrl: "/user/settings",
+			Theme: "Red",
+		},
+	}
+}
+
 func (u *companySettingsType) Find(CompanyName string) (*slickqa.CompanySettings, error) {
 	mongo := MongoSession.Copy()
 	defer mongo.Close()
