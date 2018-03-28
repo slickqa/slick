@@ -81,7 +81,7 @@ export class UserSettingsPage extends Component {
           </Menu>
 
         </Columns>
-        <Columns pad='medium'>
+        <Columns >
           <Box colorIndex="grey-1-a">
 
             <Form plain={true} onSubmit={(e) => {e.preventDefault(); UserState.submit();}}>
@@ -115,7 +115,7 @@ export class UserSettingsPage extends Component {
           </Box>
           {UserState.User.Permissions.Companies.map((company) => {
             return (
-                <Box colorIndex="grey-1-a" margin='small'>
+                <Box key={company.CompanyName} colorIndex="grey-1-a" margin='small'>
               <Card
                 label='Company'
                 heading={company.CompanyName}
@@ -124,7 +124,7 @@ export class UserSettingsPage extends Component {
               >
                   {company.Projects.map(((project) => {
                     return (
-                      <Box pad='none' >
+                      <Box key={project.ProjectName} pad='none' >
                       <Label size='large' margin='small' >{project.ProjectName}</Label>
                         <Box margin={'small'}>Roles: {project.Roles.join(', ')}</Box>
                       </Box>
