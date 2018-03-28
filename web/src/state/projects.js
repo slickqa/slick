@@ -13,7 +13,11 @@ export default class ProjectsState {
    */
   @action load() {
     return ProjectsApi.GetProjects().then((response) => {
-      this.projects = response.data.Projects;
+      if(typeof response.data.Projects === "undefined") {
+        this.projects = [];
+      } else {
+        this.projects = response.data.Projects;
+      }
       return response;
     });
   }
