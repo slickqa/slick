@@ -3,15 +3,14 @@
 import * as gateway from './gateway'
 
 /**
- * @return {Promise<HttpResponse<slickqaProjectsListResponse>>}
  */
 export function GetProjects() {
   return gateway.request(GetProjectsOperation)
 }
 
 /**
- * @param {slickqaProjectIdentity} body
- * @return {Promise<HttpResponse<slickqaProject>>}
+ * @param {slickqaProjectIdentity} body 
+ * @return {Promise<HttpResponse<slickqaProject>>} 
  */
 export function AddProject(body) {
   const parameters = {
@@ -23,9 +22,9 @@ export function AddProject(body) {
 }
 
 /**
- * @param {string} Company
- * @param {string} Name
- * @return {Promise<HttpResponse<slickqaProject>>}
+ * @param {string} Company 
+ * @param {string} Name 
+ * @return {Promise<HttpResponse<slickqaProject>>} 
  */
 export function GetProjectByName(Company, Name) {
   const parameters = {
