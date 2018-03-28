@@ -30,7 +30,6 @@ export default class AdminSideBarComponent extends Component {
   @observable addProjectMode = false;
 
   componentDidMount() {
-    console.log("ComponentDidMount");
     this.props.CompaniesState.load();
     this.props.ProjectsState.load();
   }
@@ -52,7 +51,6 @@ export default class AdminSideBarComponent extends Component {
       });
     };
     let selectedCompany = this.selected;
-    console.log(this.selected);
     let companiesTree = {};
     let companyAdminList = this.props.LoginState.CompanyAdminList;
     this.props.CompaniesState.companies.forEach(companySettings => {
@@ -70,9 +68,6 @@ export default class AdminSideBarComponent extends Component {
       }
       companiesTree[project.Id.Company].projects.push(project)
     });
-    if(Object.keys(companiesTree).length === 0) {
-      console.log("Companies Tree is empty!")
-    }
     if(selectedCompany === "" || selectedCompany === null || typeof selectedCompany === "undefined") {
       if(companyAdminList.length > 0) {
         selectedCompany = companyAdminList[0];
