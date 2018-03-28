@@ -6,6 +6,7 @@ import Select from 'grommet/components/Select';
 import Button from 'grommet/components/Button';
 import AddCircle from 'grommet/components/icons/base/AddCircle';
 import Add from 'grommet/components/icons/base/Add';
+import Configure from 'grommet/components/icons/base/Configure';
 import Close from 'grommet/components/icons/base/Close';
 import Form from 'grommet/components/Form';
 import TextInput from 'grommet/components/TextInput';
@@ -86,11 +87,11 @@ export default class AdminSideBarComponent extends Component {
     }
     window.companiesTree = companiesTree;
     window.company = company;
-    let companySettings = null;
+    let projectsHeader = <Box><Heading tag="h4">Projects:</Heading></Box>;
     if(company.isAdmin || this.props.LoginState.IsSlickAdmin) {
-      companySettings =
+      projectsHeader =
         <Box direction="row">
-          <Box flex={true} justify="center"><Anchor label="Company Settings" path={"/admin/company-settings/" + selectedCompany}/></Box>
+          <Box flex={true} justify="center"><Heading tag="h4" margin="none">Projects:</Heading></Box>
           <Box><Button icon={<AddCircle/>} onClick={() => {this.addProjectMode = true;}}/></Box>
         </Box>;
     }
@@ -127,12 +128,15 @@ export default class AdminSideBarComponent extends Component {
               {Object.keys(companiesTree).length === 1 ? selectedCompany : <Select value={selectedCompany} options={Object.keys(companiesTree)} onChange={e => {this.selected = e.option;}}/>}
             </Box>
             <Box>
+              {this.props.LoginState.IsSlickAdmin || company.isAdmin ? <Button icon={<Configure />} method="replace" path={"/admin/company-settings/" + selectedCompany}/> : null}
+            </Box>
+            <Box>
               {this.props.LoginState.IsSlickAdmin ? <Button icon={<AddCircle />} onClick={() => {this.addCompanyMode = true;}}/> : null}
             </Box>
           </Box>
           {addCompanyForm}
         </Box>
-        {companySettings}
+        {projectsHeader}
         {addProjectForm}
         <Box pad={{horizontal: "small"}}>
           {
