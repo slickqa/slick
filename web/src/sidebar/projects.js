@@ -15,9 +15,6 @@ export class ProjectSideBarComponent extends Component {
   }
 
   render() {
-    /**
-     * @type {ProjectsState}
-     */
     let { ProjectsState } = this.props;
     let companiesTree = {};
     ProjectsState.projects.forEach(project => {
