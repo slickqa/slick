@@ -6,6 +6,7 @@ import Select from 'grommet/components/Select';
 import Button from 'grommet/components/Button';
 import AddCircle from 'grommet/components/icons/base/AddCircle';
 import Add from 'grommet/components/icons/base/Add';
+import Close from 'grommet/components/icons/base/Close';
 import Form from 'grommet/components/Form';
 import TextInput from 'grommet/components/TextInput';
 import {observer, inject} from 'mobx-react';
@@ -100,6 +101,7 @@ export default class AdminSideBarComponent extends Component {
         <Box direction="row">
           <Box flex={true}><TextInput id="admin-sidebar-add-company-input" placeHolder="Company Name" autoFocus={true}/></Box>
           <Button icon={<Add />} primary={true} type="submit"/>
+          <Button icon={<Close />} primary={true} onClick={(e) => {e.preventDefault(); this.addCompanyMode = false;}} />
         </Box>
       </Form>;
     }
@@ -110,6 +112,7 @@ export default class AdminSideBarComponent extends Component {
         <Box direction="row">
           <Box flex={true}><TextInput id="admin-sidebar-add-project-input" placeHolder="Project Name" autoFocus={true}/></Box>
           <Button icon={<Add />} primary={true} type="submit"/>
+          <Button icon={<Close />} primary={true} onClick={(e) => {e.preventDefault(); this.addProjectMode = false;}} />
         </Box>
       </Form>;
     }
