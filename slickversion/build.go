@@ -1,5 +1,6 @@
 package slickversion
 
 const (
-	Build = "dev"
+	Build="118"
 )
+
