@@ -34,6 +34,9 @@ func (SlickProjectsService) GetProjects(ctx context.Context, req *slickqa.Projec
 	}
 	if claims.Permissions.SlickAdmin != 0 {
 		retval.Projects, err = db.Projects.GetAllProjects("")
+		if retval.Projects == nil {
+			retval.Projects = make([]*slickqa.Project, 0)
+		}
 		return &retval, err
 	}
 	retval.Projects = make([]*slickqa.Project, 0)
