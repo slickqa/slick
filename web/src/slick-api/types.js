@@ -39,6 +39,13 @@
  */
 
 /**
+ * @typedef {Object} slickqaCompanySettingsRequest
+ * @memberof module:types
+ * 
+ * @property {string} CompanyName 
+ */
+
+/**
  * @typedef {Object} slickqaIsAuthorizedResponse
  * @memberof module:types
  * 

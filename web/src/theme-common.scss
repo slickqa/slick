@@ -30,3 +30,7 @@ $brand-graph-colors: (#32ce21, #28811e, #dc1818, #e0cf7e, #ffd83d, #b6b6b6, #184
   background-position: 0, 0;
   background-size: cover;
 }
+
+.grommetux-background-color-index--dark .grommetux-select__control svg {
+  background-color: transparent;
+}

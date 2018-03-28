@@ -11,6 +11,20 @@ import (
 
 type SlickProjectsService struct {}
 
+func (SlickProjectsService) AddProject(ctx context.Context, id *slickqa.ProjectIdentity) (*slickqa.Project, error) {
+	claims, err := jwtauth.GetClaimsFromContext(ctx)
+	if err != nil {
+		return nil, status.Error(codes.PermissionDenied, err.Error())
+	}
+	company, ok := claims.Permissions.Companies[id.Company]
+	if (!ok || company.CompanyAdmin == 0) && claims.Permissions.SlickAdmin == 0 {
+		return nil, status.Error(codes.PermissionDenied, "not company admin or slick admin")
+	}
+
+	project, err := db.Projects.AddProject(*id)
+	return project, err
+}
+
 func (SlickProjectsService) GetProjects(ctx context.Context, req *slickqa.ProjectsRequest) (*slickqa.ProjectsListResponse, error) {
 	retval := slickqa.ProjectsListResponse{}
 	var err error
