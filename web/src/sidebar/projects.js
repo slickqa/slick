@@ -16,29 +16,23 @@ export class ProjectSideBarComponent extends Component {
 
   render() {
     let { ProjectsState } = this.props;
-    let companiesTree = {};
-    ProjectsState.projects.forEach(project => {
-      if(!(project.Id.Company in companiesTree)) {
-        companiesTree[project.Id.Company] = [];
-      }
-      (companiesTree[project.Id.Company]).push(project)
-    });
-
     return (
       <Box>
         <Box separator="bottom">
           <Heading tag="h3" align="center">Projects</Heading>
         </Box>
         <Box>
-          {Object.keys(companiesTree).map((companyName) => {
+          {Object.keys(ProjectsState.companiesTree).map((companyName) => {
             return (
               <Box key={companyName}>
                 <Heading tag="h4" margin="none">{companyName}</Heading>
-                <Box pad="small">
-                  {(companiesTree[companyName]).map(project => {
-                    return <Anchor label={project.Id.Name} path={"/projects/" + project.Id.Company + "/" + project.Id.Name} />;
+                  {(ProjectsState.companiesTree[companyName]).map(project => {
+                    return (
+                      <Box key={project.Id.Name} pad={{horizontal: "small"}} colorIndex={ProjectsState.current.Company === companyName && ProjectsState.current.Name === project.Id.Name ? 'brand-a' : null}>
+                        <Anchor label={project.Id.Name} path={"/projects/" + project.Id.Company + "/" + project.Id.Name} />
+                      </Box>
+                    );
                   })}
-                </Box>
               </Box>
             );
           })}

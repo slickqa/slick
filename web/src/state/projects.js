@@ -4,9 +4,12 @@ import * as ProjectsApi from '../slick-api/Projects';
 
 /**
  * @property {Array<slickqaProject>} projects
+ * @property {slickqaProjectIdentity} current
  */
 export default class ProjectsState {
   @observable projects = [];
+
+  @observable current = {Company: "", Name: ""};
 
   /**
    * @returns {Promise<HttpResponse<slickqaAvailableCompanySettings>>}
@@ -35,5 +38,19 @@ export default class ProjectsState {
       }
       return response;
     });
+  }
+
+  /**
+   * @return {Object<string,Array<slickqaProject>>}
+   */
+  @computed get companiesTree() {
+    let companiesTree = {};
+    this.projects.forEach(project => {
+      if(!(project.Id.Company in companiesTree)) {
+        companiesTree[project.Id.Company] = [];
+      }
+      (companiesTree[project.Id.Company]).push(project)
+    });
+    return companiesTree;
   }
 }
