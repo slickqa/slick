@@ -49,17 +49,7 @@ export class ProjectPage extends Component {
           </Tile>
           <Tile>
             <Box colorIndex="grey-1-a" pad="small" margin="small" size="large">
-              <Title>Tags</Title>
-            </Box>
-          </Tile>
-          <Tile>
-            <Box colorIndex="grey-1-a" pad="small" margin="small" size="large">
               <Title>Custom Attributes</Title>
-            </Box>
-          </Tile>
-          <Tile>
-            <Box colorIndex="grey-1-a" pad="small" margin="small" size="large">
-              <Title>Automation Tool Names</Title>
             </Box>
           </Tile>
         </Tiles>

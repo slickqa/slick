@@ -285,13 +285,25 @@ service Version {
 }
 // slick objects
 
+
+
+message LinkListIdentity {
+  string Company = 1; //`bson:"company"`
+  string Project = 2; //`bson:"project"`
+  string EntityType = 3; //`bson:"type"`
+  string EntityId = 4; //`bson:"id"`
+}
+
+message LinkList {
+  LinkListIdentity Id = 1; //`bson:"_id"`
+  map<string,Link> links = 2; //`bson:"links"`
+}
+
 message Link {
   string Url = 1; //`bson:"url"`
-  string Name = 2; //`bson:"name"`
-  // to be used by UI, examples include iframe, video, picture, external, html-source, etc
-  string UIViewType = 3; //`bson:"ui-view"`
-  bytes FileId = 4; //`bson:"fileId"`
-  bytes DocumentId = 5; //`bson:"documentId"`
+  uint32 Order = 2; //`bson:"order"`
+  string Type = 3; //`bson:"type"`
+  string ContentId = 4; //`bson:"contentId"`
 }
 
 message ProjectIdentity {
