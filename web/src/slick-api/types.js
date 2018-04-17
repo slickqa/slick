@@ -58,10 +58,27 @@
  * @memberof module:types
  * 
  * @property {string} Url 
- * @property {string} Name 
- * @property {string} UIViewType 
- * @property {string} FileId 
- * @property {string} DocumentId 
+ * @property {number} Order 
+ * @property {string} Type 
+ * @property {string} ContentId 
+ */
+
+/**
+ * @typedef {Object} slickqaLinkList
+ * @memberof module:types
+ * 
+ * @property {slickqaLinkListIdentity} Id 
+ * @property {object} links 
+ */
+
+/**
+ * @typedef {Object} slickqaLinkListIdentity
+ * @memberof module:types
+ * 
+ * @property {string} Company 
+ * @property {string} Project 
+ * @property {string} EntityType 
+ * @property {string} EntityId 
  */
 
 /**

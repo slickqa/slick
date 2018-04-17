@@ -276,6 +276,31 @@ service Projects {
    */
 }
 
+service Links {
+  rpc GetLinkList(LinkListIdentity) returns (LinkList) {
+    option (google.api.http) = {
+      get: "/api/links/{Company}/{Project}/{EntityType}/{EntityId}"
+    };
+  }
+  rpc AddLinkToList(LinkRequest) returns (LinkList) {
+    option (google.api.http) = {
+      post: "/api/links/{Id.Company}/{Id.Project}/{Id.EntityType}/{Id.EntityId}/{LinkName}"
+      body: "Item"
+    };
+  }
+  rpc RemoveLink(RemoveLinkRequest) returns (LinkList) {
+    option (google.api.http) = {
+      delete: "/api/links/{Id.Company}/{Id.Project}/{Id.EntityType}/{Id.EntityId}/{LinkName}"
+    };
+  }
+  rpc UpdateLink(LinkRequest) returns (LinkList) {
+    option (google.api.http) = {
+      put: "/api/links/{Id.Company}/{Id.Project}/{Id.EntityType}/{Id.EntityId}/{LinkName}"
+      body: "Item"
+    };
+  }
+}
+
 service Version {
   rpc GetFullVersion(VersionRequest) returns(VersionInfoResponse) {
     option (google.api.http) = {
@@ -284,12 +309,21 @@ service Version {
   }
 }
 // slick objects
+message RemoveLinkRequest {
+  LinkListIdentity Id = 1; //
+  string LinkName = 2; //
+}
 
-
+message LinkRequest {
+  LinkListIdentity Id = 1; //
+  string LinkName = 2; //
+  Link Item = 3; //
+}
 
 message LinkListIdentity {
   string Company = 1; //`bson:"company"`
   string Project = 2; //`bson:"project"`
+  // EntityType should be something like Project or Testcase
   string EntityType = 3; //`bson:"type"`
   string EntityId = 4; //`bson:"id"`
 }

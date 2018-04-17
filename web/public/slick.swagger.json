@@ -212,6 +212,204 @@
         ]
       }
     },
+    "/api/links/{Company}/{Project}/{EntityType}/{EntityId}": {
+      "get": {
+        "operationId": "GetLinkList",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/slickqaLinkList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Company",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Project",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "EntityType",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "EntityId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Links"
+        ]
+      }
+    },
+    "/api/links/{Id.Company}/{Id.Project}/{Id.EntityType}/{Id.EntityId}/{LinkName}": {
+      "delete": {
+        "operationId": "RemoveLink",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/slickqaLinkList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Id.Company",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Id.Project",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Id.EntityType",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Id.EntityId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "LinkName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Links"
+        ]
+      },
+      "post": {
+        "operationId": "AddLinkToList",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/slickqaLinkList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Id.Company",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Id.Project",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Id.EntityType",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Id.EntityId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "LinkName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/slickqaLink"
+            }
+          }
+        ],
+        "tags": [
+          "Links"
+        ]
+      },
+      "put": {
+        "operationId": "UpdateLink",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/slickqaLinkList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Id.Company",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Id.Project",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Id.EntityType",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Id.EntityId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "LinkName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/slickqaLink"
+            }
+          }
+        ],
+        "tags": [
+          "Links"
+        ]
+      }
+    },
     "/api/projects": {
       "get": {
         "operationId": "GetProjects",
@@ -551,20 +749,47 @@
         "Url": {
           "type": "string"
         },
-        "Name": {
+        "Order": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "Type": {
           "type": "string"
         },
-        "UIViewType": {
-          "type": "string",
-          "title": "to be used by UI, examples include iframe, video, picture, external, html-source, etc"
+        "ContentId": {
+          "type": "string"
+        }
+      }
+    },
+    "slickqaLinkList": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "$ref": "#/definitions/slickqaLinkListIdentity"
         },
-        "FileId": {
-          "type": "string",
-          "format": "byte"
+        "links": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/slickqaLink"
+          }
+        }
+      }
+    },
+    "slickqaLinkListIdentity": {
+      "type": "object",
+      "properties": {
+        "Company": {
+          "type": "string"
         },
-        "DocumentId": {
+        "Project": {
+          "type": "string"
+        },
+        "EntityType": {
           "type": "string",
-          "format": "byte"
+          "title": "EntityType should be something like Project or Testcase"
+        },
+        "EntityId": {
+          "type": "string"
         }
       }
     },
