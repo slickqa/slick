@@ -132,24 +132,6 @@ message AvailableCompanySettings {
   repeated CompanySettings Companies = 1; //`json:"Companies"`
 }
 
-message UploadedFile {
-  bytes Id = 1; //`bson:"_id,omitempty"`
-  string Prefix = 2; //`bson:"prefix"`
-  string Name = 3; //`bson:"name"`
-  string ContentType = 4; //`bson:"contentType"`
-  ProjectIdentity Project = 5; //`bson:"project"`
-  int32 Size = 6; //`bson:"size"`
-  string User = 7; //`bson:"user"`
-}
-
-message MarkdownDocument {
-  bytes Id = 1; //`bson:"_id,omitempty"`
-  string Name = 2; //`bson:"name"`
-  string Description = 3; //`bson:"description"`
-  string Content = 4; //`bson:"content"`
-  repeated Link Files = 5; //`bson:"files"`
-}
-
 message RefreshTokenRequest {
 }
 
@@ -277,26 +259,42 @@ service Projects {
 }
 
 service Links {
-  rpc GetLinkList(LinkListIdentity) returns (LinkList) {
+  rpc GetLinks(LinkListIdentity) returns (LinkList) {
     option (google.api.http) = {
       get: "/api/links/{Company}/{Project}/{EntityType}/{EntityId}"
     };
   }
-  rpc AddLinkToList(LinkRequest) returns (LinkList) {
+  rpc AddLink(Link) returns (LinkList) {
     option (google.api.http) = {
-      post: "/api/links/{Id.Company}/{Id.Project}/{Id.EntityType}/{Id.EntityId}/{LinkName}"
-      body: "Item"
+      post: "/api/links/{Id.Company}/{Id.Project}/{Id.EntityType}/{Id.EntityId}/{Id.Name}"
+      body: "*"
     };
   }
-  rpc RemoveLink(RemoveLinkRequest) returns (LinkList) {
+  rpc RemoveLink(LinkIdentity) returns (LinkList) {
     option (google.api.http) = {
-      delete: "/api/links/{Id.Company}/{Id.Project}/{Id.EntityType}/{Id.EntityId}/{LinkName}"
+      delete: "/api/links/{Company}/{Project}/{EntityType}/{EntityId}/{Name}"
     };
   }
-  rpc UpdateLink(LinkRequest) returns (LinkList) {
+  rpc UpdateLink(Link) returns (LinkList) {
     option (google.api.http) = {
-      put: "/api/links/{Id.Company}/{Id.Project}/{Id.EntityType}/{Id.EntityId}/{LinkName}"
-      body: "Item"
+      put: "/api/links/{Id.Company}/{Id.Project}/{Id.EntityType}/{Id.EntityId}/{Id.Name}"
+      body: "*"
+    };
+  }
+  rpc CreateFileInfo(LinkIdentity) returns (Link) {
+    option (google.api.http) = {
+      put: "/api/links/{Company}/{Project}/{EntityType}/{EntityId}/{Name}/file-info"
+    };
+  }
+  rpc GetDownloadUrl(LinkIdentity) returns (LinkUrl) {
+    option (google.api.http) = {
+      get: "/api/links/{Company}/{Project}/{EntityType}/{EntityId}/{Name}/download"
+    };
+  }
+  rpc GetUploadUrl(FileUploadInfo) returns (LinkUrl) {
+    option (google.api.http) = {
+      post: "/api/links/{Id.Company}/{Id.Project}/{Id.EntityType}/{Id.EntityId}/{Id.Name}/upload"
+      body: "*"
     };
   }
 }
@@ -309,35 +307,53 @@ service Version {
   }
 }
 // slick objects
-message RemoveLinkRequest {
-  LinkListIdentity Id = 1; //
-  string LinkName = 2; //
-}
 
-message LinkRequest {
-  LinkListIdentity Id = 1; //
-  string LinkName = 2; //
-  Link Item = 3; //
+message FileUploadInfo {
+  LinkIdentity Id = 1;
+  int64 Size = 2;
+  string ContentType = 3;
+  string FileName = 4;
 }
 
 message LinkListIdentity {
   string Company = 1; //`bson:"company"`
   string Project = 2; //`bson:"project"`
-  // EntityType should be something like Project or Testcase
   string EntityType = 3; //`bson:"type"`
   string EntityId = 4; //`bson:"id"`
 }
 
 message LinkList {
-  LinkListIdentity Id = 1; //`bson:"_id"`
-  map<string,Link> links = 2; //`bson:"links"`
+  repeated Link links = 1; //
+}
+
+message LinkUrl {
+  string Url = 1; //
+  google.protobuf.Timestamp Expires = 7; //
+}
+
+message LinkIdentity {
+  string Company = 1; //`bson:"company"`
+  string Project = 2; //`bson:"project"`
+  string EntityType = 3; //`bson:"type"`
+  string EntityId = 4; //`bson:"id"`
+  string Name = 5; //`bson:"name"`
 }
 
 message Link {
-  string Url = 1; //`bson:"url"`
-  uint32 Order = 2; //`bson:"order"`
-  string Type = 3; //`bson:"type"`
-  string ContentId = 4; //`bson:"contentId"`
+  LinkIdentity = 1; //`bson:"id"`
+  string Type = 2; //`bson:"type"`
+  int32 Order = 3; //`bson:"order"`
+  string Url = 4; //`bson:"url"`
+  string Creator = 5; //`bson:"creator"`
+  SlickFile FileInfo = 6; //`bson:"fileinfo"`
+  google.protobuf.Timestamp Updated = 7; //`bson:"updated"`
+}
+
+message SlickFile {
+  string Path = 1; //`bson:"path"`
+  string FileName = 2; //`bson:"filename"`
+  string ContentType = 3; //`bson:"contenttype"`
+  int64 Size = 4; //`bson:"size"`
 }
 
 message ProjectIdentity {
@@ -362,7 +378,6 @@ message ComponentIdentity {
 message Component{
   ComponentIdentity Id = 1; //`bson:"_id"`
   string Description = 2; //
-
 }
 
 message Feature {
