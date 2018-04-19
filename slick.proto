@@ -309,10 +309,10 @@ service Version {
 // slick objects
 
 message FileUploadInfo {
-  LinkIdentity Id = 1;
-  int64 Size = 2;
-  string ContentType = 3;
-  string FileName = 4;
+  LinkIdentity Id = 1; //
+  int64 Size = 2; //
+  string ContentType = 3; //
+  string FileName = 4; //
 }
 
 message LinkListIdentity {
@@ -340,7 +340,7 @@ message LinkIdentity {
 }
 
 message Link {
-  LinkIdentity = 1; //`bson:"id"`
+  LinkIdentity Id = 1; //`bson:"id"`
   string Type = 2; //`bson:"type"`
   int32 Order = 3; //`bson:"order"`
   string Url = 4; //`bson:"url"`

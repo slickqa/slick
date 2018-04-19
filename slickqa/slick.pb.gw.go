@@ -441,7 +441,7 @@ func request_Projects_AddProject_0(ctx context.Context, marshaler runtime.Marsha
 
 }
 
-func request_Links_GetLinkList_0(ctx context.Context, marshaler runtime.Marshaler, client LinksClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_Links_GetLinks_0(ctx context.Context, marshaler runtime.Marshaler, client LinksClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq LinkListIdentity
 	var metadata runtime.ServerMetadata
 
@@ -496,21 +496,17 @@ func request_Links_GetLinkList_0(ctx context.Context, marshaler runtime.Marshale
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "EntityId", err)
 	}
 
-	msg, err := client.GetLinkList(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.GetLinks(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-var (
-	filter_Links_AddLinkToList_0 = &utilities.DoubleArray{Encoding: map[string]int{"Item": 0, "Id": 1, "Company": 2, "Project": 3, "EntityType": 4, "EntityId": 5, "LinkName": 6}, Base: []int{1, 1, 1, 2, 3, 4, 5, 6, 0, 0, 0, 0, 0, 0}, Check: []int{0, 1, 1, 3, 3, 3, 3, 1, 2, 4, 5, 6, 7, 8}}
-)
-
-func request_Links_AddLinkToList_0(ctx context.Context, marshaler runtime.Marshaler, client LinksClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq LinkRequest
+func request_Links_AddLink_0(ctx context.Context, marshaler runtime.Marshaler, client LinksClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq Link
 	var metadata runtime.ServerMetadata
 
 	if req.ContentLength > 0 {
-		if err := marshaler.NewDecoder(req.Body).Decode(&protoReq.Item); err != nil {
+		if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil {
 			return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 		}
 	}
@@ -566,32 +562,24 @@ func request_Links_AddLinkToList_0(ctx context.Context, marshaler runtime.Marsha
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Id.EntityId", err)
 	}
 
-	val, ok = pathParams["LinkName"]
+	val, ok = pathParams["Id.Name"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "LinkName")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Id.Name")
 	}
 
-	protoReq.LinkName, err = runtime.String(val)
+	err = runtime.PopulateFieldFromPath(&protoReq, "Id.Name", val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "LinkName", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Id.Name", err)
 	}
 
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Links_AddLinkToList_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-
-	msg, err := client.AddLinkToList(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.AddLink(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-var (
-	filter_Links_RemoveLink_0 = &utilities.DoubleArray{Encoding: map[string]int{"Id": 0, "Company": 1, "Project": 2, "EntityType": 3, "EntityId": 4, "LinkName": 5}, Base: []int{1, 1, 1, 2, 3, 4, 5, 0, 0, 0, 0, 0}, Check: []int{0, 1, 2, 2, 2, 2, 1, 3, 4, 5, 6, 7}}
-)
-
 func request_Links_RemoveLink_0(ctx context.Context, marshaler runtime.Marshaler, client LinksClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq RemoveLinkRequest
+	var protoReq LinkIdentity
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -601,63 +589,59 @@ func request_Links_RemoveLink_0(ctx context.Context, marshaler runtime.Marshaler
 		_   = err
 	)
 
-	val, ok = pathParams["Id.Company"]
+	val, ok = pathParams["Company"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Id.Company")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Company")
 	}
 
-	err = runtime.PopulateFieldFromPath(&protoReq, "Id.Company", val)
+	protoReq.Company, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Id.Company", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Company", err)
 	}
 
-	val, ok = pathParams["Id.Project"]
+	val, ok = pathParams["Project"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Id.Project")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Project")
 	}
 
-	err = runtime.PopulateFieldFromPath(&protoReq, "Id.Project", val)
+	protoReq.Project, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Id.Project", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Project", err)
 	}
 
-	val, ok = pathParams["Id.EntityType"]
+	val, ok = pathParams["EntityType"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Id.EntityType")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "EntityType")
 	}
 
-	err = runtime.PopulateFieldFromPath(&protoReq, "Id.EntityType", val)
+	protoReq.EntityType, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Id.EntityType", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "EntityType", err)
 	}
 
-	val, ok = pathParams["Id.EntityId"]
+	val, ok = pathParams["EntityId"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Id.EntityId")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "EntityId")
 	}
 
-	err = runtime.PopulateFieldFromPath(&protoReq, "Id.EntityId", val)
+	protoReq.EntityId, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Id.EntityId", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "EntityId", err)
 	}
 
-	val, ok = pathParams["LinkName"]
+	val, ok = pathParams["Name"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "LinkName")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Name")
 	}
 
-	protoReq.LinkName, err = runtime.String(val)
+	protoReq.Name, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "LinkName", err)
-	}
-
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Links_RemoveLink_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Name", err)
 	}
 
 	msg, err := client.RemoveLink(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -665,16 +649,12 @@ func request_Links_RemoveLink_0(ctx context.Context, marshaler runtime.Marshaler
 
 }
 
-var (
-	filter_Links_UpdateLink_0 = &utilities.DoubleArray{Encoding: map[string]int{"Item": 0, "Id": 1, "Company": 2, "Project": 3, "EntityType": 4, "EntityId": 5, "LinkName": 6}, Base: []int{1, 1, 1, 2, 3, 4, 5, 6, 0, 0, 0, 0, 0, 0}, Check: []int{0, 1, 1, 3, 3, 3, 3, 1, 2, 4, 5, 6, 7, 8}}
-)
-
 func request_Links_UpdateLink_0(ctx context.Context, marshaler runtime.Marshaler, client LinksClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq LinkRequest
+	var protoReq Link
 	var metadata runtime.ServerMetadata
 
 	if req.ContentLength > 0 {
-		if err := marshaler.NewDecoder(req.Body).Decode(&protoReq.Item); err != nil {
+		if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil {
 			return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 		}
 	}
@@ -730,22 +710,237 @@ func request_Links_UpdateLink_0(ctx context.Context, marshaler runtime.Marshaler
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Id.EntityId", err)
 	}
 
-	val, ok = pathParams["LinkName"]
+	val, ok = pathParams["Id.Name"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "LinkName")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Id.Name")
 	}
 
-	protoReq.LinkName, err = runtime.String(val)
+	err = runtime.PopulateFieldFromPath(&protoReq, "Id.Name", val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "LinkName", err)
-	}
-
-	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_Links_UpdateLink_0); err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Id.Name", err)
 	}
 
 	msg, err := client.UpdateLink(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func request_Links_CreateFileInfo_0(ctx context.Context, marshaler runtime.Marshaler, client LinksClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq LinkIdentity
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["Company"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Company")
+	}
+
+	protoReq.Company, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Company", err)
+	}
+
+	val, ok = pathParams["Project"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Project")
+	}
+
+	protoReq.Project, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Project", err)
+	}
+
+	val, ok = pathParams["EntityType"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "EntityType")
+	}
+
+	protoReq.EntityType, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "EntityType", err)
+	}
+
+	val, ok = pathParams["EntityId"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "EntityId")
+	}
+
+	protoReq.EntityId, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "EntityId", err)
+	}
+
+	val, ok = pathParams["Name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Name", err)
+	}
+
+	msg, err := client.CreateFileInfo(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func request_Links_GetDownloadUrl_0(ctx context.Context, marshaler runtime.Marshaler, client LinksClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq LinkIdentity
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["Company"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Company")
+	}
+
+	protoReq.Company, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Company", err)
+	}
+
+	val, ok = pathParams["Project"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Project")
+	}
+
+	protoReq.Project, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Project", err)
+	}
+
+	val, ok = pathParams["EntityType"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "EntityType")
+	}
+
+	protoReq.EntityType, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "EntityType", err)
+	}
+
+	val, ok = pathParams["EntityId"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "EntityId")
+	}
+
+	protoReq.EntityId, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "EntityId", err)
+	}
+
+	val, ok = pathParams["Name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Name")
+	}
+
+	protoReq.Name, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Name", err)
+	}
+
+	msg, err := client.GetDownloadUrl(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func request_Links_GetUploadUrl_0(ctx context.Context, marshaler runtime.Marshaler, client LinksClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq FileUploadInfo
+	var metadata runtime.ServerMetadata
+
+	if req.ContentLength > 0 {
+		if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil {
+			return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+		}
+	}
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["Id.Company"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Id.Company")
+	}
+
+	err = runtime.PopulateFieldFromPath(&protoReq, "Id.Company", val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Id.Company", err)
+	}
+
+	val, ok = pathParams["Id.Project"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Id.Project")
+	}
+
+	err = runtime.PopulateFieldFromPath(&protoReq, "Id.Project", val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Id.Project", err)
+	}
+
+	val, ok = pathParams["Id.EntityType"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Id.EntityType")
+	}
+
+	err = runtime.PopulateFieldFromPath(&protoReq, "Id.EntityType", val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Id.EntityType", err)
+	}
+
+	val, ok = pathParams["Id.EntityId"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Id.EntityId")
+	}
+
+	err = runtime.PopulateFieldFromPath(&protoReq, "Id.EntityId", val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Id.EntityId", err)
+	}
+
+	val, ok = pathParams["Id.Name"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Id.Name")
+	}
+
+	err = runtime.PopulateFieldFromPath(&protoReq, "Id.Name", val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Id.Name", err)
+	}
+
+	msg, err := client.GetUploadUrl(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
@@ -1538,7 +1733,7 @@ func RegisterLinksHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc
 // "LinksClient" to call the correct interceptors.
 func RegisterLinksHandlerClient(ctx context.Context, mux *runtime.ServeMux, client LinksClient) error {
 
-	mux.Handle("GET", pattern_Links_GetLinkList_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_Links_GetLinks_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		if cn, ok := w.(http.CloseNotifier); ok {
@@ -1556,18 +1751,18 @@ func RegisterLinksHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Links_GetLinkList_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Links_GetLinks_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Links_GetLinkList_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Links_GetLinks_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_Links_AddLinkToList_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_Links_AddLink_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		if cn, ok := w.(http.CloseNotifier); ok {
@@ -1585,14 +1780,14 @@ func RegisterLinksHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Links_AddLinkToList_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Links_AddLink_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Links_AddLinkToList_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Links_AddLink_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -1654,27 +1849,126 @@ func RegisterLinksHandlerClient(ctx context.Context, mux *runtime.ServeMux, clie
 
 	})
 
+	mux.Handle("PUT", pattern_Links_CreateFileInfo_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		if cn, ok := w.(http.CloseNotifier); ok {
+			go func(done <-chan struct{}, closed <-chan bool) {
+				select {
+				case <-done:
+				case <-closed:
+					cancel()
+				}
+			}(ctx.Done(), cn.CloseNotify())
+		}
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_Links_CreateFileInfo_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Links_CreateFileInfo_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_Links_GetDownloadUrl_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		if cn, ok := w.(http.CloseNotifier); ok {
+			go func(done <-chan struct{}, closed <-chan bool) {
+				select {
+				case <-done:
+				case <-closed:
+					cancel()
+				}
+			}(ctx.Done(), cn.CloseNotify())
+		}
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_Links_GetDownloadUrl_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Links_GetDownloadUrl_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("POST", pattern_Links_GetUploadUrl_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		if cn, ok := w.(http.CloseNotifier); ok {
+			go func(done <-chan struct{}, closed <-chan bool) {
+				select {
+				case <-done:
+				case <-closed:
+					cancel()
+				}
+			}(ctx.Done(), cn.CloseNotify())
+		}
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_Links_GetUploadUrl_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_Links_GetUploadUrl_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	return nil
 }
 
 var (
-	pattern_Links_GetLinkList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "links", "Company", "Project", "EntityType", "EntityId"}, ""))
+	pattern_Links_GetLinks_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5}, []string{"api", "links", "Company", "Project", "EntityType", "EntityId"}, ""))
 
-	pattern_Links_AddLinkToList_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5, 1, 0, 4, 1, 5, 6}, []string{"api", "links", "Id.Company", "Id.Project", "Id.EntityType", "Id.EntityId", "LinkName"}, ""))
+	pattern_Links_AddLink_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5, 1, 0, 4, 1, 5, 6}, []string{"api", "links", "Id.Company", "Id.Project", "Id.EntityType", "Id.EntityId", "Id.Name"}, ""))
 
-	pattern_Links_RemoveLink_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5, 1, 0, 4, 1, 5, 6}, []string{"api", "links", "Id.Company", "Id.Project", "Id.EntityType", "Id.EntityId", "LinkName"}, ""))
+	pattern_Links_RemoveLink_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5, 1, 0, 4, 1, 5, 6}, []string{"api", "links", "Company", "Project", "EntityType", "EntityId", "Name"}, ""))
 
-	pattern_Links_UpdateLink_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5, 1, 0, 4, 1, 5, 6}, []string{"api", "links", "Id.Company", "Id.Project", "Id.EntityType", "Id.EntityId", "LinkName"}, ""))
+	pattern_Links_UpdateLink_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5, 1, 0, 4, 1, 5, 6}, []string{"api", "links", "Id.Company", "Id.Project", "Id.EntityType", "Id.EntityId", "Id.Name"}, ""))
+
+	pattern_Links_CreateFileInfo_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5, 1, 0, 4, 1, 5, 6, 2, 7}, []string{"api", "links", "Company", "Project", "EntityType", "EntityId", "Name", "file-info"}, ""))
+
+	pattern_Links_GetDownloadUrl_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5, 1, 0, 4, 1, 5, 6, 2, 7}, []string{"api", "links", "Company", "Project", "EntityType", "EntityId", "Name", "download"}, ""))
+
+	pattern_Links_GetUploadUrl_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5, 1, 0, 4, 1, 5, 6, 2, 7}, []string{"api", "links", "Id.Company", "Id.Project", "Id.EntityType", "Id.EntityId", "Id.Name", "upload"}, ""))
 )
 
 var (
-	forward_Links_GetLinkList_0 = runtime.ForwardResponseMessage
+	forward_Links_GetLinks_0 = runtime.ForwardResponseMessage
 
-	forward_Links_AddLinkToList_0 = runtime.ForwardResponseMessage
+	forward_Links_AddLink_0 = runtime.ForwardResponseMessage
 
 	forward_Links_RemoveLink_0 = runtime.ForwardResponseMessage
 
 	forward_Links_UpdateLink_0 = runtime.ForwardResponseMessage
+
+	forward_Links_CreateFileInfo_0 = runtime.ForwardResponseMessage
+
+	forward_Links_GetDownloadUrl_0 = runtime.ForwardResponseMessage
+
+	forward_Links_GetUploadUrl_0 = runtime.ForwardResponseMessage
 )
 
 // RegisterVersionHandlerFromEndpoint is same as RegisterVersionHandler but

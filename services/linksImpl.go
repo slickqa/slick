@@ -8,19 +8,31 @@ import (
 type SlickLinksService struct {
 }
 
-func (SlickLinksService) GetLinkList(context.Context, *slickqa.LinkListIdentity) (*slickqa.LinkList, error) {
+func (SlickLinksService) GetLinks(context.Context, *slickqa.LinkListIdentity) (*slickqa.LinkList, error) {
 	panic("implement me")
 }
 
-func (SlickLinksService) AddLinkToList(context.Context, *slickqa.LinkRequest) (*slickqa.LinkList, error) {
+func (SlickLinksService) AddLink(context.Context, *slickqa.Link) (*slickqa.LinkList, error) {
 	panic("implement me")
 }
 
-func (SlickLinksService) RemoveLink(context.Context, *slickqa.RemoveLinkRequest) (*slickqa.LinkList, error) {
+func (SlickLinksService) RemoveLink(context.Context, *slickqa.LinkIdentity) (*slickqa.LinkList, error) {
 	panic("implement me")
 }
 
-func (SlickLinksService) UpdateLink(context.Context, *slickqa.LinkRequest) (*slickqa.LinkList, error) {
+func (SlickLinksService) UpdateLink(context.Context, *slickqa.Link) (*slickqa.LinkList, error) {
+	panic("implement me")
+}
+
+func (SlickLinksService) CreateFileInfo(context.Context, *slickqa.LinkIdentity) (*slickqa.Link, error) {
+	panic("implement me")
+}
+
+func (SlickLinksService) GetDownloadUrl(context.Context, *slickqa.LinkIdentity) (*slickqa.LinkUrl, error) {
+	panic("implement me")
+}
+
+func (SlickLinksService) GetUploadUrl(context.Context, *slickqa.FileUploadInfo) (*slickqa.LinkUrl, error) {
 	panic("implement me")
 }
 

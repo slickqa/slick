@@ -214,7 +214,7 @@
     },
     "/api/links/{Company}/{Project}/{EntityType}/{EntityId}": {
       "get": {
-        "operationId": "GetLinkList",
+        "operationId": "GetLinks",
         "responses": {
           "200": {
             "description": "",
@@ -254,7 +254,7 @@
         ]
       }
     },
-    "/api/links/{Id.Company}/{Id.Project}/{Id.EntityType}/{Id.EntityId}/{LinkName}": {
+    "/api/links/{Company}/{Project}/{EntityType}/{EntityId}/{Name}": {
       "delete": {
         "operationId": "RemoveLink",
         "responses": {
@@ -267,31 +267,31 @@
         },
         "parameters": [
           {
-            "name": "Id.Company",
+            "name": "Company",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "Id.Project",
+            "name": "Project",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "Id.EntityType",
+            "name": "EntityType",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "Id.EntityId",
+            "name": "EntityId",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "LinkName",
+            "name": "Name",
             "in": "path",
             "required": true,
             "type": "string"
@@ -300,9 +300,107 @@
         "tags": [
           "Links"
         ]
-      },
+      }
+    },
+    "/api/links/{Company}/{Project}/{EntityType}/{EntityId}/{Name}/download": {
+      "get": {
+        "operationId": "GetDownloadUrl",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/slickqaLinkUrl"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Company",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Project",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "EntityType",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "EntityId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Links"
+        ]
+      }
+    },
+    "/api/links/{Company}/{Project}/{EntityType}/{EntityId}/{Name}/file-info": {
+      "put": {
+        "operationId": "CreateFileInfo",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/slickqaLink"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Company",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Project",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "EntityType",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "EntityId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Links"
+        ]
+      }
+    },
+    "/api/links/{Id.Company}/{Id.Project}/{Id.EntityType}/{Id.EntityId}/{Id.Name}": {
       "post": {
-        "operationId": "AddLinkToList",
+        "operationId": "AddLink",
         "responses": {
           "200": {
             "description": "",
@@ -337,7 +435,7 @@
             "type": "string"
           },
           {
-            "name": "LinkName",
+            "name": "Id.Name",
             "in": "path",
             "required": true,
             "type": "string"
@@ -391,7 +489,7 @@
             "type": "string"
           },
           {
-            "name": "LinkName",
+            "name": "Id.Name",
             "in": "path",
             "required": true,
             "type": "string"
@@ -402,6 +500,62 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/slickqaLink"
+            }
+          }
+        ],
+        "tags": [
+          "Links"
+        ]
+      }
+    },
+    "/api/links/{Id.Company}/{Id.Project}/{Id.EntityType}/{Id.EntityId}/{Id.Name}/upload": {
+      "post": {
+        "operationId": "GetUploadUrl",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/slickqaLinkUrl"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Id.Company",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Id.Project",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Id.EntityType",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Id.EntityId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Id.Name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/slickqaFileUploadInfo"
             }
           }
         ],
@@ -731,6 +885,24 @@
         }
       }
     },
+    "slickqaFileUploadInfo": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "$ref": "#/definitions/slickqaLinkIdentity"
+        },
+        "Size": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ContentType": {
+          "type": "string"
+        },
+        "FileName": {
+          "type": "string"
+        }
+      }
+    },
     "slickqaIsAuthorizedResponse": {
       "type": "object",
       "properties": {
@@ -746,36 +918,32 @@
     "slickqaLink": {
       "type": "object",
       "properties": {
-        "Url": {
-          "type": "string"
-        },
-        "Order": {
-          "type": "integer",
-          "format": "int64"
+        "Id": {
+          "$ref": "#/definitions/slickqaLinkIdentity"
         },
         "Type": {
           "type": "string"
         },
-        "ContentId": {
-          "type": "string"
-        }
-      }
-    },
-    "slickqaLinkList": {
-      "type": "object",
-      "properties": {
-        "Id": {
-          "$ref": "#/definitions/slickqaLinkListIdentity"
+        "Order": {
+          "type": "integer",
+          "format": "int32"
         },
-        "links": {
-          "type": "object",
-          "additionalProperties": {
-            "$ref": "#/definitions/slickqaLink"
-          }
+        "Url": {
+          "type": "string"
+        },
+        "Creator": {
+          "type": "string"
+        },
+        "FileInfo": {
+          "$ref": "#/definitions/slickqaSlickFile"
+        },
+        "Updated": {
+          "type": "string",
+          "format": "date-time"
         }
       }
     },
-    "slickqaLinkListIdentity": {
+    "slickqaLinkIdentity": {
       "type": "object",
       "properties": {
         "Company": {
@@ -785,11 +953,36 @@
           "type": "string"
         },
         "EntityType": {
-          "type": "string",
-          "title": "EntityType should be something like Project or Testcase"
+          "type": "string"
         },
         "EntityId": {
           "type": "string"
+        },
+        "Name": {
+          "type": "string"
+        }
+      }
+    },
+    "slickqaLinkList": {
+      "type": "object",
+      "properties": {
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/slickqaLink"
+          }
+        }
+      }
+    },
+    "slickqaLinkUrl": {
+      "type": "object",
+      "properties": {
+        "Url": {
+          "type": "string"
+        },
+        "Expires": {
+          "type": "string",
+          "format": "date-time"
         }
       }
     },
@@ -928,6 +1121,24 @@
         },
         "Prefix": {
           "type": "string"
+        }
+      }
+    },
+    "slickqaSlickFile": {
+      "type": "object",
+      "properties": {
+        "Path": {
+          "type": "string"
+        },
+        "FileName": {
+          "type": "string"
+        },
+        "ContentType": {
+          "type": "string"
+        },
+        "Size": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },

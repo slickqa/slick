@@ -9,7 +9,7 @@ import * as gateway from './gateway'
  * @param {string} EntityId 
  * @return {Promise<HttpResponse<slickqaLinkList>>} 
  */
-export function GetLinkList(Company, Project, EntityType, EntityId) {
+export function GetLinks(Company, Project, EntityType, EntityId) {
   const parameters = {
     path: {
       Company,
@@ -18,53 +18,70 @@ export function GetLinkList(Company, Project, EntityType, EntityId) {
       EntityId
     }
   }
-  return gateway.request(GetLinkListOperation, parameters)
+  return gateway.request(GetLinksOperation, parameters)
 }
 
 /**
- * @param {string} Id.Company 
- * @param {string} Id.Project 
- * @param {string} Id.EntityType 
- * @param {string} Id.EntityId 
- * @param {string} LinkName 
+ * @param {string} Company 
+ * @param {string} Project 
+ * @param {string} EntityType 
+ * @param {string} EntityId 
+ * @param {string} Name 
  * @return {Promise<HttpResponse<slickqaLinkList>>} 
  */
-export function RemoveLink(Id.Company, Id.Project, Id.EntityType, Id.EntityId, LinkName) {
+export function RemoveLink(Company, Project, EntityType, EntityId, Name) {
   const parameters = {
     path: {
-      'Id.Company': Id.Company,
-      'Id.Project': Id.Project,
-      'Id.EntityType': Id.EntityType,
-      'Id.EntityId': Id.EntityId,
-      LinkName
+      Company,
+      Project,
+      EntityType,
+      EntityId,
+      Name
     }
   }
   return gateway.request(RemoveLinkOperation, parameters)
 }
 
 /**
- * @param {string} Id.Company 
- * @param {string} Id.Project 
- * @param {string} Id.EntityType 
- * @param {string} Id.EntityId 
- * @param {string} LinkName 
- * @param {slickqaLink} body 
- * @return {Promise<HttpResponse<slickqaLinkList>>} 
+ * @param {string} Company 
+ * @param {string} Project 
+ * @param {string} EntityType 
+ * @param {string} EntityId 
+ * @param {string} Name 
+ * @return {Promise<HttpResponse<slickqaLinkUrl>>} 
  */
-export function AddLinkToList(Id.Company, Id.Project, Id.EntityType, Id.EntityId, LinkName, body) {
+export function GetDownloadUrl(Company, Project, EntityType, EntityId, Name) {
   const parameters = {
     path: {
-      'Id.Company': Id.Company,
-      'Id.Project': Id.Project,
-      'Id.EntityType': Id.EntityType,
-      'Id.EntityId': Id.EntityId,
-      LinkName
-    },
-    body: {
-      body
+      Company,
+      Project,
+      EntityType,
+      EntityId,
+      Name
     }
   }
-  return gateway.request(AddLinkToListOperation, parameters)
+  return gateway.request(GetDownloadUrlOperation, parameters)
+}
+
+/**
+ * @param {string} Company 
+ * @param {string} Project 
+ * @param {string} EntityType 
+ * @param {string} EntityId 
+ * @param {string} Name 
+ * @return {Promise<HttpResponse<slickqaLink>>} 
+ */
+export function CreateFileInfo(Company, Project, EntityType, EntityId, Name) {
+  const parameters = {
+    path: {
+      Company,
+      Project,
+      EntityType,
+      EntityId,
+      Name
+    }
+  }
+  return gateway.request(CreateFileInfoOperation, parameters)
 }
 
 /**
@@ -72,18 +89,43 @@ export function AddLinkToList(Id.Company, Id.Project, Id.EntityType, Id.EntityId
  * @param {string} Id.Project 
  * @param {string} Id.EntityType 
  * @param {string} Id.EntityId 
- * @param {string} LinkName 
+ * @param {string} Id.Name 
  * @param {slickqaLink} body 
  * @return {Promise<HttpResponse<slickqaLinkList>>} 
  */
-export function UpdateLink(Id.Company, Id.Project, Id.EntityType, Id.EntityId, LinkName, body) {
+export function AddLink(Id.Company, Id.Project, Id.EntityType, Id.EntityId, Id.Name, body) {
   const parameters = {
     path: {
       'Id.Company': Id.Company,
       'Id.Project': Id.Project,
       'Id.EntityType': Id.EntityType,
       'Id.EntityId': Id.EntityId,
-      LinkName
+      'Id.Name': Id.Name
+    },
+    body: {
+      body
+    }
+  }
+  return gateway.request(AddLinkOperation, parameters)
+}
+
+/**
+ * @param {string} Id.Company 
+ * @param {string} Id.Project 
+ * @param {string} Id.EntityType 
+ * @param {string} Id.EntityId 
+ * @param {string} Id.Name 
+ * @param {slickqaLink} body 
+ * @return {Promise<HttpResponse<slickqaLinkList>>} 
+ */
+export function UpdateLink(Id.Company, Id.Project, Id.EntityType, Id.EntityId, Id.Name, body) {
+  const parameters = {
+    path: {
+      'Id.Company': Id.Company,
+      'Id.Project': Id.Project,
+      'Id.EntityType': Id.EntityType,
+      'Id.EntityId': Id.EntityId,
+      'Id.Name': Id.Name
     },
     body: {
       body
@@ -92,24 +134,65 @@ export function UpdateLink(Id.Company, Id.Project, Id.EntityType, Id.EntityId, L
   return gateway.request(UpdateLinkOperation, parameters)
 }
 
-const GetLinkListOperation = {
+/**
+ * @param {string} Id.Company 
+ * @param {string} Id.Project 
+ * @param {string} Id.EntityType 
+ * @param {string} Id.EntityId 
+ * @param {string} Id.Name 
+ * @param {slickqaFileUploadInfo} body 
+ * @return {Promise<HttpResponse<slickqaLinkUrl>>} 
+ */
+export function GetUploadUrl(Id.Company, Id.Project, Id.EntityType, Id.EntityId, Id.Name, body) {
+  const parameters = {
+    path: {
+      'Id.Company': Id.Company,
+      'Id.Project': Id.Project,
+      'Id.EntityType': Id.EntityType,
+      'Id.EntityId': Id.EntityId,
+      'Id.Name': Id.Name
+    },
+    body: {
+      body
+    }
+  }
+  return gateway.request(GetUploadUrlOperation, parameters)
+}
+
+const GetLinksOperation = {
   path: '/api/links/{Company}/{Project}/{EntityType}/{EntityId}',
   method: 'get'
 }
 
 const RemoveLinkOperation = {
-  path: '/api/links/{Id.Company}/{Id.Project}/{Id.EntityType}/{Id.EntityId}/{LinkName}',
+  path: '/api/links/{Company}/{Project}/{EntityType}/{EntityId}/{Name}',
   method: 'delete'
 }
 
-const AddLinkToListOperation = {
-  path: '/api/links/{Id.Company}/{Id.Project}/{Id.EntityType}/{Id.EntityId}/{LinkName}',
+const GetDownloadUrlOperation = {
+  path: '/api/links/{Company}/{Project}/{EntityType}/{EntityId}/{Name}/download',
+  method: 'get'
+}
+
+const CreateFileInfoOperation = {
+  path: '/api/links/{Company}/{Project}/{EntityType}/{EntityId}/{Name}/file-info',
+  method: 'put'
+}
+
+const AddLinkOperation = {
+  path: '/api/links/{Id.Company}/{Id.Project}/{Id.EntityType}/{Id.EntityId}/{Id.Name}',
   contentTypes: ['application/json'],
   method: 'post'
 }
 
 const UpdateLinkOperation = {
-  path: '/api/links/{Id.Company}/{Id.Project}/{Id.EntityType}/{Id.EntityId}/{LinkName}',
+  path: '/api/links/{Id.Company}/{Id.Project}/{Id.EntityType}/{Id.EntityId}/{Id.Name}',
   contentTypes: ['application/json'],
   method: 'put'
+}
+
+const GetUploadUrlOperation = {
+  path: '/api/links/{Id.Company}/{Id.Project}/{Id.EntityType}/{Id.EntityId}/{Id.Name}/upload',
+  contentTypes: ['application/json'],
+  method: 'post'
 }

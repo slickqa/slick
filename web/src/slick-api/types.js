@@ -46,6 +46,16 @@
  */
 
 /**
+ * @typedef {Object} slickqaFileUploadInfo
+ * @memberof module:types
+ * 
+ * @property {slickqaLinkIdentity} Id 
+ * @property {string} Size 
+ * @property {string} ContentType 
+ * @property {string} FileName 
+ */
+
+/**
  * @typedef {Object} slickqaIsAuthorizedResponse
  * @memberof module:types
  * 
@@ -57,28 +67,39 @@
  * @typedef {Object} slickqaLink
  * @memberof module:types
  * 
- * @property {string} Url 
- * @property {number} Order 
+ * @property {slickqaLinkIdentity} Id 
  * @property {string} Type 
- * @property {string} ContentId 
+ * @property {number} Order 
+ * @property {string} Url 
+ * @property {string} Creator 
+ * @property {slickqaSlickFile} FileInfo 
+ * @property {date} Updated 
  */
 
 /**
- * @typedef {Object} slickqaLinkList
- * @memberof module:types
- * 
- * @property {slickqaLinkListIdentity} Id 
- * @property {object} links 
- */
-
-/**
- * @typedef {Object} slickqaLinkListIdentity
+ * @typedef {Object} slickqaLinkIdentity
  * @memberof module:types
  * 
  * @property {string} Company 
  * @property {string} Project 
  * @property {string} EntityType 
  * @property {string} EntityId 
+ * @property {string} Name 
+ */
+
+/**
+ * @typedef {Object} slickqaLinkList
+ * @memberof module:types
+ * 
+ * @property {slickqaLink[]} links 
+ */
+
+/**
+ * @typedef {Object} slickqaLinkUrl
+ * @memberof module:types
+ * 
+ * @property {string} Url 
+ * @property {date} Expires 
  */
 
 /**
@@ -152,6 +173,16 @@
  * @property {string} SecretKey 
  * @property {string} Bucket 
  * @property {string} Prefix 
+ */
+
+/**
+ * @typedef {Object} slickqaSlickFile
+ * @memberof module:types
+ * 
+ * @property {string} Path 
+ * @property {string} FileName 
+ * @property {string} ContentType 
+ * @property {string} Size 
  */
 
 /**
