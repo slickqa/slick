@@ -1,0 +1,60 @@
+diff --git a/web/src/slick-api/Auth.js b/web/src/slick-api/Auth.js
+index e95f8d4..d2f2fe8 100644
+--- a/web/src/slick-api/Auth.js
++++ b/web/src/slick-api/Auth.js
+@@ -46,6 +46,7 @@ export function LoginWithToken(Token) {
+ }
+ 
+ /**
++ * @return {Promise<HttpResponse<slickqaLoginResponse>>}
+  */
+ export function RefreshToken() {
+   return gateway.request(RefreshTokenOperation)
+diff --git a/web/src/slick-api/Company.js b/web/src/slick-api/Company.js
+index 6ff9cd4..d344503 100644
+--- a/web/src/slick-api/Company.js
++++ b/web/src/slick-api/Company.js
+@@ -3,6 +3,7 @@
+ import * as gateway from './gateway'
+ 
+ /**
++ * @return {Promise<HttpResponse<slickqaAvailableCompanySettings>>}
+  */
+ export function GetAvailableCompanySettings() {
+   return gateway.request(GetAvailableCompanySettingsOperation)
+diff --git a/web/src/slick-api/Projects.js b/web/src/slick-api/Projects.js
+index b57ed52..309ce6e 100644
+--- a/web/src/slick-api/Projects.js
++++ b/web/src/slick-api/Projects.js
+@@ -3,6 +3,7 @@
+ import * as gateway from './gateway'
+ 
+ /**
++ * @return {Promise<HttpResponse<slickqaProjectsListResponse>>}
+  */
+ export function GetProjects() {
+   return gateway.request(GetProjectsOperation)
+diff --git a/web/src/slick-api/Users.js b/web/src/slick-api/Users.js
+index 7832530..edb1c10 100644
+--- a/web/src/slick-api/Users.js
++++ b/web/src/slick-api/Users.js
+@@ -48,6 +48,7 @@
+ }
+ 
+ /**
++ * @return {Promise<HttpResponse<slickqaUserInfo>>}
+  */
+ export function GetCurrentUserInfo() {
+   return gateway.request(GetCurrentUserInfoOperation)
+diff --git a/web/src/slick-api/Version.js b/web/src/slick-api/Version.js
+index 1e4250e..40c12b9 100644
+--- a/web/src/slick-api/Version.js
++++ b/web/src/slick-api/Version.js
+@@ -3,6 +3,7 @@
+ import * as gateway from './gateway'
+ 
+ /**
++ * @return {Promise<HttpResponse<slickqaVersionInfoResponse>>}
+  */
+ export function GetFullVersion() {
+   return gateway.request(GetFullVersionOperation)
