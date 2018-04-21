@@ -24,10 +24,6 @@ func (SlickLinksService) UpdateLink(context.Context, *slickqa.Link) (*slickqa.Li
 	panic("implement me")
 }
 
-func (SlickLinksService) CreateFileInfo(context.Context, *slickqa.LinkIdentity) (*slickqa.Link, error) {
-	panic("implement me")
-}
-
 func (SlickLinksService) GetDownloadUrl(context.Context, *slickqa.LinkIdentity) (*slickqa.LinkUrl, error) {
 	panic("implement me")
 }

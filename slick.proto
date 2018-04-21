@@ -281,11 +281,6 @@ service Links {
       body: "*"
     };
   }
-  rpc CreateFileInfo(LinkIdentity) returns (Link) {
-    option (google.api.http) = {
-      put: "/api/links/{Company}/{Project}/{EntityType}/{EntityId}/{Name}/file-info"
-    };
-  }
   rpc GetDownloadUrl(LinkIdentity) returns (LinkUrl) {
     option (google.api.http) = {
       get: "/api/links/{Company}/{Project}/{EntityType}/{EntityId}/{Name}/download"

@@ -350,54 +350,6 @@
         ]
       }
     },
-    "/api/links/{Company}/{Project}/{EntityType}/{EntityId}/{Name}/file-info": {
-      "put": {
-        "operationId": "CreateFileInfo",
-        "responses": {
-          "200": {
-            "description": "",
-            "schema": {
-              "$ref": "#/definitions/slickqaLink"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "Company",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "Project",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "EntityType",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "EntityId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "Name",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "Links"
-        ]
-      }
-    },
     "/api/links/{Id.Company}/{Id.Project}/{Id.EntityType}/{Id.EntityId}/{Id.Name}": {
       "post": {
         "operationId": "AddLink",

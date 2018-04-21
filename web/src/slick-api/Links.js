@@ -64,27 +64,6 @@ export function GetDownloadUrl(Company, Project, EntityType, EntityId, Name) {
 }
 
 /**
- * @param {string} Company 
- * @param {string} Project 
- * @param {string} EntityType 
- * @param {string} EntityId 
- * @param {string} Name 
- * @return {Promise<HttpResponse<slickqaLink>>} 
- */
-export function CreateFileInfo(Company, Project, EntityType, EntityId, Name) {
-  const parameters = {
-    path: {
-      Company,
-      Project,
-      EntityType,
-      EntityId,
-      Name
-    }
-  }
-  return gateway.request(CreateFileInfoOperation, parameters)
-}
-
-/**
  * @param {string} Id.Company 
  * @param {string} Id.Project 
  * @param {string} Id.EntityType 
@@ -172,11 +151,6 @@ const RemoveLinkOperation = {
 const GetDownloadUrlOperation = {
   path: '/api/links/{Company}/{Project}/{EntityType}/{EntityId}/{Name}/download',
   method: 'get'
-}
-
-const CreateFileInfoOperation = {
-  path: '/api/links/{Company}/{Project}/{EntityType}/{EntityId}/{Name}/file-info',
-  method: 'put'
 }
 
 const AddLinkOperation = {
