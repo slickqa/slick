@@ -3,6 +3,7 @@
 import * as gateway from './gateway'
 
 /**
+ * @return {Promise<HttpResponse<slickqaVersionInfoResponse>>}
  */
 export function GetFullVersion() {
   return gateway.request(GetFullVersionOperation)

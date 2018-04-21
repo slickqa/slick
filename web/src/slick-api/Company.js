@@ -3,6 +3,7 @@
 import * as gateway from './gateway'
 
 /**
+ * @return {Promise<HttpResponse<slickqaAvailableCompanySettings>>}
  */
 export function GetAvailableCompanySettings() {
   return gateway.request(GetAvailableCompanySettingsOperation)

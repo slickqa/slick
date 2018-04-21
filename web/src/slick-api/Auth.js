@@ -46,6 +46,7 @@ export function LoginWithToken(Token) {
 }
 
 /**
+ * @return {Promise<HttpResponse<slickqaLoginResponse>>}
  */
 export function RefreshToken() {
   return gateway.request(RefreshTokenOperation)

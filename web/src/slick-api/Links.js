@@ -64,22 +64,22 @@ export function GetDownloadUrl(Company, Project, EntityType, EntityId, Name) {
 }
 
 /**
- * @param {string} Id.Company 
- * @param {string} Id.Project 
- * @param {string} Id.EntityType 
- * @param {string} Id.EntityId 
- * @param {string} Id.Name 
+ * @param {string} Id_Company 
+ * @param {string} Id_Project 
+ * @param {string} Id_EntityType 
+ * @param {string} Id_EntityId 
+ * @param {string} Id_Name 
  * @param {slickqaLink} body 
  * @return {Promise<HttpResponse<slickqaLinkList>>} 
  */
-export function AddLink(Id.Company, Id.Project, Id.EntityType, Id.EntityId, Id.Name, body) {
+export function AddLink(Id_Company, Id_Project, Id_EntityType, Id_EntityId, Id_Name, body) {
   const parameters = {
     path: {
-      'Id.Company': Id.Company,
-      'Id.Project': Id.Project,
-      'Id.EntityType': Id.EntityType,
-      'Id.EntityId': Id.EntityId,
-      'Id.Name': Id.Name
+      'Id_Company': Id_Company,
+      'Id_Project': Id_Project,
+      'Id_EntityType': Id_EntityType,
+      'Id_EntityId': Id_EntityId,
+      'Id_Name': Id_Name
     },
     body: {
       body
@@ -89,22 +89,22 @@ export function AddLink(Id.Company, Id.Project, Id.EntityType, Id.EntityId, Id.N
 }
 
 /**
- * @param {string} Id.Company 
- * @param {string} Id.Project 
- * @param {string} Id.EntityType 
- * @param {string} Id.EntityId 
- * @param {string} Id.Name 
+ * @param {string} Id_Company 
+ * @param {string} Id_Project 
+ * @param {string} Id_EntityType 
+ * @param {string} Id_EntityId 
+ * @param {string} Id_Name 
  * @param {slickqaLink} body 
  * @return {Promise<HttpResponse<slickqaLinkList>>} 
  */
-export function UpdateLink(Id.Company, Id.Project, Id.EntityType, Id.EntityId, Id.Name, body) {
+export function UpdateLink(Id_Company, Id_Project, Id_EntityType, Id_EntityId, Id_Name, body) {
   const parameters = {
     path: {
-      'Id.Company': Id.Company,
-      'Id.Project': Id.Project,
-      'Id.EntityType': Id.EntityType,
-      'Id.EntityId': Id.EntityId,
-      'Id.Name': Id.Name
+      'Id_Company': Id_Company,
+      'Id_Project': Id_Project,
+      'Id_EntityType': Id_EntityType,
+      'Id_EntityId': Id_EntityId,
+      'Id_Name': Id_Name
     },
     body: {
       body
@@ -114,22 +114,22 @@ export function UpdateLink(Id.Company, Id.Project, Id.EntityType, Id.EntityId, I
 }
 
 /**
- * @param {string} Id.Company 
- * @param {string} Id.Project 
- * @param {string} Id.EntityType 
- * @param {string} Id.EntityId 
- * @param {string} Id.Name 
+ * @param {string} Id_Company 
+ * @param {string} Id_Project 
+ * @param {string} Id_EntityType 
+ * @param {string} Id_EntityId 
+ * @param {string} Id_Name 
  * @param {slickqaFileUploadInfo} body 
  * @return {Promise<HttpResponse<slickqaLinkUrl>>} 
  */
-export function GetUploadUrl(Id.Company, Id.Project, Id.EntityType, Id.EntityId, Id.Name, body) {
+export function GetUploadUrl(Id_Company, Id_Project, Id_EntityType, Id_EntityId, Id_Name, body) {
   const parameters = {
     path: {
-      'Id.Company': Id.Company,
-      'Id.Project': Id.Project,
-      'Id.EntityType': Id.EntityType,
-      'Id.EntityId': Id.EntityId,
-      'Id.Name': Id.Name
+      'Id_Company': Id_Company,
+      'Id_Project': Id_Project,
+      'Id_EntityType': Id_EntityType,
+      'Id_EntityId': Id_EntityId,
+      'Id_Name': Id_Name
     },
     body: {
       body
@@ -154,19 +154,19 @@ const GetDownloadUrlOperation = {
 }
 
 const AddLinkOperation = {
-  path: '/api/links/{Id.Company}/{Id.Project}/{Id.EntityType}/{Id.EntityId}/{Id.Name}',
+  path: '/api/links/{Id_Company}/{Id_Project}/{Id_EntityType}/{Id_EntityId}/{Id_Name}',
   contentTypes: ['application/json'],
   method: 'post'
 }
 
 const UpdateLinkOperation = {
-  path: '/api/links/{Id.Company}/{Id.Project}/{Id.EntityType}/{Id.EntityId}/{Id.Name}',
+  path: '/api/links/{Id_Company}/{Id_Project}/{Id_EntityType}/{Id_EntityId}/{Id_Name}',
   contentTypes: ['application/json'],
   method: 'put'
 }
 
 const GetUploadUrlOperation = {
-  path: '/api/links/{Id.Company}/{Id.Project}/{Id.EntityType}/{Id.EntityId}/{Id.Name}/upload',
+  path: '/api/links/{Id_Company}/{Id_Project}/{Id_EntityType}/{Id_EntityId}/{Id_Name}/upload',
   contentTypes: ['application/json'],
   method: 'post'
 }

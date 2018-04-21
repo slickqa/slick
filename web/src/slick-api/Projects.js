@@ -3,6 +3,7 @@
 import * as gateway from './gateway'
 
 /**
+ * @return {Promise<HttpResponse<slickqaProjectsListResponse>>}
  */
 export function GetProjects() {
   return gateway.request(GetProjectsOperation)

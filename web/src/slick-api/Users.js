@@ -48,6 +48,7 @@ export function GetUsersForProject(CompanyName, ProjectName) {
 }
 
 /**
+ * @return {Promise<HttpResponse<slickqaUserInfo>>}
  */
 export function GetCurrentUserInfo() {
   return gateway.request(GetCurrentUserInfoOperation)
