@@ -2,33 +2,198 @@ package services
 
 import (
 	"github.com/slickqa/slick/slickqa"
-	"golang.org/x/net/context"
+	"context"
+	"github.com/slickqa/slick/jwtauth"
+	"google.golang.org/grpc/status"
+	"google.golang.org/grpc/codes"
+	"github.com/slickqa/slick/db"
+	"github.com/slickqa/slick/slickconfig"
+	"github.com/golang/protobuf/ptypes"
+	"errors"
 )
 
 type SlickLinksService struct {
 }
 
-func (SlickLinksService) GetLinks(context.Context, *slickqa.LinkListIdentity) (*slickqa.LinkList, error) {
+func linkPermissionFromEntityType(entityType string) (uint32) {
+	switch entityType {
+	case "Project":
+		return slickconfig.PERMISSION_ADMIN
+	case "Testcase":
+		return slickconfig.PERMISSION_TESTCASE_WRITE
+	case "Build":
+		return slickconfig.PERMISSION_BUILD_WRITE
+	case "Testplan":
+		return slickconfig.PERMISSION_TESTPLAN_WRITE
+	case "Testrun":
+		return slickconfig.PERMISSION_TESTRUN_WRITE
+	case "Result":
+		return slickconfig.PERMISSION_RESULT_WRITE
+	default:
+		return 0xfffffff // an unreasonable permission, not all the bits are even used
+	}
+}
+
+func listIdentityFromLinkIdentity(identity *slickqa.LinkIdentity) (*slickqa.LinkListIdentity) {
+	if identity == nil {
+		return nil
+	}
+	return &slickqa.LinkListIdentity{
+		Company: identity.Company,
+		Project: identity.Project,
+		EntityType: identity.EntityType,
+		EntityId: identity.EntityId,
+	}
+}
+
+func sanitizeLinkObject(target *slickqa.Link, original *slickqa.Link) {
+	if target == nil {
+		return
+	}
+	if original != nil {
+		target.Creator = original.Creator
+		target.FileInfo = original.FileInfo
+	} else {
+		// the only thing allowed to set file info is the upload process
+		target.FileInfo = nil
+	}
+	target.Updated = ptypes.TimestampNow()
+}
+
+func checkLinkForErrors(target *slickqa.Link) (error) {
+	if target == nil {
+		return errors.New("invalid link object")
+	}
+	if target.Id == nil {
+		return errors.New("missing id")
+	}
+	if target.Id.Name == "" {
+		return errors.New("empty name is invalid")
+	}
+	if target.Id.Company == "" {
+		return errors.New("empty company is invalid")
+	}
+	if target.Id.Project == "" {
+		return errors.New("empty product is invalid")
+	}
+	if target.Id.EntityType == "" {
+		return errors.New("empty entity type is invalid")
+	}
+	if target.Type == "" {
+		return errors.New("empty target type is invalid")
+	}
+	return nil
+}
+
+func (SlickLinksService) GetLinks(ctx context.Context, id *slickqa.LinkListIdentity) (*slickqa.LinkList, error) {
+	err := jwtauth.HasPermission(ctx, id.Company, id.Project, 0)
+	if err != nil {
+		return nil, status.Error(codes.PermissionDenied, err.Error())
+	}
+	links, err := db.Links.FindLinks(&db.LinksQuery{Id: &slickqa.LinkIdentity{ Company: id.Company, Project: id.Project, EntityType: id.EntityType, EntityId: id.EntityId}})
+	return &slickqa.LinkList{
+		Links: links,
+	}, err
+}
+
+func (l SlickLinksService) AddLink(ctx context.Context, link *slickqa.Link) (*slickqa.LinkList, error) {
+	err := checkLinkForErrors(link)
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	claims, err := jwtauth.GetClaimsCheckPermission(ctx, link.Id.Company, link.Id.Project, linkPermissionFromEntityType(link.Id.EntityType))
+	if err != nil {
+		return nil, status.Error(codes.PermissionDenied, err.Error())
+	}
+	// make sure they aren't editing protected entries of the link object
+	sanitizeLinkObject(link, nil)
+
+	// set Creator
+	link.Creator = claims.Subject
+
+	// save link
+	err = db.Links.AddLink(link)
+	if err != nil {
+		return nil, status.Error(codes.AlreadyExists, err.Error())
+	}
+
+	//db.Links.
+	return l.GetLinks(ctx, listIdentityFromLinkIdentity(link.Id))
+}
+
+func (l SlickLinksService) RemoveLink(ctx context.Context, id *slickqa.LinkIdentity) (*slickqa.LinkList, error) {
+	err := jwtauth.HasPermission(ctx, id.Company, id.Project, linkPermissionFromEntityType(id.EntityType))
+	if err != nil {
+		return nil, status.Error(codes.PermissionDenied, err.Error())
+	}
+
+	link, err := db.Links.FindLinkById(id)
+	if err != nil {
+		return nil, status.Error(codes.NotFound, err.Error())
+	}
+	if link.FileInfo != nil {
+		compSettings, err := db.CompanySettings.Find(id.Company)
+		if err != nil || compSettings.StorageSettings == nil || compSettings.StorageSettings.AccessKey == "" {
+			// TODO: log error, don't fail, this can happen if someone removes storage options, we should still allow removing the link from the db
+		} else {
+			// TODO: remove file from storage
+		}
+	}
+
+	// delete link object from db
+	err = db.Links.DeleteLink(id)
+	if err != nil {
+		return nil, status.Error(codes.NotFound, err.Error())
+	}
+	return l.GetLinks(ctx, listIdentityFromLinkIdentity(id))
+}
+
+func (l SlickLinksService) UpdateLink(ctx context.Context, link *slickqa.Link) (*slickqa.LinkList, error) {
+	err := jwtauth.HasPermission(ctx, link.Id.Company, link.Id.Project, linkPermissionFromEntityType(link.Id.EntityType))
+	if err != nil {
+		return nil, status.Error(codes.PermissionDenied, err.Error())
+	}
+	// find link in db, return error if it doesn't exist
+	original, err := db.Links.FindLinkById(link.Id)
+	if err != nil {
+		return nil, status.Error(codes.NotFound, err.Error())
+	}
+
+	// make sure they aren't editing protected entries of the link object
+	sanitizeLinkObject(link, original)
+
+	// save link
+	err = db.Links.UpdateLink(link)
+	if err != nil {
+		// shouldn't be possible
+		return nil, status.Error(codes.NotFound, err.Error())
+	}
+
+	// return list
+	return l.GetLinks(ctx, listIdentityFromLinkIdentity(link.Id))
+}
+
+func (l SlickLinksService) GetDownloadUrl(ctx context.Context, id *slickqa.LinkIdentity) (*slickqa.LinkUrl, error) {
+	err := jwtauth.HasPermission(ctx, id.Company, id.Project, 0)
+	if err != nil {
+		return nil, status.Error(codes.PermissionDenied, err.Error())
+	}
+	// find link in db, return error if it doesn't exist
+	// generate URL from company storage settings
+
 	panic("implement me")
 }
 
-func (SlickLinksService) AddLink(context.Context, *slickqa.Link) (*slickqa.LinkList, error) {
-	panic("implement me")
-}
+func (l SlickLinksService) GetUploadUrl(ctx context.Context, uploadInfo *slickqa.FileUploadInfo) (*slickqa.LinkUrl, error) {
+	err := jwtauth.HasPermission(ctx, uploadInfo.Id.Company, uploadInfo.Id.Project, linkPermissionFromEntityType(uploadInfo.Id.EntityType))
+	if err != nil {
+		return nil, status.Error(codes.PermissionDenied, err.Error())
+	}
+	// find link in db, return error if it doesn't exist
+	// update db with current file upload info
+	// generate upload URL from company storage settings locked to file upload info
 
-func (SlickLinksService) RemoveLink(context.Context, *slickqa.LinkIdentity) (*slickqa.LinkList, error) {
-	panic("implement me")
-}
-
-func (SlickLinksService) UpdateLink(context.Context, *slickqa.Link) (*slickqa.LinkList, error) {
-	panic("implement me")
-}
-
-func (SlickLinksService) GetDownloadUrl(context.Context, *slickqa.LinkIdentity) (*slickqa.LinkUrl, error) {
-	panic("implement me")
-}
-
-func (SlickLinksService) GetUploadUrl(context.Context, *slickqa.FileUploadInfo) (*slickqa.LinkUrl, error) {
 	panic("implement me")
 }
 
