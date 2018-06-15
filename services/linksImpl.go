@@ -10,6 +10,9 @@ import (
 	"github.com/slickqa/slick/slickconfig"
 	"github.com/golang/protobuf/ptypes"
 	"errors"
+	"fmt"
+	"github.com/minio/minio-go"
+	"time"
 )
 
 type SlickLinksService struct {
@@ -179,10 +182,39 @@ func (l SlickLinksService) GetDownloadUrl(ctx context.Context, id *slickqa.LinkI
 	if err != nil {
 		return nil, status.Error(codes.PermissionDenied, err.Error())
 	}
-	// find link in db, return error if it doesn't exist
-	// generate URL from company storage settings
 
-	panic("implement me")
+
+	// find link in db, return error if it doesn't exist
+	link, err := db.Links.FindLinkById(id)
+	if err != nil {
+		return nil, status.Error(codes.NotFound, err.Error())
+	}
+
+	if link.FileInfo == nil {
+		return nil, status.Error(codes.InvalidArgument, "link has no file information")
+	}
+
+	// get company settings for s3 configuration
+	settings, err := db.CompanySettings.Find(id.Company)
+	if err != nil || settings.StorageSettings == nil {
+		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("No storage settings are defined for %s", id.Company))
+	}
+
+	// generate URL from company storage settings
+	minioClient, err := minio.New(settings.StorageSettings.BaseUrl, settings.StorageSettings.AccessKey, settings.StorageSettings.SecretKey, true)
+	if err != nil {
+		return nil, status.Error(codes.Unknown, "Unable to create storage client")
+	}
+
+	// TODO come up with a more intelligent time period or at least configurable
+	url, err := minioClient.PresignedGetObject(settings.StorageSettings.Bucket, link.FileInfo.Path, time.Minute * 15, nil)
+	if err != nil {
+		return nil, status.Error(codes.Unknown, "Generating url failed.")
+	}
+
+	expire, _ := ptypes.TimestampProto(time.Now().Add(time.Minute * 15))
+
+	return &slickqa.LinkUrl{Url: url.String(), Expires: expire}, nil
 }
 
 func (l SlickLinksService) GetUploadUrl(ctx context.Context, uploadInfo *slickqa.FileUploadInfo) (*slickqa.LinkUrl, error) {
