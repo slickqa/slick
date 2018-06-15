@@ -181,6 +181,9 @@ func GetClaimsCheckPermission(ctx context.Context, CompanyName string, ProjectNa
 	if claims.Permissions.SlickAdmin != 0 {
 		return claims, nil
 	}
+	if CompanyName == "" {
+		return nil, errors.New("invalid empty company name")
+	}
 	if company, ok := claims.Permissions.Companies[CompanyName]; ok {
 		if company.CompanyAdmin != 0 {
 			return claims, nil
@@ -190,7 +193,7 @@ func GetClaimsCheckPermission(ctx context.Context, CompanyName string, ProjectNa
 				return claims, nil
 			}
 			if (projectPermission&Permission) != 0 || Permission == 0 {
-				return cliams, nil
+				return claims, nil
 			}
 			return nil, errors.New("user " + claims.Subject + " does not have " + slickconfig.DescribePermission(Permission) + " for company " + CompanyName + " project " + ProjectName)
 
@@ -203,31 +206,9 @@ func GetClaimsCheckPermission(ctx context.Context, CompanyName string, ProjectNa
 }
 
 func HasPermission(ctx context.Context, CompanyName string, ProjectName string, Permission uint32) error {
-	claims, err := GetClaimsFromContext(ctx)
+	_, err := GetClaimsCheckPermission(ctx, CompanyName, ProjectName, Permission)
 	if err != nil {
 		return err
 	}
-	if claims.Permissions.SlickAdmin != 0 {
-		return nil
-	}
-	if company, ok := claims.Permissions.Companies[CompanyName]; ok {
-		if company.CompanyAdmin != 0 {
-			return nil
-		}
-		if projectPermission, ok := company.ProjectPermissions[ProjectName]; ok {
-			if (projectPermission & slickconfig.PERMISSION_ADMIN) != 0 {
-				return nil
-			}
-			if (projectPermission&Permission) != 0 || Permission == 0 {
-				return nil
-			}
-			return errors.New("user " + claims.Subject + " does not have " + slickconfig.DescribePermission(Permission) + " for company " + CompanyName + " project " + ProjectName)
-
-		} else {
-			return errors.New("user " + claims.Subject + " does not have any access to project " + ProjectName + " from company " + CompanyName)
-		}
-	} else {
-		return errors.New("user " + claims.Subject + " does not have permission to company " + CompanyName)
-	}
-
+	return nil
 }
