@@ -3,15 +3,14 @@
 import * as gateway from './gateway'
 
 /**
- * @return {Promise<HttpResponse<slickqaAvailableCompanySettings>>}
  */
 export function GetAvailableCompanySettings() {
   return gateway.request(GetAvailableCompanySettingsOperation)
 }
 
 /**
- * @param {slickqaCompanySettingsRequest} body
- * @return {Promise<HttpResponse<slickqaCompanySettings>>}
+ * @param {slickqaCompanySettingsRequest} body 
+ * @return {Promise<HttpResponse<slickqaCompanySettings>>} 
  */
 export function AddCompanySettings(body) {
   const parameters = {
@@ -23,8 +22,8 @@ export function AddCompanySettings(body) {
 }
 
 /**
- * @param {string} CompanyName
- * @return {Promise<HttpResponse<slickqaCompanySettings>>}
+ * @param {string} CompanyName 
+ * @return {Promise<HttpResponse<slickqaCompanySettings>>} 
  */
 export function GetCompanySettings(CompanyName) {
   const parameters = {
@@ -36,9 +35,9 @@ export function GetCompanySettings(CompanyName) {
 }
 
 /**
- * @param {string} CompanyName
- * @param {slickqaCompanySettings} body
- * @return {Promise<HttpResponse<slickqaCompanySettings>>}
+ * @param {string} CompanyName 
+ * @param {slickqaCompanySettings} body 
+ * @return {Promise<HttpResponse<slickqaCompanySettings>>} 
  */
 export function UpdateCompanySettings(CompanyName, body) {
   const parameters = {

@@ -3,10 +3,10 @@
 import * as gateway from './gateway'
 
 /**
- * @param {string} CompanyName
- * @param {string} ProjectName
- * @param {number} Permission
- * @return {Promise<HttpResponse<slickqaIsAuthorizedResponse>>}
+ * @param {string} CompanyName 
+ * @param {string} ProjectName 
+ * @param {number} Permission 
+ * @return {Promise<HttpResponse<slickqaIsAuthorizedResponse>>} 
  */
 export function IsAuthorized(CompanyName, ProjectName, Permission) {
   const parameters = {
@@ -20,8 +20,8 @@ export function IsAuthorized(CompanyName, ProjectName, Permission) {
 }
 
 /**
- * @param {slickqaPlainUserLoginRequest} body
- * @return {Promise<HttpResponse<slickqaLoginResponse>>}
+ * @param {slickqaPlainUserLoginRequest} body 
+ * @return {Promise<HttpResponse<slickqaLoginResponse>>} 
  */
 export function LoginWithCredentials(body) {
   const parameters = {
@@ -33,8 +33,8 @@ export function LoginWithCredentials(body) {
 }
 
 /**
- * @param {string} Token
- * @return {Promise<HttpResponse<slickqaLoginResponse>>}
+ * @param {string} Token 
+ * @return {Promise<HttpResponse<slickqaLoginResponse>>} 
  */
 export function LoginWithToken(Token) {
   const parameters = {
@@ -46,7 +46,6 @@ export function LoginWithToken(Token) {
 }
 
 /**
- * @return {Promise<HttpResponse<slickqaLoginResponse>>}
  */
 export function RefreshToken() {
   return gateway.request(RefreshTokenOperation)

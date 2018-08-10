@@ -108,10 +108,8 @@ func request_Auth_LoginWithCredentials_0(ctx context.Context, marshaler runtime.
 	var protoReq PlainUserLoginRequest
 	var metadata runtime.ServerMetadata
 
-	if req.ContentLength > 0 {
-		if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil {
-			return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-		}
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := client.LoginWithCredentials(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -233,10 +231,8 @@ func request_Users_UpdateUser_0(ctx context.Context, marshaler runtime.Marshaler
 	var protoReq UserInfo
 	var metadata runtime.ServerMetadata
 
-	if req.ContentLength > 0 {
-		if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil {
-			return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-		}
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	var (
@@ -266,10 +262,8 @@ func request_Users_AddUserToCompany_0(ctx context.Context, marshaler runtime.Mar
 	var protoReq AddUserRequest
 	var metadata runtime.ServerMetadata
 
-	if req.ContentLength > 0 {
-		if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil {
-			return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-		}
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	var (
@@ -335,10 +329,8 @@ func request_Company_UpdateCompanySettings_0(ctx context.Context, marshaler runt
 	var protoReq CompanySettings
 	var metadata runtime.ServerMetadata
 
-	if req.ContentLength > 0 {
-		if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil {
-			return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-		}
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	var (
@@ -368,10 +360,8 @@ func request_Company_AddCompanySettings_0(ctx context.Context, marshaler runtime
 	var protoReq CompanySettingsRequest
 	var metadata runtime.ServerMetadata
 
-	if req.ContentLength > 0 {
-		if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil {
-			return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-		}
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := client.AddCompanySettings(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -430,10 +420,8 @@ func request_Projects_AddProject_0(ctx context.Context, marshaler runtime.Marsha
 	var protoReq ProjectIdentity
 	var metadata runtime.ServerMetadata
 
-	if req.ContentLength > 0 {
-		if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil {
-			return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-		}
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
 	msg, err := client.AddProject(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -460,14 +448,14 @@ func RegisterAuthHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux,
 	defer func() {
 		if err != nil {
 			if cerr := conn.Close(); cerr != nil {
-				grpclog.Printf("Failed to close conn to %s: %v", endpoint, cerr)
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
 			}
 			return
 		}
 		go func() {
 			<-ctx.Done()
 			if cerr := conn.Close(); cerr != nil {
-				grpclog.Printf("Failed to close conn to %s: %v", endpoint, cerr)
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
 			}
 		}()
 	}()
@@ -481,8 +469,8 @@ func RegisterAuthHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.
 	return RegisterAuthHandlerClient(ctx, mux, NewAuthClient(conn))
 }
 
-// RegisterAuthHandler registers the http handlers for service Auth to "mux".
-// The handlers forward requests to the grpc endpoint over the given implementation of "AuthClient".
+// RegisterAuthHandlerClient registers the http handlers for service Auth
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "AuthClient".
 // Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "AuthClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "AuthClient" to call the correct interceptors.
@@ -637,14 +625,14 @@ func RegisterUsersHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux
 	defer func() {
 		if err != nil {
 			if cerr := conn.Close(); cerr != nil {
-				grpclog.Printf("Failed to close conn to %s: %v", endpoint, cerr)
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
 			}
 			return
 		}
 		go func() {
 			<-ctx.Done()
 			if cerr := conn.Close(); cerr != nil {
-				grpclog.Printf("Failed to close conn to %s: %v", endpoint, cerr)
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
 			}
 		}()
 	}()
@@ -658,8 +646,8 @@ func RegisterUsersHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc
 	return RegisterUsersHandlerClient(ctx, mux, NewUsersClient(conn))
 }
 
-// RegisterUsersHandler registers the http handlers for service Users to "mux".
-// The handlers forward requests to the grpc endpoint over the given implementation of "UsersClient".
+// RegisterUsersHandlerClient registers the http handlers for service Users
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "UsersClient".
 // Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "UsersClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "UsersClient" to call the correct interceptors.
@@ -880,14 +868,14 @@ func RegisterCompanyHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeM
 	defer func() {
 		if err != nil {
 			if cerr := conn.Close(); cerr != nil {
-				grpclog.Printf("Failed to close conn to %s: %v", endpoint, cerr)
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
 			}
 			return
 		}
 		go func() {
 			<-ctx.Done()
 			if cerr := conn.Close(); cerr != nil {
-				grpclog.Printf("Failed to close conn to %s: %v", endpoint, cerr)
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
 			}
 		}()
 	}()
@@ -901,8 +889,8 @@ func RegisterCompanyHandler(ctx context.Context, mux *runtime.ServeMux, conn *gr
 	return RegisterCompanyHandlerClient(ctx, mux, NewCompanyClient(conn))
 }
 
-// RegisterCompanyHandler registers the http handlers for service Company to "mux".
-// The handlers forward requests to the grpc endpoint over the given implementation of "CompanyClient".
+// RegisterCompanyHandlerClient registers the http handlers for service Company
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "CompanyClient".
 // Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "CompanyClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "CompanyClient" to call the correct interceptors.
@@ -1057,14 +1045,14 @@ func RegisterProjectsHandlerFromEndpoint(ctx context.Context, mux *runtime.Serve
 	defer func() {
 		if err != nil {
 			if cerr := conn.Close(); cerr != nil {
-				grpclog.Printf("Failed to close conn to %s: %v", endpoint, cerr)
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
 			}
 			return
 		}
 		go func() {
 			<-ctx.Done()
 			if cerr := conn.Close(); cerr != nil {
-				grpclog.Printf("Failed to close conn to %s: %v", endpoint, cerr)
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
 			}
 		}()
 	}()
@@ -1078,8 +1066,8 @@ func RegisterProjectsHandler(ctx context.Context, mux *runtime.ServeMux, conn *g
 	return RegisterProjectsHandlerClient(ctx, mux, NewProjectsClient(conn))
 }
 
-// RegisterProjectsHandler registers the http handlers for service Projects to "mux".
-// The handlers forward requests to the grpc endpoint over the given implementation of "ProjectsClient".
+// RegisterProjectsHandlerClient registers the http handlers for service Projects
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "ProjectsClient".
 // Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "ProjectsClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "ProjectsClient" to call the correct interceptors.
@@ -1201,14 +1189,14 @@ func RegisterVersionHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeM
 	defer func() {
 		if err != nil {
 			if cerr := conn.Close(); cerr != nil {
-				grpclog.Printf("Failed to close conn to %s: %v", endpoint, cerr)
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
 			}
 			return
 		}
 		go func() {
 			<-ctx.Done()
 			if cerr := conn.Close(); cerr != nil {
-				grpclog.Printf("Failed to close conn to %s: %v", endpoint, cerr)
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
 			}
 		}()
 	}()
@@ -1222,8 +1210,8 @@ func RegisterVersionHandler(ctx context.Context, mux *runtime.ServeMux, conn *gr
 	return RegisterVersionHandlerClient(ctx, mux, NewVersionClient(conn))
 }
 
-// RegisterVersionHandler registers the http handlers for service Version to "mux".
-// The handlers forward requests to the grpc endpoint over the given implementation of "VersionClient".
+// RegisterVersionHandlerClient registers the http handlers for service Version
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "VersionClient".
 // Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "VersionClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "VersionClient" to call the correct interceptors.
