@@ -6,10 +6,9 @@ import (
 	"github.com/pelletier/go-toml"
 	"io/ioutil"
 	"net/http"
-	"github.com/serussell/logxi/v1"
-	"fmt"
-	"os/user"
+		"os/user"
 	"path"
+	"github.com/rs/zerolog/log"
 )
 
 type ServiceConfiguration struct {
@@ -69,7 +68,7 @@ const (
 
 var (
 	Configuration SlickConfiguration
-	logger = log.New("slickconfig")
+	logger = log.With().Str("loggerName", "slickconfig").Logger()
 	roles = make(map[string]Role, 0)
 )
 
@@ -103,7 +102,7 @@ func (c *SlickConfiguration) LoadFromStandardLocations() {
 				if err == nil {
 					c.Load(data)
 				} else {
-					logger.Warn("Unable to find configuration in any of the standard locations, only defaults available.")
+					logger.Warn().Msg("Unable to find configuration in any of the standard locations, only defaults available.")
 				}
 			}
 		}
@@ -115,7 +114,7 @@ func (c *SlickConfiguration) LoadFromStandardLocations() {
 func (c *SlickConfiguration) Load(data []byte) {
 	err := toml.Unmarshal(data, c)
 	if err != nil {
-		logger.Warn("Problem loading configuration", "error", err)
+		logger.Warn().AnErr("error", err).Msg("Problem loading configuration")
 	}
 	for _, role := range c.Roles.Defaults {
 		roles[role.Name] = role
@@ -124,24 +123,24 @@ func (c *SlickConfiguration) Load(data []byte) {
 
 func (c *SlickConfiguration) LoadFromLocation(location string) {
 	if strings.HasPrefix(location, "http") {
-		resp, err := http.Get("http://example.com/")
+		resp, err := http.Get(location)
 		defer resp.Body.Close()
 		if err == nil {
 			body, err := ioutil.ReadAll(resp.Body)
 			if err == nil {
 				c.Load(body)
 			} else {
-				logger.Warn(fmt.Sprintf("Error retrieving logs from location %s, only defaults available.", location), "error", err)
+				logger.Warn().AnErr("error", err).Str("location", location).Msg("Error retrieving configuration from location, only defaults available.")
 			}
 		} else {
-			logger.Warn(fmt.Sprintf("Error retrieving logs from location %s, only defaults available.", location), "error", err)
+			logger.Warn().AnErr("error", err).Str("location", location).Msg("Error retrieving configuration from location, only defaults available.")
 		}
 	} else {
 		data, err := ioutil.ReadFile(location)
 		if err == nil {
 			c.Load(data)
 		} else {
-			logger.Warn(fmt.Sprintf("Error retrieving logs from location %s, only defaults available.", location), "error", err)
+			logger.Warn().AnErr("error", err).Str("location", location).Msg("Error retrieving configuration from location, only defaults available.")
 		}
 	}
 }

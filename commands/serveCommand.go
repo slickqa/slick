@@ -7,7 +7,6 @@ import (
 	"google.golang.org/grpc"
 	"crypto/tls"
 	"github.com/slickqa/slick/slickconfig"
-	"github.com/serussell/logxi/v1"
 	"crypto/x509"
 	"net/url"
 	"net/http"
@@ -23,6 +22,7 @@ import (
 	"io/ioutil"
 	"path"
 	"fmt"
+	"github.com/rs/zerolog/log"
 )
 
 var (
@@ -63,7 +63,7 @@ func devModeReverseProxy(mux *http.ServeMux) {
 }
 
 func RunService(c *cli.Context) {
-	logger := log.New("commands.serve")
+	logger := log.With().Str("loggerName", "commands.serve").Logger()
 	db.InitializeMongoConnection()
 	defer db.CloseMongoConnection()
 
@@ -71,7 +71,7 @@ func RunService(c *cli.Context) {
 	pair, err := tls.X509KeyPair([]byte(slickconfig.Configuration.TLSEncryption.TLSCertificate),
 		                         []byte(slickconfig.Configuration.TLSEncryption.TLSPrivateKey))
 	if err != nil {
-		logger.Fatal("Unable to create certificate key pair for TLS connections.", "error", err)
+		logger.Fatal().AnErr("error", err).Msg("Unable to create certificate key pair for TLS connections.")
 		return
 	}
 
@@ -79,14 +79,13 @@ func RunService(c *cli.Context) {
 	ok := certPool.AppendCertsFromPEM([]byte(slickconfig.Configuration.TLSEncryption.TLSCertificate))
 
 	if !ok {
-		logger.Fatal("Unable to create certificate pool.")
+		logger.Fatal().Msg("Unable to create certificate pool.")
 		return
 	}
 
 	baseUrl, err := url.Parse(slickconfig.Configuration.Common.BaseUrl)
 	if err != nil {
-		logger.Fatal("Unable to parse base url.", "BaseUrl", slickconfig.Configuration.Common.BaseUrl,
-			         "error", err)
+		logger.Fatal().AnErr("error", err).Str("url", slickconfig.Configuration.Common.BaseUrl).Msg("Unable to parse base url.")
 		return
 	}
 
@@ -113,35 +112,35 @@ func RunService(c *cli.Context) {
 	err = slickqa.RegisterAuthHandlerFromEndpoint(ctx, restGatewayMux, fmt.Sprintf("%s:%d", dialHostname, slickconfig.Configuration.Common.ListenPort), dopts)
 
 	if err != nil {
-		logger.Fatal("Error registering auth grpc gateway", "error", err)
+		logger.Fatal().AnErr("error", err).Msg("Error registering auth grpc gateway")
 		return
 	}
 
 	err = slickqa.RegisterUsersHandlerFromEndpoint(ctx, restGatewayMux, fmt.Sprintf("%s:%d", dialHostname, slickconfig.Configuration.Common.ListenPort), dopts)
 
 	if err != nil {
-		logger.Fatal("Error registering users grpc gateway", "error", err)
+		logger.Fatal().AnErr("error", err).Msg("Error registering users grpc gateway")
 		return
 	}
 
 	err = slickqa.RegisterVersionHandlerFromEndpoint(ctx, restGatewayMux, fmt.Sprintf("%s:%d", dialHostname, slickconfig.Configuration.Common.ListenPort), dopts)
 
 	if err != nil {
-		logger.Fatal("Error registering version grpc gateway", "error", err)
+		logger.Fatal().AnErr("error", err).Msg("Error registering version grpc gateway")
 		return
 	}
 
 	err = slickqa.RegisterCompanyHandlerFromEndpoint(ctx, restGatewayMux, fmt.Sprintf("%s:%d", dialHostname, slickconfig.Configuration.Common.ListenPort), dopts)
 
 	if err != nil {
-		logger.Fatal("Error registering company grpc gateway", "error", err)
+		logger.Fatal().AnErr("error", err).Msg("Error registering company grpc gateway")
 		return
 	}
 
 	err = slickqa.RegisterProjectsHandlerFromEndpoint(ctx, restGatewayMux, fmt.Sprintf("%s:%d", dialHostname, slickconfig.Configuration.Common.ListenPort), dopts)
 
 	if err != nil {
-		logger.Fatal("Error registering projects grpc gateway", "error", err)
+		logger.Fatal().AnErr("error", err).Msg("Error registering projects grpc gateway")
 		return
 	}
 
@@ -153,9 +152,7 @@ func RunService(c *cli.Context) {
 		if slickconfig.Configuration.Common.LocalWebFilesPath != "" {
 			indexContent, err := ioutil.ReadFile(path.Join(slickconfig.Configuration.Common.LocalWebFilesPath, "index.html"))
 			if err != nil {
-				logger.Error("index.html not found!",
-					"localFilePath", slickconfig.Configuration.Common.LocalWebFilesPath,
-						"error", err)
+				logger.Error().AnErr("error", err).Str("localFilePath", slickconfig.Configuration.Common.LocalWebFilesPath).Msg("index.html not found!")
 				indexContent = make([]byte, 0)
 			}
 			fileserver := http.FileServer(http.Dir(slickconfig.Configuration.Common.LocalWebFilesPath))
@@ -173,11 +170,11 @@ func RunService(c *cli.Context) {
 		} else {
 			box, err := rice.FindBox("../web/dist")
 			if err != nil {
-				logger.Error("Unable to find embedded content.", "error", err)
+				logger.Error().AnErr("error", err).Msg("Unable to find embedded content.")
 			} else {
 				indexContent, err := box.Bytes("index.html")
 				if err != nil {
-					logger.Error("index.html not found in embedded content.", "error", err)
+					logger.Error().AnErr("error", err).Msg("index.html not found in embedded content.")
 					indexContent = make([]byte, 0)
 				}
 				riceServer := http.FileServer(box.HTTPBox())
@@ -186,7 +183,7 @@ func RunService(c *cli.Context) {
 					if dotPos > 0 && (len(req.URL.Path) - dotPos) <= 5 && req.URL.Path != "index.html"  || req.URL.Path == "/swagger-ui/" {
 						// at this point we know that in the path there was a . within 5 digits of the end.
 						// we are going to ASSUME that means a file.  That could make a you know what out of you and me
-						logger.Debug("Serving request from files", req.URL.Path)
+						logger.Debug().Str("path", req.URL.Path).Msg("Serving request from files")
 						riceServer.ServeHTTP(w, req)
 					} else {
 						w.Header().Set("Content-Type", "text/html; charset=utf-8")
@@ -199,7 +196,7 @@ func RunService(c *cli.Context) {
 
 	conn, err := net.Listen("tcp", slickconfig.Configuration.Common.ListenIP + ":"+ fmt.Sprintf("%d", slickconfig.Configuration.Common.ListenPort))
 	if err != nil {
-		logger.Fatal("Error occured trying to listen on host:port", "host:port", slickconfig.Configuration.Common.ListenIP + ":" + fmt.Sprintf("%d", slickconfig.Configuration.Common.ListenPort), "error", err)
+		logger.Fatal().AnErr("error", err).Str("host", slickconfig.Configuration.Common.ListenIP).Int("port", slickconfig.Configuration.Common.ListenPort).Msg("Error occured trying to listen on host:port")
 		return
 	}
 
@@ -215,7 +212,7 @@ func RunService(c *cli.Context) {
 	// TODO: template index.html so that
 	err = srv.Serve(tls.NewListener(conn, srv.TLSConfig))
 	if err != nil {
-		logger.Error("Error recieved from http server.", "error", err)
+		logger.Error().AnErr("error", err).Msg("Error recieved from http server.")
 	}
 }
 
