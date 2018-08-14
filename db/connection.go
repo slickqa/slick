@@ -2,11 +2,11 @@ package db
 
 import (
 	"github.com/globalsign/mgo"
-	"github.com/serussell/logxi/v1"
 	"github.com/slickqa/slick/slickconfig"
 	"crypto/tls"
 	"crypto/x509"
 	"io/ioutil"
+	"github.com/rs/zerolog/log"
 )
 
 var (
@@ -15,19 +15,16 @@ var (
 
 func InitializeMongoConnection() error {
 	var err error
-	logger := log.New("db.connection")
-	logger.Debug("Connecting to mongo database",
-		"url", slickconfig.Configuration.Mongo.URL,
-		"useTLS", slickconfig.Configuration.Mongo.UseTLS)
+	logger := log.With().Str("loggerName", "db.connection.init").Logger()
+	logger.Debug().Str("url", slickconfig.Configuration.Mongo.URL).Bool("useTLS", slickconfig.Configuration.Mongo.UseTLS).Msg("Connecting to mongo database")
+
 	if slickconfig.Configuration.Mongo.UseTLS {
 		roots := x509.NewCertPool()
 
 		if ca, err := ioutil.ReadFile(slickconfig.Configuration.Mongo.RootCertificatesLocation); err == nil {
 			roots.AppendCertsFromPEM(ca)
 		} else {
-			logger.Error("Trying to load Root Certificate Location contained an error, continuing on as if it worked.",
-				"RootCertificatesLocation", slickconfig.Configuration.Mongo.RootCertificatesLocation,
-				"Error", err)
+			logger.Error().AnErr("error", err).Str("RootCertificatesLocation", slickconfig.Configuration.Mongo.RootCertificatesLocation).Msg("Trying to load Root Certificate Location contained an error, continuing on as if it worked.")
 		}
 
 		tlsConfig := &tls.Config{}
@@ -41,24 +38,18 @@ func InitializeMongoConnection() error {
 		if err == nil {
 			MongoSession, err = mgo.DialWithInfo(dialInfo)
 			if err != nil {
-				logger.Fatal("Error connecting to mongodb!",
-					"URL", slickconfig.Configuration.Mongo.URL,
-					"Error", err)
+				logger.Fatal().AnErr("error", err).Str("url", slickconfig.Configuration.Mongo.URL).Msg("Error connecting to mongodb!")
 				return err
 			}
 		} else {
-			logger.Fatal("Unable to parse URL and connect to mongo!",
-				"URL", slickconfig.Configuration.Mongo.URL,
-				"Error", err)
+			logger.Fatal().AnErr("error", err).Str("url", slickconfig.Configuration.Mongo.URL).Msg("Unable to parse URL and connect to mongo!")
 			return err
 		}
 
 	} else {
 		MongoSession, err = mgo.Dial(slickconfig.Configuration.Mongo.URL)
 		if err != nil {
-			logger.Fatal("Error connecting to mongodb!",
-				"URL", slickconfig.Configuration.Mongo.URL,
-				"Error", err)
+			logger.Fatal().AnErr("error", err).Str("url", slickconfig.Configuration.Mongo.URL).Msg("Error connecting to mongodb!")
 			return err
 		}
 	}

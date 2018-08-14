@@ -2,7 +2,6 @@ package commands
 
 import (
 	"github.com/codegangsta/cli"
-	"github.com/serussell/logxi/v1"
 	"github.com/slickqa/slick/slickconfig"
 	"crypto/rsa"
 	"crypto/rand"
@@ -15,6 +14,7 @@ import (
 	"math/big"
 	"net/url"
 	"io/ioutil"
+	"github.com/rs/zerolog/log"
 )
 
 var (
@@ -34,16 +34,16 @@ var (
 )
 
 func InitializeConfiguration(c *cli.Context) {
-	logger := log.New("slickcli.init")
+	logger := log.With().Str("loggerName", "slick.commands.init").Logger()
 	if c.IsSet("base-url") {
 		slickconfig.Configuration.Common.BaseUrl = c.String("base-url")
 	}
 
 	// ---------------------------- JWT Keys ---------------------------------
-	logger.Debug("Generating JWT keys...")
+	logger.Debug().Msg("Generating JWT keys...")
 	key, err := rsa.GenerateKey(rand.Reader, 1024)
 	if err != nil {
-		logger.Fatal("Unable to generate cryptographic key", err)
+		logger.Fatal().AnErr("error", err).Msg("Unable to generate cryptographic key")
 		return
 	}
 	block := &pem.Block{
@@ -60,14 +60,14 @@ func InitializeConfiguration(c *cli.Context) {
 	slickconfig.Configuration.TokenEncryption.JWTPublicKey = string(pem.EncodeToMemory(block))
 
 	// ---------------------------- TLS Key and Certificate ---------------------------------
-	logger.Debug("Generating TLS key and certificate...")
+	logger.Debug().Msg("Generating TLS key and certificate...")
 	baseUrl, err := url.Parse(slickconfig.Configuration.Common.BaseUrl)
 	if err != nil {
-		logger.Fatal("Failed to parse url!", "url", slickconfig.Configuration.Common.BaseUrl, "error", err)
+		logger.Fatal().AnErr("error", err).Str("url",slickconfig.Configuration.Common.BaseUrl).Msg("Failed to parse url!")
 	}
 	key, err = rsa.GenerateKey(rand.Reader, 2048)
 	if err != nil {
-		logger.Fatal("Error generating TLS key.", "error", err)
+		logger.Fatal().AnErr("error", err).Msg("Error generating TLS key.")
 	}
 	block = &pem.Block{
 		Type: "RSA PRIVATE KEY",
@@ -80,7 +80,7 @@ func InitializeConfiguration(c *cli.Context) {
 	serialNumberLimit := new(big.Int).Lsh(big.NewInt(1), 128)
 	serialNumber, err := rand.Int(rand.Reader, serialNumberLimit)
 	if err != nil {
-		logger.Fatal("Failed to generate serial number: ", "Error", err)
+		logger.Fatal().AnErr("error", err).Msg("Failed to generate serial number: ")
 	}
 
 	template := x509.Certificate{
@@ -117,7 +117,7 @@ func InitializeConfiguration(c *cli.Context) {
 
 	configContent, err := slickconfig.Configuration.ToBytes()
 	if err != nil {
-		logger.Fatal("Problem generating configuration:", err)
+		logger.Fatal().AnErr("error", err).Msg("Problem generating configuration:")
 	}
 
 	if c.IsSet("o") {

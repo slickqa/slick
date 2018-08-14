@@ -12,8 +12,8 @@ import (
 	googleUser "google.golang.org/api/oauth2/v2"
 	"github.com/slickqa/slick/slickconfig"
 	"github.com/slickqa/slick/db"
-	"github.com/serussell/logxi/v1"
 	"encoding/json"
+	"github.com/rs/zerolog/log"
 )
 
 func GoogleLoginHandlers(mux *http.ServeMux) {
@@ -81,7 +81,7 @@ func slickUserFromGoogleUser(user *googleUser.Userinfoplus) *slickqa.UserInfo {
 }
 
 func issueLoginSession() http.Handler {
-	logger := log.New("services.googleLogin.issueLoginSession")
+	logger := log.With().Str("loggerName", "services.googleLogin.issueLoginSession").Logger()
 	fn := func(w http.ResponseWriter, req *http.Request) {
 		ctx := req.Context()
 		googleUser, err := google.UserFromContext(ctx)
@@ -94,7 +94,7 @@ func issueLoginSession() http.Handler {
 			user = slickUserFromGoogleUser(googleUser)
 			err = db.User.AddUser(user)
 			if err != nil {
-				logger.Error("Cannot store in database user, login can continue, but many things may not work.", "user", user, "error", err)
+				logger.Error().AnErr("error", err).Str("user", user.EmailAddress).Msg("Cannot store in database user, login can continue, but many things may not work.")
 			}
 		}
 		if user.UserPreferences == nil {
@@ -115,7 +115,7 @@ func issueLoginSession() http.Handler {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		logger.Debug("Successful Login", "user", user)
+		logger.Debug().Str("user", user.EmailAddress).Msg("Successful Login")
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		w.Write([]byte(fmt.Sprintf(`
 <html>

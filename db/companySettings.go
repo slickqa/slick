@@ -3,8 +3,8 @@ package db
 import (
 	"github.com/slickqa/slick/slickqa"
 	"github.com/slickqa/slick/slickconfig"
-	"github.com/serussell/logxi/v1"
 	"errors"
+	"github.com/rs/zerolog/log"
 )
 
 const (
@@ -67,9 +67,9 @@ func (u *companySettingsType) AddCompanySettings(companySettings *slickqa.Compan
 }
 
 func (u *companySettingsType) UpdateCompanySettings(companyName string, companySettings *slickqa.CompanySettings) error {
-	logger := log.New("db.connection")
+	logger := log.With().Str("loggerName", "db.CompanySettings.UpdateCompanySettings").Logger()
 	if companySettings.CompanyName != companyName {
-		logger.Error("Request to update company with a name that is different.  Can't change company name!", "Company Name", companyName, "Company Settings", companySettings)
+		logger.Error().Str("providedCompanyName", companyName).Str("updatedCompanySettingsCompanyName", companySettings.CompanyName).Msg("Request to update company with a name that is different.  Can't change company name!")
 		return errors.New("not allowed to change company name in settings")
 	}
 	mongo := MongoSession.Copy()

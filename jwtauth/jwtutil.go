@@ -2,7 +2,6 @@ package jwtauth
 
 import (
 	"github.com/dgrijalva/jwt-go"
-	"github.com/serussell/logxi/v1"
 	"fmt"
 	"errors"
 	"context"
@@ -14,16 +13,18 @@ import (
 	"crypto/x509"
 	"google.golang.org/grpc/metadata"
 	"strings"
+	"github.com/rs/zerolog/log"
+	"github.com/rs/zerolog"
 )
 
 var (
 	JwtRSAPrivateKey *rsa.PrivateKey
 	JwtRSAPublicKey  *rsa.PublicKey
-	logger           log.Logger
+	logger           zerolog.Logger
 )
 
 func init() {
-	logger = log.New("jwtauth")
+	logger = log.With().Str("loggerName", "jwtauth").Logger()
 }
 
 type jwtoken struct {
@@ -91,13 +92,13 @@ func initKeys() {
 	block, _ := pem.Decode([]byte(slickconfig.Configuration.TokenEncryption.JWTPrivateKey))
 	JwtRSAPrivateKey, err = x509.ParsePKCS1PrivateKey(block.Bytes)
 	if err != nil {
-		logger.Error("Failed Parsing private key from PEM block.", "error", err)
+		logger.Error().AnErr("error", err).Msg("Failed Parsing private key from PEM block.")
 	}
 	block, _ = pem.Decode([]byte(slickconfig.Configuration.TokenEncryption.JWTPublicKey))
 	public_key, err := x509.ParsePKIXPublicKey(block.Bytes)
 
 	if JwtRSAPublicKey, ok = public_key.(*rsa.PublicKey); !ok {
-		logger.Error("Failed Parsing RSA public key from PEM block.")
+		logger.Error().Msg("Failed Parsing RSA public key from PEM block.")
 	}
 }
 
