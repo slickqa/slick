@@ -23,3 +23,10 @@ web/src/slick-api: web/public/slick.swagger.json web/node_modules/.bin/openapi
 	patch -p1 <fixcodecompletion.diff
 clean:
 	rm -rf slickqa/slick.pb.go slickqa/slick.pb.gw.go web/public/slick.swagger.json web/src/slick-api
+
+deps:
+	go get -u github.com/GeertJohan/go.rice
+	go get -u github.com/GeertJohan/go.rice/rice
+	go get -u github.com/slickqa/protobuf/protoc-gen-go
+	go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
+	go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
