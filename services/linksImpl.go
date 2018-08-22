@@ -206,7 +206,7 @@ func (l SlickLinksService) GetDownloadUrl(ctx context.Context, id *slickqa.LinkI
 		return nil, status.Error(codes.Unknown, "Unable to create storage client")
 	}
 
-	// TODO come up with a more intelligent time period or at least configurable
+	// TODO come up with a more intelligent time period or at least configurable, maybe tied to jwt expiration?
 	url, err := minioClient.PresignedGetObject(settings.StorageSettings.Bucket, link.FileInfo.Path, time.Minute * 15, nil)
 	if err != nil {
 		return nil, status.Error(codes.Unknown, "Generating url failed.")
