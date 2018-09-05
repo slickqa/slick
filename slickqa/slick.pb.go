@@ -39,7 +39,7 @@ func (m *IsAuthorizedRequest) Reset()         { *m = IsAuthorizedRequest{} }
 func (m *IsAuthorizedRequest) String() string { return proto.CompactTextString(m) }
 func (*IsAuthorizedRequest) ProtoMessage()    {}
 func (*IsAuthorizedRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{0}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{0}
 }
 func (m *IsAuthorizedRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_IsAuthorizedRequest.Unmarshal(m, b)
@@ -92,7 +92,7 @@ func (m *IsAuthorizedResponse) Reset()         { *m = IsAuthorizedResponse{} }
 func (m *IsAuthorizedResponse) String() string { return proto.CompactTextString(m) }
 func (*IsAuthorizedResponse) ProtoMessage()    {}
 func (*IsAuthorizedResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{1}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{1}
 }
 func (m *IsAuthorizedResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_IsAuthorizedResponse.Unmarshal(m, b)
@@ -136,7 +136,7 @@ func (m *CurrentUserRequest) Reset()         { *m = CurrentUserRequest{} }
 func (m *CurrentUserRequest) String() string { return proto.CompactTextString(m) }
 func (*CurrentUserRequest) ProtoMessage()    {}
 func (*CurrentUserRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{2}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{2}
 }
 func (m *CurrentUserRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CurrentUserRequest.Unmarshal(m, b)
@@ -167,7 +167,7 @@ func (m *UserInfoRequest) Reset()         { *m = UserInfoRequest{} }
 func (m *UserInfoRequest) String() string { return proto.CompactTextString(m) }
 func (*UserInfoRequest) ProtoMessage()    {}
 func (*UserInfoRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{3}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{3}
 }
 func (m *UserInfoRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UserInfoRequest.Unmarshal(m, b)
@@ -205,7 +205,7 @@ func (m *UsersForCompanyQueryRequest) Reset()         { *m = UsersForCompanyQuer
 func (m *UsersForCompanyQueryRequest) String() string { return proto.CompactTextString(m) }
 func (*UsersForCompanyQueryRequest) ProtoMessage()    {}
 func (*UsersForCompanyQueryRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{4}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{4}
 }
 func (m *UsersForCompanyQueryRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UsersForCompanyQueryRequest.Unmarshal(m, b)
@@ -244,7 +244,7 @@ func (m *UsersForProjectQueryRequest) Reset()         { *m = UsersForProjectQuer
 func (m *UsersForProjectQueryRequest) String() string { return proto.CompactTextString(m) }
 func (*UsersForProjectQueryRequest) ProtoMessage()    {}
 func (*UsersForProjectQueryRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{5}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{5}
 }
 func (m *UsersForProjectQueryRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UsersForProjectQueryRequest.Unmarshal(m, b)
@@ -289,7 +289,7 @@ func (m *UsersQueryResponse) Reset()         { *m = UsersQueryResponse{} }
 func (m *UsersQueryResponse) String() string { return proto.CompactTextString(m) }
 func (*UsersQueryResponse) ProtoMessage()    {}
 func (*UsersQueryResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{6}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{6}
 }
 func (m *UsersQueryResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UsersQueryResponse.Unmarshal(m, b)
@@ -328,7 +328,7 @@ func (m *ProjectPermissionInfo) Reset()         { *m = ProjectPermissionInfo{} }
 func (m *ProjectPermissionInfo) String() string { return proto.CompactTextString(m) }
 func (*ProjectPermissionInfo) ProtoMessage()    {}
 func (*ProjectPermissionInfo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{7}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{7}
 }
 func (m *ProjectPermissionInfo) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ProjectPermissionInfo.Unmarshal(m, b)
@@ -375,7 +375,7 @@ func (m *CompanyPermissionInfo) Reset()         { *m = CompanyPermissionInfo{} }
 func (m *CompanyPermissionInfo) String() string { return proto.CompactTextString(m) }
 func (*CompanyPermissionInfo) ProtoMessage()    {}
 func (*CompanyPermissionInfo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{8}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{8}
 }
 func (m *CompanyPermissionInfo) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CompanyPermissionInfo.Unmarshal(m, b)
@@ -428,7 +428,7 @@ func (m *SlickPermissionInfo) Reset()         { *m = SlickPermissionInfo{} }
 func (m *SlickPermissionInfo) String() string { return proto.CompactTextString(m) }
 func (*SlickPermissionInfo) ProtoMessage()    {}
 func (*SlickPermissionInfo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{9}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{9}
 }
 func (m *SlickPermissionInfo) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SlickPermissionInfo.Unmarshal(m, b)
@@ -476,7 +476,7 @@ func (m *Preferences) Reset()         { *m = Preferences{} }
 func (m *Preferences) String() string { return proto.CompactTextString(m) }
 func (*Preferences) ProtoMessage()    {}
 func (*Preferences) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{10}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{10}
 }
 func (m *Preferences) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Preferences.Unmarshal(m, b)
@@ -539,7 +539,7 @@ func (m *S3StorageSettings) Reset()         { *m = S3StorageSettings{} }
 func (m *S3StorageSettings) String() string { return proto.CompactTextString(m) }
 func (*S3StorageSettings) ProtoMessage()    {}
 func (*S3StorageSettings) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{11}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{11}
 }
 func (m *S3StorageSettings) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_S3StorageSettings.Unmarshal(m, b)
@@ -610,7 +610,7 @@ func (m *CompanySettings) Reset()         { *m = CompanySettings{} }
 func (m *CompanySettings) String() string { return proto.CompactTextString(m) }
 func (*CompanySettings) ProtoMessage()    {}
 func (*CompanySettings) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{12}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{12}
 }
 func (m *CompanySettings) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CompanySettings.Unmarshal(m, b)
@@ -691,7 +691,7 @@ func (m *UserInfo) Reset()         { *m = UserInfo{} }
 func (m *UserInfo) String() string { return proto.CompactTextString(m) }
 func (*UserInfo) ProtoMessage()    {}
 func (*UserInfo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{13}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{13}
 }
 func (m *UserInfo) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UserInfo.Unmarshal(m, b)
@@ -785,7 +785,7 @@ func (m *ApiTokenLoginRequest) Reset()         { *m = ApiTokenLoginRequest{} }
 func (m *ApiTokenLoginRequest) String() string { return proto.CompactTextString(m) }
 func (*ApiTokenLoginRequest) ProtoMessage()    {}
 func (*ApiTokenLoginRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{14}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{14}
 }
 func (m *ApiTokenLoginRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ApiTokenLoginRequest.Unmarshal(m, b)
@@ -824,7 +824,7 @@ func (m *PlainUserLoginRequest) Reset()         { *m = PlainUserLoginRequest{} }
 func (m *PlainUserLoginRequest) String() string { return proto.CompactTextString(m) }
 func (*PlainUserLoginRequest) ProtoMessage()    {}
 func (*PlainUserLoginRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{15}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{15}
 }
 func (m *PlainUserLoginRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PlainUserLoginRequest.Unmarshal(m, b)
@@ -871,7 +871,7 @@ func (m *LoginResponse) Reset()         { *m = LoginResponse{} }
 func (m *LoginResponse) String() string { return proto.CompactTextString(m) }
 func (*LoginResponse) ProtoMessage()    {}
 func (*LoginResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{16}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{16}
 }
 func (m *LoginResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_LoginResponse.Unmarshal(m, b)
@@ -922,7 +922,7 @@ func (m *VersionRequest) Reset()         { *m = VersionRequest{} }
 func (m *VersionRequest) String() string { return proto.CompactTextString(m) }
 func (*VersionRequest) ProtoMessage()    {}
 func (*VersionRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{17}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{17}
 }
 func (m *VersionRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_VersionRequest.Unmarshal(m, b)
@@ -953,7 +953,7 @@ func (m *VersionInfoResponse) Reset()         { *m = VersionInfoResponse{} }
 func (m *VersionInfoResponse) String() string { return proto.CompactTextString(m) }
 func (*VersionInfoResponse) ProtoMessage()    {}
 func (*VersionInfoResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{18}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{18}
 }
 func (m *VersionInfoResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_VersionInfoResponse.Unmarshal(m, b)
@@ -991,7 +991,7 @@ func (m *CompanySettingsRequest) Reset()         { *m = CompanySettingsRequest{}
 func (m *CompanySettingsRequest) String() string { return proto.CompactTextString(m) }
 func (*CompanySettingsRequest) ProtoMessage()    {}
 func (*CompanySettingsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{19}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{19}
 }
 func (m *CompanySettingsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CompanySettingsRequest.Unmarshal(m, b)
@@ -1031,7 +1031,7 @@ func (m *AddUserRequest) Reset()         { *m = AddUserRequest{} }
 func (m *AddUserRequest) String() string { return proto.CompactTextString(m) }
 func (*AddUserRequest) ProtoMessage()    {}
 func (*AddUserRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{20}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{20}
 }
 func (m *AddUserRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AddUserRequest.Unmarshal(m, b)
@@ -1082,7 +1082,7 @@ func (m *AvailableCompanySettingsRequest) Reset()         { *m = AvailableCompan
 func (m *AvailableCompanySettingsRequest) String() string { return proto.CompactTextString(m) }
 func (*AvailableCompanySettingsRequest) ProtoMessage()    {}
 func (*AvailableCompanySettingsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{21}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{21}
 }
 func (m *AvailableCompanySettingsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AvailableCompanySettingsRequest.Unmarshal(m, b)
@@ -1113,7 +1113,7 @@ func (m *AvailableCompanySettings) Reset()         { *m = AvailableCompanySettin
 func (m *AvailableCompanySettings) String() string { return proto.CompactTextString(m) }
 func (*AvailableCompanySettings) ProtoMessage()    {}
 func (*AvailableCompanySettings) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{22}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{22}
 }
 func (m *AvailableCompanySettings) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AvailableCompanySettings.Unmarshal(m, b)
@@ -1150,7 +1150,7 @@ func (m *RefreshTokenRequest) Reset()         { *m = RefreshTokenRequest{} }
 func (m *RefreshTokenRequest) String() string { return proto.CompactTextString(m) }
 func (*RefreshTokenRequest) ProtoMessage()    {}
 func (*RefreshTokenRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{23}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{23}
 }
 func (m *RefreshTokenRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RefreshTokenRequest.Unmarshal(m, b)
@@ -1180,7 +1180,7 @@ func (m *ProjectsRequest) Reset()         { *m = ProjectsRequest{} }
 func (m *ProjectsRequest) String() string { return proto.CompactTextString(m) }
 func (*ProjectsRequest) ProtoMessage()    {}
 func (*ProjectsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{24}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{24}
 }
 func (m *ProjectsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ProjectsRequest.Unmarshal(m, b)
@@ -1211,7 +1211,7 @@ func (m *ProjectsListResponse) Reset()         { *m = ProjectsListResponse{} }
 func (m *ProjectsListResponse) String() string { return proto.CompactTextString(m) }
 func (*ProjectsListResponse) ProtoMessage()    {}
 func (*ProjectsListResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{25}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{25}
 }
 func (m *ProjectsListResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ProjectsListResponse.Unmarshal(m, b)
@@ -1252,7 +1252,7 @@ func (m *FileUploadInfo) Reset()         { *m = FileUploadInfo{} }
 func (m *FileUploadInfo) String() string { return proto.CompactTextString(m) }
 func (*FileUploadInfo) ProtoMessage()    {}
 func (*FileUploadInfo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{26}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{26}
 }
 func (m *FileUploadInfo) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_FileUploadInfo.Unmarshal(m, b)
@@ -1314,7 +1314,7 @@ func (m *LinkListIdentity) Reset()         { *m = LinkListIdentity{} }
 func (m *LinkListIdentity) String() string { return proto.CompactTextString(m) }
 func (*LinkListIdentity) ProtoMessage()    {}
 func (*LinkListIdentity) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{27}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{27}
 }
 func (m *LinkListIdentity) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_LinkListIdentity.Unmarshal(m, b)
@@ -1373,7 +1373,7 @@ func (m *LinkList) Reset()         { *m = LinkList{} }
 func (m *LinkList) String() string { return proto.CompactTextString(m) }
 func (*LinkList) ProtoMessage()    {}
 func (*LinkList) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{28}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{28}
 }
 func (m *LinkList) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_LinkList.Unmarshal(m, b)
@@ -1412,7 +1412,7 @@ func (m *LinkUrl) Reset()         { *m = LinkUrl{} }
 func (m *LinkUrl) String() string { return proto.CompactTextString(m) }
 func (*LinkUrl) ProtoMessage()    {}
 func (*LinkUrl) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{29}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{29}
 }
 func (m *LinkUrl) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_LinkUrl.Unmarshal(m, b)
@@ -1461,7 +1461,7 @@ func (m *LinkIdentity) Reset()         { *m = LinkIdentity{} }
 func (m *LinkIdentity) String() string { return proto.CompactTextString(m) }
 func (*LinkIdentity) ProtoMessage()    {}
 func (*LinkIdentity) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{30}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{30}
 }
 func (m *LinkIdentity) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_LinkIdentity.Unmarshal(m, b)
@@ -1533,7 +1533,7 @@ func (m *Link) Reset()         { *m = Link{} }
 func (m *Link) String() string { return proto.CompactTextString(m) }
 func (*Link) ProtoMessage()    {}
 func (*Link) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{31}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{31}
 }
 func (m *Link) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Link.Unmarshal(m, b)
@@ -1616,7 +1616,7 @@ func (m *SlickFile) Reset()         { *m = SlickFile{} }
 func (m *SlickFile) String() string { return proto.CompactTextString(m) }
 func (*SlickFile) ProtoMessage()    {}
 func (*SlickFile) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{32}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{32}
 }
 func (m *SlickFile) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SlickFile.Unmarshal(m, b)
@@ -1676,7 +1676,7 @@ func (m *ProjectIdentity) Reset()         { *m = ProjectIdentity{} }
 func (m *ProjectIdentity) String() string { return proto.CompactTextString(m) }
 func (*ProjectIdentity) ProtoMessage()    {}
 func (*ProjectIdentity) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{33}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{33}
 }
 func (m *ProjectIdentity) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ProjectIdentity.Unmarshal(m, b)
@@ -1726,7 +1726,7 @@ func (m *Project) Reset()         { *m = Project{} }
 func (m *Project) String() string { return proto.CompactTextString(m) }
 func (*Project) ProtoMessage()    {}
 func (*Project) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{34}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{34}
 }
 func (m *Project) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Project.Unmarshal(m, b)
@@ -1800,7 +1800,7 @@ func (m *ComponentIdentity) Reset()         { *m = ComponentIdentity{} }
 func (m *ComponentIdentity) String() string { return proto.CompactTextString(m) }
 func (*ComponentIdentity) ProtoMessage()    {}
 func (*ComponentIdentity) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{35}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{35}
 }
 func (m *ComponentIdentity) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ComponentIdentity.Unmarshal(m, b)
@@ -1846,7 +1846,7 @@ func (m *Component) Reset()         { *m = Component{} }
 func (m *Component) String() string { return proto.CompactTextString(m) }
 func (*Component) ProtoMessage()    {}
 func (*Component) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{36}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{36}
 }
 func (m *Component) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Component.Unmarshal(m, b)
@@ -1894,7 +1894,7 @@ func (m *Feature) Reset()         { *m = Feature{} }
 func (m *Feature) String() string { return proto.CompactTextString(m) }
 func (*Feature) ProtoMessage()    {}
 func (*Feature) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{37}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{37}
 }
 func (m *Feature) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Feature.Unmarshal(m, b)
@@ -1964,7 +1964,7 @@ func (m *Testcase) Reset()         { *m = Testcase{} }
 func (m *Testcase) String() string { return proto.CompactTextString(m) }
 func (*Testcase) ProtoMessage()    {}
 func (*Testcase) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{38}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{38}
 }
 func (m *Testcase) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Testcase.Unmarshal(m, b)
@@ -2080,7 +2080,7 @@ func (m *Testplans) Reset()         { *m = Testplans{} }
 func (m *Testplans) String() string { return proto.CompactTextString(m) }
 func (*Testplans) ProtoMessage()    {}
 func (*Testplans) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{39}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{39}
 }
 func (m *Testplans) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Testplans.Unmarshal(m, b)
@@ -2132,7 +2132,7 @@ func (m *Testruns) Reset()         { *m = Testruns{} }
 func (m *Testruns) String() string { return proto.CompactTextString(m) }
 func (*Testruns) ProtoMessage()    {}
 func (*Testruns) Descriptor() ([]byte, []int) {
-	return fileDescriptor_slick_5179239ed68e0201, []int{40}
+	return fileDescriptor_slick_ba2128a6cb6aa9f0, []int{40}
 }
 func (m *Testruns) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Testruns.Unmarshal(m, b)
@@ -3239,9 +3239,9 @@ var _Version_serviceDesc = grpc.ServiceDesc{
 	Metadata: "slick.proto",
 }
 
-func init() { proto.RegisterFile("slick.proto", fileDescriptor_slick_5179239ed68e0201) }
+func init() { proto.RegisterFile("slick.proto", fileDescriptor_slick_ba2128a6cb6aa9f0) }
 
-var fileDescriptor_slick_5179239ed68e0201 = []byte{
+var fileDescriptor_slick_ba2128a6cb6aa9f0 = []byte{
 	// 2493 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x59, 0xcd, 0x72, 0x1b, 0xc7,
 	0xf1, 0xaf, 0x05, 0x09, 0x7e, 0x34, 0x3f, 0x35, 0x22, 0x65, 0x08, 0xd2, 0x5f, 0xa2, 0xc7, 0x92,
