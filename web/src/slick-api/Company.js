@@ -11,7 +11,7 @@ export function GetAvailableCompanySettings() {
 
 /**
  * @param {slickqaCompanySettingsRequest} body 
- * @return {Promise<HttpResponse<slickqaCompanySettings>>} 
+ * @return {Promise<HttpResponse<slickqaCompanySettings>>} A successful response.
  */
 export function AddCompanySettings(body) {
   const parameters = {
@@ -24,7 +24,7 @@ export function AddCompanySettings(body) {
 
 /**
  * @param {string} CompanyName 
- * @return {Promise<HttpResponse<slickqaCompanySettings>>} 
+ * @return {Promise<HttpResponse<slickqaCompanySettings>>} A successful response.
  */
 export function GetCompanySettings(CompanyName) {
   const parameters = {
@@ -38,7 +38,7 @@ export function GetCompanySettings(CompanyName) {
 /**
  * @param {string} CompanyName 
  * @param {slickqaCompanySettings} body 
- * @return {Promise<HttpResponse<slickqaCompanySettings>>} 
+ * @return {Promise<HttpResponse<slickqaCompanySettings>>} A successful response.
  */
 export function UpdateCompanySettings(CompanyName, body) {
   const parameters = {

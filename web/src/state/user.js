@@ -19,10 +19,18 @@ export default class UserState {
   reset() {
     if(localStorage.token) {
       UserApi.GetCurrentUserInfo().then((response) => {
+        console.log(response.data);
         this.User = response.data;
       });
     } else {
-        this.User = {};
+        this.User = {
+          UserPreferences: {
+            Theme: "Red"
+          },
+          Permissions: {
+            Companies: [],
+          }
+        };
     }
   }
 

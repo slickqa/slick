@@ -6,7 +6,7 @@ import * as gateway from './gateway'
  * @param {string} CompanyName 
  * @param {string} ProjectName 
  * @param {number} Permission 
- * @return {Promise<HttpResponse<slickqaIsAuthorizedResponse>>} 
+ * @return {Promise<HttpResponse<slickqaIsAuthorizedResponse>>} A successful response.
  */
 export function IsAuthorized(CompanyName, ProjectName, Permission) {
   const parameters = {
@@ -21,7 +21,7 @@ export function IsAuthorized(CompanyName, ProjectName, Permission) {
 
 /**
  * @param {slickqaPlainUserLoginRequest} body 
- * @return {Promise<HttpResponse<slickqaLoginResponse>>} 
+ * @return {Promise<HttpResponse<slickqaLoginResponse>>} A successful response.
  */
 export function LoginWithCredentials(body) {
   const parameters = {
@@ -34,7 +34,7 @@ export function LoginWithCredentials(body) {
 
 /**
  * @param {string} Token 
- * @return {Promise<HttpResponse<slickqaLoginResponse>>} 
+ * @return {Promise<HttpResponse<slickqaLoginResponse>>} A successful response.
  */
 export function LoginWithToken(Token) {
   const parameters = {

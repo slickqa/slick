@@ -72,7 +72,7 @@ export class UserSettingsPage extends Component {
                 <Anchor
                   key={theme}
                   className='active'
-                  onClick={() => {UserState.User.UserPreferences.Theme = theme;}}>
+                  onClick={() => {UserState.User.UserPreferences.Theme = theme; this.editedFields.push("theme")}}>
                   {theme}
                 </Anchor>
               );}

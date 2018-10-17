@@ -62,16 +62,21 @@ export default class Navbar extends Component {
     e.preventDefault();
     const {UserState} = this.props;
     let link = {
-      Name: document.title,
+      Id: {
+
+        Name: document.title,
+      },
       Url: document.location.href.substring(document.location.protocol.length + document.location.host.length + 2),
       UIViewType: "favorite"
     };
+    console.log(link);
 
     if(!UserState.User.UserPreferences.Favorites) {
       UserState.User.UserPreferences.Favorites = [];
     }
     UserState.User.UserPreferences.Favorites.push(link);
     UserState.submit();
+    console.log(UserState);
   }
 
   setLandingPage(e) {

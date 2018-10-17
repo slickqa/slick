@@ -11,7 +11,7 @@ export function GetProjects() {
 
 /**
  * @param {slickqaProjectIdentity} body 
- * @return {Promise<HttpResponse<slickqaProject>>} 
+ * @return {Promise<HttpResponse<slickqaProject>>} A successful response.
  */
 export function AddProject(body) {
   const parameters = {
@@ -25,7 +25,7 @@ export function AddProject(body) {
 /**
  * @param {string} Company 
  * @param {string} Name 
- * @return {Promise<HttpResponse<slickqaProject>>} 
+ * @return {Promise<HttpResponse<slickqaProject>>} A successful response.
  */
 export function GetProjectByName(Company, Name) {
   const parameters = {
