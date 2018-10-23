@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import Heading from 'grommet/components/Heading';
 import Box from 'grommet/components/Box';
+import Button from 'grommet/components/Button';
 import Tiles from 'grommet/components/Tiles';
 import Tile from 'grommet/components/Tile';
 import Title from 'grommet/components/Title';
+import List from 'grommet/components/List';
+import ListItem from 'grommet/components/ListItem';
+import CloseIcon from 'grommet/components/icons/base/Close';
 import StandardPage from './standard';
 import navigation from '../navigation';
 import {EmbeddedLinkItemView, LinkItem} from "../components/LinkView";
@@ -33,6 +37,7 @@ export class ProjectPage extends Component {
 
   render() {
     let { ProjectsState } = this.props;
+    console.log(this.props);
     let companyParam = this.props.match.params.company;
     let projectParam = this.props.match.params.project;
     setTimeout(() => {ProjectsState.current = {Company: companyParam, Name: projectParam}}, 0);
@@ -50,30 +55,35 @@ export class ProjectPage extends Component {
       LastUpdated: new Date()
       };
     }
+    let content = null;
     let query = qs.parse(this.props.location.search);
-
-    let linksList = this.links.map((link) => {
-      let item = <LinkItem link={link}/>;
-      let show = null;
-
-      if(query.view === link.Id.Name) {
-        show = <EmbeddedLinkItemView link={link}/>
+    if(query.view) {
+      let link = this.links.find((possible) => {return possible.Id.Name === query.view});
+      if(link) {
+        content = <Box colorIndex="grey-1-a" pad="small" margin={{vertical: "small"}}>
+          <Box separator="bottom">
+            <Heading margin="none">Project {projectParam} for Company {companyParam}</Heading>
+          </Box>
+          <Heading margin="none" tag="h2">{link.Id.Name}</Heading>
+          <Box>
+            <EmbeddedLinkItemView link={link}/>
+          </Box>
+          <Button icon={<CloseIcon/>} onClick={this.props.history.goBack} primary={true} label="Close"/>
+        </Box>;
       }
-      return <li key={link.Id.Name}>{item}{show}</li>;
-    });
-
-
-    return (
-      <StandardPage nav="Projects">
+    } else {
+      content = <Box>
         <Box colorIndex="grey-1-a" pad="small" margin={{vertical: "small"}}><Heading margin="none">Project {projectParam} for Company {companyParam}</Heading></Box>
         <Tiles fill={true}>
           <Tile>
             <Box colorIndex="grey-1-a" pad="small" margin="small" size="large">
               <Title>Links, Documents, and Files</Title>
               <Box>
-                <ul>
-                  {linksList}
-                </ul>
+                <List>
+                  {this.links.map((link) => {
+                    return <ListItem key={link.Id.Name}><LinkItem link={link} onClick={this.onSelectLinkItem.bind(this, link.Id.Name)}/></ListItem>;
+                  })}
+                </List>
               </Box>
             </Box>
           </Tile>
@@ -83,9 +93,23 @@ export class ProjectPage extends Component {
             </Box>
           </Tile>
         </Tiles>
+      </Box>;
+    }
+
+    return (
+      <StandardPage nav="Projects">
+        {content}
       </StandardPage>
     );
   }
+
+  onSelectLinkItem(itemName) {
+    this.props.history.push({
+      path: this.props.location.path,
+      search: qs.stringify({view: itemName})
+    })
+  }
+
 }
 
 navigation.registerUrlMapping("/projects/:company/:project", ProjectPage);

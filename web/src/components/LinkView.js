@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import Anchor from 'grommet/components/Anchor';
+import Box from 'grommet/components/Box';
 import ImageIcon from 'grommet/components/icons/base/Image';
 import UnknownIcon from 'grommet/components/icons/base/Document';
 import {GetDownloadUrl} from '../slick-api/Links';
@@ -122,7 +123,7 @@ export class EmbeddedLinkItemView extends Component {
 
   renderImageLink() {
     let link = this.props.link;
-    return <img src={this.state.downloadUrl} alt={link.Id.Name}/>;
+    return <Box><img className="embedded-link-item-view" src={this.state.downloadUrl} alt={link.Id.Name}/></Box>;
   }
 
 
