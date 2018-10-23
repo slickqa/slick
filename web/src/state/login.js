@@ -74,7 +74,7 @@ export default class LoginState {
   }
 
   @computed get IsLoggedIn() {
-    return localStorage.token && Object.keys(this.DecodedJwt).length !== 0 && !this.IsExpired;
+    return localStorage.token && typeof this.DecodedJwt.sp !== 'undefined' && !this.IsExpired;
   }
 
   /**

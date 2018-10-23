@@ -47,6 +47,7 @@ export default class Navbar extends Component {
     });
     this.changeNavAction = this.changeNavAction.bind(this);
     this.addToFavorites = this.addToFavorites.bind(this);
+    this.setLandingPage = this.setLandingPage.bind(this);
   }
 
   changeNavAction(to) {
@@ -62,9 +63,11 @@ export default class Navbar extends Component {
     e.preventDefault();
     const {UserState} = this.props;
     let link = {
-      Name: document.title,
+      Id: {
+        Name: document.title,
+      },
       Url: document.location.href.substring(document.location.protocol.length + document.location.host.length + 2),
-      UIViewType: "favorite"
+      Type: "favorite"
     };
 
     if(!UserState.User.UserPreferences.Favorites) {

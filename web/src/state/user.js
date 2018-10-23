@@ -22,7 +22,14 @@ export default class UserState {
         this.User = response.data;
       });
     } else {
-        this.User = {};
+        this.User = {
+          UserPreferences: {
+            Theme: "Red"
+          },
+          Permissions: {
+            Companies: [],
+          }
+        };
     }
   }
 

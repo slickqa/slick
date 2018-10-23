@@ -20,7 +20,7 @@
         "operationId": "IsAuthorized",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/slickqaIsAuthorizedResponse"
             }
@@ -57,7 +57,7 @@
         "operationId": "LoginWithCredentials",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/slickqaLoginResponse"
             }
@@ -83,7 +83,7 @@
         "operationId": "LoginWithToken",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/slickqaLoginResponse"
             }
@@ -107,7 +107,7 @@
         "operationId": "RefreshToken",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/slickqaLoginResponse"
             }
@@ -123,7 +123,7 @@
         "operationId": "GetAvailableCompanySettings",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/slickqaAvailableCompanySettings"
             }
@@ -137,7 +137,7 @@
         "operationId": "AddCompanySettings",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/slickqaCompanySettings"
             }
@@ -163,7 +163,7 @@
         "operationId": "GetCompanySettings",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/slickqaCompanySettings"
             }
@@ -185,7 +185,7 @@
         "operationId": "UpdateCompanySettings",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/slickqaCompanySettings"
             }
@@ -217,7 +217,7 @@
         "operationId": "GetLinks",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/slickqaLinkList"
             }
@@ -259,7 +259,7 @@
         "operationId": "RemoveLink",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/slickqaLinkList"
             }
@@ -307,7 +307,7 @@
         "operationId": "GetDownloadUrl",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/slickqaLinkUrl"
             }
@@ -355,7 +355,7 @@
         "operationId": "AddLink",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/slickqaLinkList"
             }
@@ -409,7 +409,7 @@
         "operationId": "UpdateLink",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/slickqaLinkList"
             }
@@ -465,7 +465,7 @@
         "operationId": "GetUploadUrl",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/slickqaLinkUrl"
             }
@@ -521,7 +521,7 @@
         "operationId": "GetProjects",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/slickqaProjectsListResponse"
             }
@@ -535,7 +535,7 @@
         "operationId": "AddProject",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/slickqaProject"
             }
@@ -561,7 +561,7 @@
         "operationId": "GetProjectByName",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/slickqaProject"
             }
@@ -591,7 +591,7 @@
         "operationId": "GetUsersForCompany",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/slickqaUsersQueryResponse"
             }
@@ -613,7 +613,7 @@
         "operationId": "AddUserToCompany",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/slickqaUserInfo"
             }
@@ -645,7 +645,7 @@
         "operationId": "GetUsersForProject",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/slickqaUsersQueryResponse"
             }
@@ -675,7 +675,7 @@
         "operationId": "GetCurrentUserInfo",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/slickqaUserInfo"
             }
@@ -691,7 +691,7 @@
         "operationId": "GetUserInfo",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/slickqaUserInfo"
             }
@@ -715,7 +715,7 @@
         "operationId": "UpdateUser",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/slickqaUserInfo"
             }
@@ -747,7 +747,7 @@
         "operationId": "GetFullVersion",
         "responses": {
           "200": {
-            "description": "",
+            "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/slickqaVersionInfoResponse"
             }

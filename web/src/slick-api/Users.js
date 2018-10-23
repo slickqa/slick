@@ -4,7 +4,7 @@ import * as gateway from './gateway'
 
 /**
  * @param {string} CompanyName 
- * @return {Promise<HttpResponse<slickqaUsersQueryResponse>>} 
+ * @return {Promise<HttpResponse<slickqaUsersQueryResponse>>} A successful response.
  */
 export function GetUsersForCompany(CompanyName) {
   const parameters = {
@@ -18,7 +18,7 @@ export function GetUsersForCompany(CompanyName) {
 /**
  * @param {string} CompanyName 
  * @param {slickqaAddUserRequest} body 
- * @return {Promise<HttpResponse<slickqaUserInfo>>} 
+ * @return {Promise<HttpResponse<slickqaUserInfo>>} A successful response.
  */
 export function AddUserToCompany(CompanyName, body) {
   const parameters = {
@@ -35,7 +35,7 @@ export function AddUserToCompany(CompanyName, body) {
 /**
  * @param {string} CompanyName 
  * @param {string} ProjectName 
- * @return {Promise<HttpResponse<slickqaUsersQueryResponse>>} 
+ * @return {Promise<HttpResponse<slickqaUsersQueryResponse>>} A successful response.
  */
 export function GetUsersForProject(CompanyName, ProjectName) {
   const parameters = {
@@ -56,7 +56,7 @@ export function GetCurrentUserInfo() {
 
 /**
  * @param {string} EmailAddress 
- * @return {Promise<HttpResponse<slickqaUserInfo>>} 
+ * @return {Promise<HttpResponse<slickqaUserInfo>>} A successful response.
  */
 export function GetUserInfo(EmailAddress) {
   const parameters = {
@@ -70,7 +70,7 @@ export function GetUserInfo(EmailAddress) {
 /**
  * @param {string} EmailAddress 
  * @param {slickqaUserInfo} body 
- * @return {Promise<HttpResponse<slickqaUserInfo>>} 
+ * @return {Promise<HttpResponse<slickqaUserInfo>>} A successful response.
  */
 export function UpdateUser(EmailAddress, body) {
   const parameters = {

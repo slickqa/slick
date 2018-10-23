@@ -1,9 +1,9 @@
 package db
 
 import (
-	"github.com/slickqa/slick/slickqa"
 	"github.com/globalsign/mgo"
 	"github.com/slickqa/slick/slickconfig"
+	"github.com/slickqa/slick/slickqa"
 )
 
 const (
@@ -14,15 +14,18 @@ type linksType struct {}
 var Links = linksType{}
 
 type LinksQuery struct {
-	Id *slickqa.LinkIdentity `bson:"_id"`
+	Company string `bson:"_id.company"`
+	Project string `bson:"_id.project"`
+	EntityType string `bson:"_id.type"`
+	EntityId string `bson:"_id.id"`
 }
 
 func (l *linksType) FindLinkById(id *slickqa.LinkIdentity) (*slickqa.Link, error) {
 	mongo := MongoSession.Copy()
 	defer mongo.Close()
-	var retval *slickqa.Link
-	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(LinksCollectionName).FindId(id).One(retval)
-	return retval, err
+	var retval slickqa.Link
+	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(LinksCollectionName).FindId(id).One(&retval)
+	return &retval, err
 }
 
 func (l *linksType) FindLinks(query *LinksQuery) ([]*slickqa.Link, error) {
@@ -33,7 +36,7 @@ func (l *linksType) FindLinks(query *LinksQuery) ([]*slickqa.Link, error) {
 
 func (*linksType) FindLinksUsingConnection(query *LinksQuery, mongo *mgo.Session) ([]*slickqa.Link, error) {
 	var links []*slickqa.Link
-	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(LinksCollectionName).Find(query).All(links)
+	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(LinksCollectionName).Find(query).All(&links)
 	return links, err
 }
 

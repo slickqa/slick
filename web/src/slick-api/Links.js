@@ -7,7 +7,7 @@ import * as gateway from './gateway'
  * @param {string} Project 
  * @param {string} EntityType 
  * @param {string} EntityId 
- * @return {Promise<HttpResponse<slickqaLinkList>>} 
+ * @return {Promise<HttpResponse<slickqaLinkList>>} A successful response.
  */
 export function GetLinks(Company, Project, EntityType, EntityId) {
   const parameters = {
@@ -27,7 +27,7 @@ export function GetLinks(Company, Project, EntityType, EntityId) {
  * @param {string} EntityType 
  * @param {string} EntityId 
  * @param {string} Name 
- * @return {Promise<HttpResponse<slickqaLinkList>>} 
+ * @return {Promise<HttpResponse<slickqaLinkList>>} A successful response.
  */
 export function RemoveLink(Company, Project, EntityType, EntityId, Name) {
   const parameters = {
@@ -48,7 +48,7 @@ export function RemoveLink(Company, Project, EntityType, EntityId, Name) {
  * @param {string} EntityType 
  * @param {string} EntityId 
  * @param {string} Name 
- * @return {Promise<HttpResponse<slickqaLinkUrl>>} 
+ * @return {Promise<HttpResponse<slickqaLinkUrl>>} A successful response.
  */
 export function GetDownloadUrl(Company, Project, EntityType, EntityId, Name) {
   const parameters = {
@@ -70,7 +70,7 @@ export function GetDownloadUrl(Company, Project, EntityType, EntityId, Name) {
  * @param {string} Id_EntityId 
  * @param {string} Id_Name 
  * @param {slickqaLink} body 
- * @return {Promise<HttpResponse<slickqaLinkList>>} 
+ * @return {Promise<HttpResponse<slickqaLinkList>>} A successful response.
  */
 export function AddLink(Id_Company, Id_Project, Id_EntityType, Id_EntityId, Id_Name, body) {
   const parameters = {
@@ -95,7 +95,7 @@ export function AddLink(Id_Company, Id_Project, Id_EntityType, Id_EntityId, Id_N
  * @param {string} Id_EntityId 
  * @param {string} Id_Name 
  * @param {slickqaLink} body 
- * @return {Promise<HttpResponse<slickqaLinkList>>} 
+ * @return {Promise<HttpResponse<slickqaLinkList>>} A successful response.
  */
 export function UpdateLink(Id_Company, Id_Project, Id_EntityType, Id_EntityId, Id_Name, body) {
   const parameters = {
@@ -120,7 +120,7 @@ export function UpdateLink(Id_Company, Id_Project, Id_EntityType, Id_EntityId, I
  * @param {string} Id_EntityId 
  * @param {string} Id_Name 
  * @param {slickqaFileUploadInfo} body 
- * @return {Promise<HttpResponse<slickqaLinkUrl>>} 
+ * @return {Promise<HttpResponse<slickqaLinkUrl>>} A successful response.
  */
 export function GetUploadUrl(Id_Company, Id_Project, Id_EntityType, Id_EntityId, Id_Name, body) {
   const parameters = {

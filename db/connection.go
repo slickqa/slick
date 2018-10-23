@@ -2,6 +2,7 @@ package db
 
 import (
 	"github.com/globalsign/mgo"
+	"github.com/globalsign/mgo/bson"
 	"github.com/slickqa/slick/slickconfig"
 	"crypto/tls"
 	"crypto/x509"
@@ -14,6 +15,7 @@ var (
 )
 
 func InitializeMongoConnection() error {
+	bson.SetJSONTagFallback(true)
 	var err error
 	logger := log.With().Str("loggerName", "db.connection.init").Logger()
 	logger.Debug().Str("url", slickconfig.Configuration.Mongo.URL).Bool("useTLS", slickconfig.Configuration.Mongo.UseTLS).Msg("Connecting to mongo database")

@@ -92,6 +92,9 @@ func issueLoginSession() http.Handler {
 		user, err := db.User.Find(googleUser.Email)
 		if err != nil {
 			user = slickUserFromGoogleUser(googleUser)
+			if user.UserPreferences == nil {
+				user.UserPreferences = defaultPreferencesForUser(user)
+			}
 			err = db.User.AddUser(user)
 			if err != nil {
 				logger.Error().AnErr("error", err).Str("user", user.EmailAddress).Msg("Cannot store in database user, login can continue, but many things may not work.")
