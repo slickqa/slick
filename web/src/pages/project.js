@@ -6,16 +6,29 @@ import Tile from 'grommet/components/Tile';
 import Title from 'grommet/components/Title';
 import StandardPage from './standard';
 import navigation from '../navigation';
+import {EmbeddedLinkItemView, LinkItem} from "../components/LinkView";
+import {GetLinks} from "../slick-api/Links";
 import {inject, observer} from 'mobx-react';
+import {observable} from "mobx";
+import qs from 'query-string';
 
 @inject('ProjectsState') @observer
 export class ProjectPage extends Component {
+  @observable links = [];
+
   constructor(props) {
     super(props);
   }
 
   componentWillMount() {
+    let companyParam = this.props.match.params.company;
+    let projectParam = this.props.match.params.project;
     document.title = this.props.match.params.project + " Project";
+    GetLinks(companyParam, projectParam, "Project", projectParam).then((resp) => {
+      if(resp.data.links) {
+        this.links = resp.data.links;
+      }
+    });
   }
 
   render() {
@@ -37,6 +50,18 @@ export class ProjectPage extends Component {
       LastUpdated: new Date()
       };
     }
+    let query = qs.parse(this.props.location.search);
+
+    let linksList = this.links.map((link) => {
+      let item = <LinkItem link={link}/>;
+      let show = null;
+
+      if(query.view === link.Id.Name) {
+        show = <EmbeddedLinkItemView link={link}/>
+      }
+      return <li key={link.Id.Name}>{item}{show}</li>;
+    });
+
 
     return (
       <StandardPage nav="Projects">
@@ -45,6 +70,11 @@ export class ProjectPage extends Component {
           <Tile>
             <Box colorIndex="grey-1-a" pad="small" margin="small" size="large">
               <Title>Links, Documents, and Files</Title>
+              <Box>
+                <ul>
+                  {linksList}
+                </ul>
+              </Box>
             </Box>
           </Tile>
           <Tile>

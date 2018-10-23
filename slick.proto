@@ -327,15 +327,15 @@ message LinkUrl {
 }
 
 message LinkIdentity {
-  string Company = 1; //`bson:"company"`
-  string Project = 2; //`bson:"project"`
-  string EntityType = 3; //`bson:"type"`
-  string EntityId = 4; //`bson:"id"`
-  string Name = 5; //`bson:"name"`
+  string Company = 1; //`bson:"company,omitempty"`
+  string Project = 2; //`bson:"project,omitempty"`
+  string EntityType = 3; //`bson:"type,omitempty"`
+  string EntityId = 4; //`bson:"id,omitempty"`
+  string Name = 5; //`bson:"name,omitempty"`
 }
 
 message Link {
-  LinkIdentity Id = 1; //`bson:"id"`
+  LinkIdentity Id = 1; //`bson:"_id"`
   string Type = 2; //`bson:"type"`
   int32 Order = 3; //`bson:"order"`
   string Url = 4; //`bson:"url"`

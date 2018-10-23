@@ -1476,11 +1476,11 @@ func (m *LinkUrl) GetExpires() *timestamp.Timestamp {
 }
 
 type LinkIdentity struct {
-	Company              string   ` protobuf:"bytes,1,opt,name=Company,proto3"           json:"Company,omitempty"      bson:"company"`
-	Project              string   ` protobuf:"bytes,2,opt,name=Project,proto3"           json:"Project,omitempty"      bson:"project"`
-	EntityType           string   ` protobuf:"bytes,3,opt,name=EntityType,proto3"        json:"EntityType,omitempty"   bson:"type"`
-	EntityId             string   ` protobuf:"bytes,4,opt,name=EntityId,proto3"          json:"EntityId,omitempty"     bson:"id"`
-	Name                 string   ` protobuf:"bytes,5,opt,name=Name,proto3"              json:"Name,omitempty"         bson:"name"`
+	Company              string   ` protobuf:"bytes,1,opt,name=Company,proto3"           json:"Company,omitempty"      bson:"company,omitempty"`
+	Project              string   ` protobuf:"bytes,2,opt,name=Project,proto3"           json:"Project,omitempty"      bson:"project,omitempty"`
+	EntityType           string   ` protobuf:"bytes,3,opt,name=EntityType,proto3"        json:"EntityType,omitempty"   bson:"type,omitempty"`
+	EntityId             string   ` protobuf:"bytes,4,opt,name=EntityId,proto3"          json:"EntityId,omitempty"     bson:"id,omitempty"`
+	Name                 string   ` protobuf:"bytes,5,opt,name=Name,proto3"              json:"Name,omitempty"         bson:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"                                             `
 	XXX_unrecognized     []byte   `json:"-"                                             `
 	XXX_sizecache        int32    `json:"-"                                             `
@@ -1547,7 +1547,7 @@ func (m *LinkIdentity) GetName() string {
 }
 
 type Link struct {
-	Id                   *LinkIdentity        ` protobuf:"bytes,1,opt,name=Id,proto3"                json:"Id,omitempty"           bson:"id"`
+	Id                   *LinkIdentity        ` protobuf:"bytes,1,opt,name=Id,proto3"                json:"Id,omitempty"           bson:"_id"`
 	Type                 string               ` protobuf:"bytes,2,opt,name=Type,proto3"              json:"Type,omitempty"         bson:"type"`
 	Order                int32                ` protobuf:"varint,3,opt,name=Order,proto3"            json:"Order,omitempty"        bson:"order"`
 	Url                  string               ` protobuf:"bytes,4,opt,name=Url,proto3"               json:"Url,omitempty"          bson:"url"`

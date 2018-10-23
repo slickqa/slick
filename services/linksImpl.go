@@ -1,6 +1,7 @@
 package services
 
 import (
+	"github.com/rs/zerolog/log"
 	"github.com/slickqa/slick/slickqa"
 	"context"
 	"github.com/slickqa/slick/jwtauth"
@@ -93,7 +94,7 @@ func (SlickLinksService) GetLinks(ctx context.Context, id *slickqa.LinkListIdent
 	if err != nil {
 		return nil, status.Error(codes.PermissionDenied, err.Error())
 	}
-	links, err := db.Links.FindLinks(&db.LinksQuery{Id: &slickqa.LinkIdentity{ Company: id.Company, Project: id.Project, EntityType: id.EntityType, EntityId: id.EntityId}})
+	links, err := db.Links.FindLinks(&db.LinksQuery{ Company: id.Company, Project: id.Project, EntityType: id.EntityType, EntityId: id.EntityId})
 	return &slickqa.LinkList{
 		Links: links,
 	}, err
@@ -184,9 +185,12 @@ func (l SlickLinksService) GetDownloadUrl(ctx context.Context, id *slickqa.LinkI
 	}
 
 
+	logger := log.With().Str("loggerName", "services.linksImpl.GetDownloadUrl").Logger()
+	logger.Debug().Msg("Looking for link")
 	// find link in db, return error if it doesn't exist
 	link, err := db.Links.FindLinkById(id)
 	if err != nil {
+		logger.Debug().Str("error", err.Error()).Msg("Error finding link")
 		return nil, status.Error(codes.NotFound, err.Error())
 	}
 
@@ -200,9 +204,11 @@ func (l SlickLinksService) GetDownloadUrl(ctx context.Context, id *slickqa.LinkI
 		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("No storage settings are defined for %s", id.Company))
 	}
 
+	logger.Debug().Str("BaseUrl", settings.StorageSettings.BaseUrl).Msg("Initializing minio client")
 	// generate URL from company storage settings
 	minioClient, err := minio.New(settings.StorageSettings.BaseUrl, settings.StorageSettings.AccessKey, settings.StorageSettings.SecretKey, true)
 	if err != nil {
+		logger.Error().Str("error", err.Error()).Msg("Unable to create storage client")
 		return nil, status.Error(codes.Unknown, "Unable to create storage client")
 	}
 
@@ -211,6 +217,7 @@ func (l SlickLinksService) GetDownloadUrl(ctx context.Context, id *slickqa.LinkI
 	if err != nil {
 		return nil, status.Error(codes.Unknown, "Generating url failed.")
 	}
+	logger.Debug().Str("URL", url.String())
 
 	expire, _ := ptypes.TimestampProto(time.Now().Add(time.Minute * 15))
 

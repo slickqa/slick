@@ -13,7 +13,11 @@ export default class CompaniesState {
    */
   @action load() {
     return CompanyApi.GetAvailableCompanySettings().then((response) => {
-      this.companies = response.data.Companies;
+      if(response.data.Companies) {
+        this.companies = response.data.Companies;
+      } else {
+        this.companies = [];
+      }
       return response;
     });
   }

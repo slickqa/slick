@@ -97,6 +97,7 @@ func RunService(c *cli.Context) {
 	slickqa.RegisterVersionServer(grpcServer, &services.SlickVersionService{})
 	slickqa.RegisterCompanyServer(grpcServer, &services.SlickCompanyService{})
 	slickqa.RegisterProjectsServer(grpcServer, &services.SlickProjectsService{})
+	slickqa.RegisterLinksServer(grpcServer, &services.SlickLinksService{})
 	dialHostname := slickconfig.Configuration.Common.ListenIP
 	if dialHostname == "0.0.0.0" || dialHostname == "127.0.0.1" {
 		dialHostname = "localhost"
@@ -141,6 +142,13 @@ func RunService(c *cli.Context) {
 
 	if err != nil {
 		logger.Fatal().AnErr("error", err).Msg("Error registering projects grpc gateway")
+		return
+	}
+
+	err = slickqa.RegisterLinksHandlerFromEndpoint(ctx, restGatewayMux, fmt.Sprintf("%s:%d", dialHostname, slickconfig.Configuration.Common.ListenPort), dopts)
+
+	if err != nil {
+		logger.Fatal().AnErr("error", err).Msg("Error registering links grpc gateway")
 		return
 	}
 
