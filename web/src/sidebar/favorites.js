@@ -16,7 +16,7 @@ export class FavoriteSideBarComponent extends Component {
     const {UserState} = this.props;
     if(UserState.User.UserPreferences && UserState.User.UserPreferences.Favorites) {
       favoritesList = UserState.User.UserPreferences.Favorites.map((favorite) => {
-        if(favorite.Type === "favorite") {
+        if(favorite.Type === "favorite" && favorite.Id) {
           return <Anchor key={favorite.Id.Name} path={favorite.Url}>{favorite.Id.Name}</Anchor>;
         }
       });
