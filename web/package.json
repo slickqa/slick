@@ -18,7 +18,7 @@
     "mobx-react": "^5.3.1",
     "node-sass-glob-importer": "^5.2.0",
     "prop-types": "^15.6.2",
-    "query-string": "^6.2.0",
+    "query-string": "^5.1.1",
     "react": "^15.4.0",
     "react-dom": "^15.4.0",
     "react-router-dom": "^4.3.1"

@@ -4,4 +4,5 @@ slick.toml
 **/.idea
 web/dist
 web/node_modules
+web/.eslintcache
 swagger-codegen-cli-2.3.1.jar
