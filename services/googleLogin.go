@@ -92,6 +92,9 @@ func issueLoginSession() http.Handler {
 		user, err := db.User.Find(googleUser.Email)
 		if err != nil {
 			user = slickUserFromGoogleUser(googleUser)
+			if user.EmailAddress == slickconfig.Configuration.DefaultAccess.Admin {
+				user.Permissions.SlickAdmin = 1
+			}
 			if user.UserPreferences == nil {
 				user.UserPreferences = defaultPreferencesForUser(user)
 			}

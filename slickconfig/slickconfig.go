@@ -30,6 +30,7 @@ type RolesConfiguration struct {
 type DefaultAccessConfiguration struct {
 	Company string `toml:"company-name" comment:"The company name for the projects you want to give access to."`
 	Projects []string `toml:"projects" comment:"The list of projects you want every user who logs in to have read only access to."`
+	Admin string `toml:"admin" comment:"When this user signs in they are automatically given slick admin permissions.  Should be an email address."`
 }
 
 type TLSEncryptionConfiguration struct {
