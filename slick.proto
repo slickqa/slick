@@ -294,6 +294,15 @@ service Links {
   }
 }
 
+service Agents {
+  rpc UpdateStatus(AgentStatus) returns (AgentStatus) {
+    option (google.api.http) = {
+      post: "/api/agents/{Id.Company}/{Id.Name}/status"
+      body: "*"
+    };
+  }
+}
+
 service Version {
   rpc GetFullVersion(VersionRequest) returns(VersionInfoResponse) {
     option (google.api.http) = {
@@ -412,4 +421,24 @@ message Testruns{
   string State = 7; //`bson:"state"`
   string TestplanId = 8; //`bson:"_id,omitempty"`
 }
+
+message AgentId {
+  string Company = 1; //`bson:"company"`
+  string Name = 2; //`bson:"name"`
+}
+
+message AgentCurrentTest {
+  string Name = 1; //`bson:"name"`
+  string Url = 2; //`bson:"url"`
+  string AutomationId = 3; //`bson:"automationId"`
+}
+
+message AgentStatus {
+  AgentId Id = 1; //`bson:"_id"`
+  google.protobuf.Timestamp LastCheckin = 2; //`bson:"checkin"`
+  string RunStatus = 3; //`bson:"runstatus"`
+  repeated string Groups = 4; //`bson:"groups"`
+  AgentCurrentTest CurrentTest = 5; //`bson:"testcase"`
+}
+
 

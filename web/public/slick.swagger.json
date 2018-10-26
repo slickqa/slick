@@ -15,6 +15,44 @@
     "application/json"
   ],
   "paths": {
+    "/api/agents/{Id.Company}/{Id.Name}/status": {
+      "post": {
+        "operationId": "UpdateStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/slickqaAgentStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Id.Company",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Id.Name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/slickqaAgentStatus"
+            }
+          }
+        ],
+        "tags": [
+          "Agents"
+        ]
+      }
+    },
     "/api/auth/isAuthorized/{CompanyName}/{ProjectName}/{Permission}": {
       "get": {
         "operationId": "IsAuthorized",
@@ -771,6 +809,55 @@
         },
         "Permissions": {
           "$ref": "#/definitions/slickqaCompanyPermissionInfo"
+        }
+      }
+    },
+    "slickqaAgentCurrentTest": {
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "Url": {
+          "type": "string"
+        },
+        "AutomationId": {
+          "type": "string"
+        }
+      }
+    },
+    "slickqaAgentId": {
+      "type": "object",
+      "properties": {
+        "Company": {
+          "type": "string"
+        },
+        "Name": {
+          "type": "string"
+        }
+      }
+    },
+    "slickqaAgentStatus": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "$ref": "#/definitions/slickqaAgentId"
+        },
+        "LastCheckin": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "RunStatus": {
+          "type": "string"
+        },
+        "Groups": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "CurrentTest": {
+          "$ref": "#/definitions/slickqaAgentCurrentTest"
         }
       }
     },

@@ -11,6 +11,34 @@
  */
 
 /**
+ * @typedef {Object} slickqaAgentCurrentTest
+ * @memberof module:types
+ * 
+ * @property {string} Name 
+ * @property {string} Url 
+ * @property {string} AutomationId 
+ */
+
+/**
+ * @typedef {Object} slickqaAgentId
+ * @memberof module:types
+ * 
+ * @property {string} Company 
+ * @property {string} Name 
+ */
+
+/**
+ * @typedef {Object} slickqaAgentStatus
+ * @memberof module:types
+ * 
+ * @property {slickqaAgentId} Id 
+ * @property {date} LastCheckin 
+ * @property {string} RunStatus 
+ * @property {string[]} Groups 
+ * @property {slickqaAgentCurrentTest} CurrentTest 
+ */
+
+/**
  * @typedef {Object} slickqaAvailableCompanySettings
  * @memberof module:types
  * 
