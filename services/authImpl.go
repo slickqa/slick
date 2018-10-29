@@ -1,12 +1,11 @@
 package services
 
 import (
-	"golang.org/x/net/context"
-	"github.com/slickqa/slick/jwtauth"
-	"github.com/slickqa/slick/slickqa"
-	"github.com/slickqa/slick/slickconfig"
-	"errors"
 	"github.com/slickqa/slick/db"
+	"github.com/slickqa/slick/jwtauth"
+	"github.com/slickqa/slick/slickconfig"
+	"github.com/slickqa/slick/slickqa"
+	"golang.org/x/net/context"
 )
 
 
@@ -41,12 +40,24 @@ func (s *SlickAuthService) RefreshToken(ctx context.Context, request *slickqa.Re
 	}
 }
 
-func (s *SlickAuthService) LoginWithToken(context.Context, *slickqa.ApiTokenLoginRequest) (*slickqa.LoginResponse, error) {
-	return nil, errors.New("not implemented")
+func (s *SlickAuthService) LoginWithToken(ctx context.Context, req *slickqa.ApiTokenLoginRequest) (*slickqa.LoginResponse, error) {
+	user, err := db.User.FindByToken(req.Token)
+	if err != nil {
+		return failedLoginResponse()
+	}
+	token, err := jwtauth.CreateJWTForUser(*user)
+	if err != nil {
+		return failedLoginResponse()
+	}
+	return &slickqa.LoginResponse{
+		Success: true,
+		Token: token,
+		User: user,
+	}, nil
 }
 
 func (s *SlickAuthService) LoginWithCredentials(context.Context, *slickqa.PlainUserLoginRequest) (*slickqa.LoginResponse, error) {
-	return nil, errors.New("not implemented")
+	return failedLoginResponse()
 }
 
 func (s *SlickAuthService) IsAuthorized(ctx context.Context, req *slickqa.IsAuthorizedRequest) (*slickqa.IsAuthorizedResponse, error) {

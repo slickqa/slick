@@ -91,6 +91,7 @@ message UserInfo {
   string JobTitle = 7; //`bson:"title"`
   string HashedPassword = 8; //`bson:"hashedPassword"`
   Preferences UserPreferences = 9; //`bson:"preferences"`
+  string ApiToken = 10; //`bson:"apiToken"`
 }
 
 message ApiTokenLoginRequest {
@@ -130,6 +131,15 @@ message AvailableCompanySettingsRequest {
 
 message AvailableCompanySettings {
   repeated CompanySettings Companies = 1; //`json:"Companies"`
+}
+
+message AgentsRequest {
+  string Company = 1; //
+}
+
+message AgentsResponse {
+  repeated AgentStatus Agents = 1; //
+
 }
 
 message RefreshTokenRequest {
@@ -299,6 +309,12 @@ service Agents {
     option (google.api.http) = {
       post: "/api/agents/{Id.Company}/{Id.Name}/status"
       body: "*"
+    };
+  }
+
+  rpc GetAgents(AgentsRequest) returns (AgentsResponse) {
+    option (google.api.http) = {
+      get: "/api/agents/{Company}"
     };
   }
 }

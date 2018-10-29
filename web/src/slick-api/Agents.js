@@ -3,6 +3,19 @@
 import * as gateway from './gateway'
 
 /**
+ * @param {string} Company 
+ * @return {Promise<HttpResponse<slickqaAgentsResponse>>} A successful response.
+ */
+export function GetAgents(Company) {
+  const parameters = {
+    path: {
+      Company
+    }
+  }
+  return gateway.request(GetAgentsOperation, parameters)
+}
+
+/**
  * @param {string} Id.Company 
  * @param {string} Id.Name 
  * @param {slickqaAgentStatus} body 
@@ -19,6 +32,11 @@ export function UpdateStatus(Id.Company, Id.Name, body) {
     }
   }
   return gateway.request(UpdateStatusOperation, parameters)
+}
+
+const GetAgentsOperation = {
+  path: '/api/agents/{Company}',
+  method: 'get'
 }
 
 const UpdateStatusOperation = {

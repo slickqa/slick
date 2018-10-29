@@ -39,6 +39,13 @@
  */
 
 /**
+ * @typedef {Object} slickqaAgentsResponse
+ * @memberof module:types
+ * 
+ * @property {slickqaAgentStatus[]} Agents 
+ */
+
+/**
  * @typedef {Object} slickqaAvailableCompanySettings
  * @memberof module:types
  * 
@@ -234,6 +241,7 @@
  * @property {string} JobTitle 
  * @property {string} HashedPassword 
  * @property {slickqaPreferences} UserPreferences 
+ * @property {string} ApiToken 
  */
 
 /**
