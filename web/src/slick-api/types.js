@@ -36,6 +36,7 @@
  * @property {string} RunStatus 
  * @property {string[]} Groups 
  * @property {slickqaAgentCurrentTest} CurrentTest 
+ * @property {date} LastScreenshotUpdate 
  */
 
 /**
@@ -208,6 +209,13 @@
  * @property {string} SecretKey 
  * @property {string} Bucket 
  * @property {string} Prefix 
+ */
+
+/**
+ * @typedef {Object} slickqaScreenshotUpdateRequest
+ * @memberof module:types
+ * 
+ * @property {slickqaAgentId} Id 
  */
 
 /**

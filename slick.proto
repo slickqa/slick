@@ -135,6 +135,7 @@ message AvailableCompanySettings {
 
 message AgentsRequest {
   string Company = 1; //
+  google.protobuf.Timestamp UpdatedSince = 2; //
 }
 
 message AgentsResponse {
@@ -150,6 +151,10 @@ message ProjectsRequest {
 
 message ProjectsListResponse {
   repeated Project Projects = 1; //
+}
+
+message ScreenshotUpdateRequest {
+  AgentId Id = 1; //
 }
 
 service Auth {
@@ -317,6 +322,13 @@ service Agents {
       get: "/api/agents/{Company}"
     };
   }
+
+  rpc UpdateScreenshot(ScreenshotUpdateRequest) returns (AgentStatus) {
+    option (google.api.http) = {
+      put: "/api/agents/{Id.Company}/{Id.Name}/screenshot"
+      body: "*"
+    };
+  }
 }
 
 service Version {
@@ -455,6 +467,7 @@ message AgentStatus {
   string RunStatus = 3; //`bson:"runstatus"`
   repeated string Groups = 4; //`bson:"groups"`
   AgentCurrentTest CurrentTest = 5; //`bson:"testcase"`
+  google.protobuf.Timestamp LastScreenshotUpdate = 6; //`bson:"screenshotUpdate"`
 }
 
 

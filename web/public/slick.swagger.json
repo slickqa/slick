@@ -39,6 +39,44 @@
         ]
       }
     },
+    "/api/agents/{Id.Company}/{Id.Name}/screenshot": {
+      "post": {
+        "operationId": "UpdateScreenshot",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/slickqaAgentStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Id.Company",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Id.Name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/slickqaScreenshotUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Agents"
+        ]
+      }
+    },
     "/api/agents/{Id.Company}/{Id.Name}/status": {
       "post": {
         "operationId": "UpdateStatus",
@@ -882,6 +920,10 @@
         },
         "CurrentTest": {
           "$ref": "#/definitions/slickqaAgentCurrentTest"
+        },
+        "LastScreenshotUpdate": {
+          "type": "string",
+          "format": "date-time"
         }
       }
     },
@@ -1195,6 +1237,14 @@
         },
         "Prefix": {
           "type": "string"
+        }
+      }
+    },
+    "slickqaScreenshotUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "$ref": "#/definitions/slickqaAgentId"
         }
       }
     },

@@ -18,6 +18,25 @@ export function GetAgents(Company) {
 /**
  * @param {string} Id.Company 
  * @param {string} Id.Name 
+ * @param {slickqaScreenshotUpdateRequest} body 
+ * @return {Promise<HttpResponse<slickqaAgentStatus>>} A successful response.
+ */
+export function UpdateScreenshot(Id.Company, Id.Name, body) {
+  const parameters = {
+    path: {
+      'Id.Company': Id.Company,
+      'Id.Name': Id.Name
+    },
+    body: {
+      body
+    }
+  }
+  return gateway.request(UpdateScreenshotOperation, parameters)
+}
+
+/**
+ * @param {string} Id.Company 
+ * @param {string} Id.Name 
  * @param {slickqaAgentStatus} body 
  * @return {Promise<HttpResponse<slickqaAgentStatus>>} A successful response.
  */
@@ -37,6 +56,12 @@ export function UpdateStatus(Id.Company, Id.Name, body) {
 const GetAgentsOperation = {
   path: '/api/agents/{Company}',
   method: 'get'
+}
+
+const UpdateScreenshotOperation = {
+  path: '/api/agents/{Id.Company}/{Id.Name}/screenshot',
+  contentTypes: ['application/json'],
+  method: 'post'
 }
 
 const UpdateStatusOperation = {
