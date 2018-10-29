@@ -39,6 +39,13 @@
  */
 
 /**
+ * @typedef {Object} slickqaAgentsResponse
+ * @memberof module:types
+ * 
+ * @property {slickqaAgentStatus[]} Agents 
+ */
+
+/**
  * @typedef {Object} slickqaAvailableCompanySettings
  * @memberof module:types
  * 

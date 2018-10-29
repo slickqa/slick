@@ -15,6 +15,30 @@
     "application/json"
   ],
   "paths": {
+    "/api/agents/{Company}": {
+      "get": {
+        "operationId": "GetAgents",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/slickqaAgentsResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Company",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Agents"
+        ]
+      }
+    },
     "/api/agents/{Id.Company}/{Id.Name}/status": {
       "post": {
         "operationId": "UpdateStatus",
@@ -858,6 +882,17 @@
         },
         "CurrentTest": {
           "$ref": "#/definitions/slickqaAgentCurrentTest"
+        }
+      }
+    },
+    "slickqaAgentsResponse": {
+      "type": "object",
+      "properties": {
+        "Agents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/slickqaAgentStatus"
+          }
         }
       }
     },

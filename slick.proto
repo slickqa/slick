@@ -132,6 +132,15 @@ message AvailableCompanySettings {
   repeated CompanySettings Companies = 1; //`json:"Companies"`
 }
 
+message AgentsRequest {
+  string Company = 1; //
+}
+
+message AgentsResponse {
+  repeated AgentStatus Agents = 1; //
+
+}
+
 message RefreshTokenRequest {
 }
 
@@ -299,6 +308,12 @@ service Agents {
     option (google.api.http) = {
       post: "/api/agents/{Id.Company}/{Id.Name}/status"
       body: "*"
+    };
+  }
+
+  rpc GetAgents(AgentsRequest) returns (AgentsResponse) {
+    option (google.api.http) = {
+      get: "/api/agents/{Company}"
     };
   }
 }
