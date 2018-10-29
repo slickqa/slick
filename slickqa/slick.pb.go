@@ -694,7 +694,7 @@ type UserInfo struct {
 	JobTitle             string               ` protobuf:"bytes,7,opt,name=JobTitle,proto3"          json:"JobTitle,omitempty"     bson:"title"`
 	HashedPassword       string               ` protobuf:"bytes,8,opt,name=HashedPassword,proto3"    json:"HashedPassword,omitempty"  bson:"hashedPassword"`
 	UserPreferences      *Preferences         ` protobuf:"bytes,9,opt,name=UserPreferences,proto3"   json:"UserPreferences,omitempty"  bson:"preferences"`
-	ApiToken             string               ` protobuf:"bytes,10,opt,name=ApiToken,proto3"         json:"ApiToken,omitempty"     bson:"token"`
+	ApiToken             string               ` protobuf:"bytes,10,opt,name=ApiToken,proto3"         json:"ApiToken,omitempty"     bson:"apiToken"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"                                             `
 	XXX_unrecognized     []byte               `json:"-"                                             `
 	XXX_sizecache        int32                `json:"-"                                             `
