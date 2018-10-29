@@ -103,6 +103,7 @@ func RunService(c *cli.Context) {
 		dialHostname = "localhost"
 	}
 	dopts := []grpc.DialOption{grpc.WithTransportCredentials(credentials.NewTLS(&tls.Config{
+		InsecureSkipVerify: true,
 		ServerName: fmt.Sprintf("%s:%d", dialHostname, slickconfig.Configuration.Common.ListenPort),
 		RootCAs:    certPool,
 	}))}
