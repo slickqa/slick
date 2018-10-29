@@ -1,6 +1,7 @@
 package db
 
 import (
+	"github.com/globalsign/mgo/bson"
 	"github.com/slickqa/slick/slickqa"
 	"github.com/slickqa/slick/slickconfig"
 )
@@ -21,6 +22,14 @@ func (u *userType) Find(email string) (*slickqa.UserInfo, error) {
 	defer mongo.Close()
 	result := slickqa.UserInfo{}
 	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(UsersCollectionName).Find(userIdQuery{Email: email}).One(&result)
+	return &result, err
+}
+
+func (u *userType) FindByToken(token string) (*slickqa.UserInfo, error) {
+	mongo := MongoSession.Copy()
+	defer mongo.Close()
+	result := slickqa.UserInfo{}
+	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(UsersCollectionName).Find(bson.M{"apiToken": token}).One(&result)
 	return &result, err
 }
 

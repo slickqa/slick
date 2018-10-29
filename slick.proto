@@ -91,6 +91,7 @@ message UserInfo {
   string JobTitle = 7; //`bson:"title"`
   string HashedPassword = 8; //`bson:"hashedPassword"`
   Preferences UserPreferences = 9; //`bson:"preferences"`
+  string ApiToken = 10; //`bson:"token"`
 }
 
 message ApiTokenLoginRequest {

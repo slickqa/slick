@@ -241,6 +241,7 @@
  * @property {string} JobTitle 
  * @property {string} HashedPassword 
  * @property {slickqaPreferences} UserPreferences 
+ * @property {string} ApiToken 
  */
 
 /**

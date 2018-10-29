@@ -1260,6 +1260,9 @@
         },
         "UserPreferences": {
           "$ref": "#/definitions/slickqaPreferences"
+        },
+        "ApiToken": {
+          "type": "string"
         }
       }
     },
