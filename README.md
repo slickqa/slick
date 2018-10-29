@@ -6,27 +6,29 @@ The easiest way to get started is by pulling the repo using go get and opening y
 
   `go get github.com/slickqa/slick`
 
-Get the dependancies:  
-
+#### Get the dependancies:
     `$GOHOME/src/github.com/slickqa/slick/make deps`
 
-Build:
+#### Build:
 
     `$GOHOME/src/github.com/slickqa/slick/go build`
   
-Generate config slick.toml:
+#### Generate config slick.toml:
 
     `./slick init -o slick.toml`
   
-Start your slick backend:
+#### Start your slick backend:
 
     `./slick -d serve -dev`
   
-Set up Google Authentication.  You will need to add the "client-id" and the "secret" to the slick.toml in the "google-authentication" section:
+#### Set up Google Authentication: 
+
+You will need to add the "client-id" and the "secret" to the slick.toml in the "google-authentication" section:
     
     `go to https://console.developers.google.com and create a project, and then go to API and Services -> Credentials and create credentials.`
 
-Start the frontend: 
+#### Start the frontend: 
+
     `cd web`
     
     `npm run dev`
