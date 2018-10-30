@@ -329,6 +329,33 @@ service Agents {
       body: "*"
     };
   }
+
+  rpc GetQueuedAction(AgentId) returns(AgentQueuedAction) {
+    option (google.api.http) = {
+      get: "/api/agents/{Company}/{Name}/action"
+    };
+  }
+
+  rpc AddQueuedAction(AgentQueuedAction) returns(AgentQueuedAction) {
+    option (google.api.http) = {
+      post: "/api/agents/{Target.Company}/{Target.Name}/action"
+      body: "*"
+    };
+  }
+
+  rpc GetAgentRunStatus(AgentId) returns(AgentRunStatus) {
+    option (google.api.http) = {
+      get: "/api/agents/{Company}/{Name}/status"
+    };
+  }
+
+  rpc SetAgentRunStatus(AgentRunStatus) returns(AgentRunStatus) {
+    option (google.api.http) = {
+      put: "/api/agents/{Id.Company}/{Id.Name}/status"
+      body: "*"
+    };
+  }
+
 }
 
 service Version {
@@ -461,6 +488,24 @@ message AgentCurrentTest {
   string AutomationId = 3; //`bson:"automationId"`
 }
 
+message ProjectReleaseBuildInfo {
+  string Project = 1; //`bson:"project"`
+  string Release = 2; //`bson:"release"`
+  string Build = 3; //`bson:"build"`
+}
+
+message AgentQueuedAction {
+  bytes Id = 1; //`bson:"_id"`
+  AgentId Target = 2; //`bson:"target"`
+  string Action = 3; //`bson:"action"`
+  string ActionParameter = 4; //`bson:"parameter"`
+}
+
+message AgentRunStatus {
+  AgentId Id = 1; //`bson:"_id"`
+  string RunStatus = 2; //`bson:"status"`
+}
+
 message AgentStatus {
   AgentId Id = 1; //`bson:"_id"`
   google.protobuf.Timestamp LastCheckin = 2; //`bson:"checkin"`
@@ -468,6 +513,17 @@ message AgentStatus {
   repeated string Groups = 4; //`bson:"groups"`
   AgentCurrentTest CurrentTest = 5; //`bson:"testcase"`
   google.protobuf.Timestamp LastScreenshotUpdate = 6; //`bson:"screenshotUpdate"`
+  repeated string Provides = 7; //`bson:"provides"`
+  repeated string BrokenProvides = 8; //`bson:"provides"`
+  repeated ProjectReleaseBuildInfo Projects = 9; //`bson:"projects"`
+  string Action = 10; //`bson:"action"`
+  string ActionParameter = 11; //`bson:"actionParameter"`
+  string Hardware = 12; //`bson:"hardware"`
+  string IP = 13; //`bson:"ip"`
+  bool ShouldExit = 14; //`bson:"shouldExit"`
+  map<string, string> Versions = 15; //`bson:"versions"`
+  map<string, string> Attributes = 16; //`bson:"attributes"`
+  map<string, string> RequiredAttributes = 18; //`bson:"requiredAttributes"`
 }
 
 

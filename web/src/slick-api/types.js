@@ -28,6 +28,24 @@
  */
 
 /**
+ * @typedef {Object} slickqaAgentQueuedAction
+ * @memberof module:types
+ * 
+ * @property {string} Id 
+ * @property {slickqaAgentId} Target 
+ * @property {string} Action 
+ * @property {string} ActionParameter 
+ */
+
+/**
+ * @typedef {Object} slickqaAgentRunStatus
+ * @memberof module:types
+ * 
+ * @property {slickqaAgentId} Id 
+ * @property {string} RunStatus 
+ */
+
+/**
  * @typedef {Object} slickqaAgentStatus
  * @memberof module:types
  * 
@@ -37,6 +55,17 @@
  * @property {string[]} Groups 
  * @property {slickqaAgentCurrentTest} CurrentTest 
  * @property {date} LastScreenshotUpdate 
+ * @property {string[]} Provides 
+ * @property {string[]} BrokenProvides 
+ * @property {slickqaProjectReleaseBuildInfo[]} Projects 
+ * @property {string} Action 
+ * @property {string} ActionParameter 
+ * @property {string} Hardware 
+ * @property {string} IP 
+ * @property {boolean} ShouldExit 
+ * @property {object} Versions 
+ * @property {object} Attributes 
+ * @property {object} RequiredAttributes 
  */
 
 /**
@@ -191,6 +220,15 @@
  * 
  * @property {string} ProjectName 
  * @property {string[]} Roles 
+ */
+
+/**
+ * @typedef {Object} slickqaProjectReleaseBuildInfo
+ * @memberof module:types
+ * 
+ * @property {string} Project 
+ * @property {string} Release 
+ * @property {string} Build 
  */
 
 /**

@@ -32,6 +32,73 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "UpdatedSince",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "tags": [
+          "Agents"
+        ]
+      }
+    },
+    "/api/agents/{Company}/{Name}/action": {
+      "get": {
+        "operationId": "GetQueuedAction",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/slickqaAgentQueuedAction"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Company",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Agents"
+        ]
+      }
+    },
+    "/api/agents/{Company}/{Name}/status": {
+      "get": {
+        "operationId": "GetAgentRunStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/slickqaAgentRunStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Company",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Name",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "tags": [
@@ -40,7 +107,7 @@
       }
     },
     "/api/agents/{Id.Company}/{Id.Name}/screenshot": {
-      "post": {
+      "put": {
         "operationId": "UpdateScreenshot",
         "responses": {
           "200": {
@@ -107,6 +174,80 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/slickqaAgentStatus"
+            }
+          }
+        ],
+        "tags": [
+          "Agents"
+        ]
+      },
+      "put": {
+        "operationId": "SetAgentRunStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/slickqaAgentRunStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Id.Company",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Id.Name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/slickqaAgentRunStatus"
+            }
+          }
+        ],
+        "tags": [
+          "Agents"
+        ]
+      }
+    },
+    "/api/agents/{Target.Company}/{Target.Name}/action": {
+      "post": {
+        "operationId": "AddQueuedAction",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/slickqaAgentQueuedAction"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Target.Company",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Target.Name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/slickqaAgentQueuedAction"
             }
           }
         ],
@@ -899,6 +1040,35 @@
         }
       }
     },
+    "slickqaAgentQueuedAction": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "string",
+          "format": "byte"
+        },
+        "Target": {
+          "$ref": "#/definitions/slickqaAgentId"
+        },
+        "Action": {
+          "type": "string"
+        },
+        "ActionParameter": {
+          "type": "string"
+        }
+      }
+    },
+    "slickqaAgentRunStatus": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "$ref": "#/definitions/slickqaAgentId"
+        },
+        "RunStatus": {
+          "type": "string"
+        }
+      }
+    },
     "slickqaAgentStatus": {
       "type": "object",
       "properties": {
@@ -924,6 +1094,58 @@
         "LastScreenshotUpdate": {
           "type": "string",
           "format": "date-time"
+        },
+        "Provides": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "BrokenProvides": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "Projects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/slickqaProjectReleaseBuildInfo"
+          }
+        },
+        "Action": {
+          "type": "string"
+        },
+        "ActionParameter": {
+          "type": "string"
+        },
+        "Hardware": {
+          "type": "string"
+        },
+        "IP": {
+          "type": "string"
+        },
+        "ShouldExit": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "Versions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "Attributes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "RequiredAttributes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       }
     },
@@ -1206,6 +1428,20 @@
           "items": {
             "type": "string"
           }
+        }
+      }
+    },
+    "slickqaProjectReleaseBuildInfo": {
+      "type": "object",
+      "properties": {
+        "Project": {
+          "type": "string"
+        },
+        "Release": {
+          "type": "string"
+        },
+        "Build": {
+          "type": "string"
         }
       }
     },
