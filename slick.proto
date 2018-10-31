@@ -319,7 +319,7 @@ service Agents {
 
   rpc GetAgents(AgentsRequest) returns (AgentsResponse) {
     option (google.api.http) = {
-      post: "/api/agents/{Company}"
+      get: "/api/agents/{Company}"
     };
   }
 

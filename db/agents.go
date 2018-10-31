@@ -64,9 +64,14 @@ func (agentsType) FindAgents(request *slickqa.AgentsRequest) ([]*slickqa.Agent, 
 	defer mongo.Close()
 	query := bson.M{
 		"_id.company": request.Company,
-		"checkIn": bson.M{
-			"$gt": request.UpdatedSince,
-		},
+	}
+	if request.UpdatedSince != nil {
+		query = bson.M{
+			"_id.company": request.Company,
+			"checkIn": bson.M{
+				"$gt": request.UpdatedSince,
+			},
+		}
 	}
 	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(AgentsCollectionName).Find(query).All(&agents)
 	return agents, err
