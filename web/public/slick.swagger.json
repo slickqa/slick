@@ -16,7 +16,7 @@
   ],
   "paths": {
     "/api/agents/{Company}": {
-      "get": {
+      "post": {
         "operationId": "GetAgents",
         "responses": {
           "200": {
@@ -32,13 +32,6 @@
             "in": "path",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "UpdatedSince",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "date-time"
           }
         ],
         "tags": [
@@ -76,7 +69,7 @@
         ]
       }
     },
-    "/api/agents/{Company}/{Name}/status": {
+    "/api/agents/{Company}/{Name}/run-status": {
       "get": {
         "operationId": "GetAgentRunStatus",
         "responses": {
@@ -106,14 +99,14 @@
         ]
       }
     },
-    "/api/agents/{Id.Company}/{Id.Name}/screenshot": {
-      "put": {
-        "operationId": "UpdateScreenshot",
+    "/api/agents/{Id.Company}/{Id.Name}/action": {
+      "post": {
+        "operationId": "AddQueuedAction",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/slickqaAgentStatus"
+              "$ref": "#/definitions/slickqaAgent"
             }
           }
         },
@@ -135,7 +128,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/slickqaScreenshotUpdateRequest"
+              "$ref": "#/definitions/slickqaAgentQueuedAction"
             }
           }
         ],
@@ -144,43 +137,7 @@
         ]
       }
     },
-    "/api/agents/{Id.Company}/{Id.Name}/status": {
-      "post": {
-        "operationId": "UpdateStatus",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/slickqaAgentStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "Id.Company",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "Id.Name",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/slickqaAgentStatus"
-            }
-          }
-        ],
-        "tags": [
-          "Agents"
-        ]
-      },
+    "/api/agents/{Id.Company}/{Id.Name}/run-status": {
       "put": {
         "operationId": "SetAgentRunStatus",
         "responses": {
@@ -218,26 +175,26 @@
         ]
       }
     },
-    "/api/agents/{Target.Company}/{Target.Name}/action": {
-      "post": {
-        "operationId": "AddQueuedAction",
+    "/api/agents/{Id.Company}/{Id.Name}/screenshot": {
+      "put": {
+        "operationId": "UpdateScreenshotTimestamp",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/slickqaAgentQueuedAction"
+              "$ref": "#/definitions/slickqaAgent"
             }
           }
         },
         "parameters": [
           {
-            "name": "Target.Company",
+            "name": "Id.Company",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "Target.Name",
+            "name": "Id.Name",
             "in": "path",
             "required": true,
             "type": "string"
@@ -247,7 +204,45 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/slickqaAgentQueuedAction"
+              "$ref": "#/definitions/slickqaScreenshotUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Agents"
+        ]
+      }
+    },
+    "/api/agents/{Id.Company}/{Id.Name}/status": {
+      "post": {
+        "operationId": "UpdateStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/slickqaAgent"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Id.Company",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Id.Name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/slickqaAgentStatusUpdate"
             }
           }
         ],
@@ -1015,6 +1010,34 @@
         }
       }
     },
+    "slickqaAgent": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "$ref": "#/definitions/slickqaAgentId"
+        },
+        "GivenRunStatus": {
+          "type": "string"
+        },
+        "GivenAction": {
+          "type": "string"
+        },
+        "GivenActionParameter": {
+          "type": "string"
+        },
+        "LastCheckin": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "LastScreenshotUpdate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "$ref": "#/definitions/slickqaAgentStatus"
+        }
+      }
+    },
     "slickqaAgentCurrentTest": {
       "type": "object",
       "properties": {
@@ -1044,10 +1067,6 @@
       "type": "object",
       "properties": {
         "Id": {
-          "type": "string",
-          "format": "byte"
-        },
-        "Target": {
           "$ref": "#/definitions/slickqaAgentId"
         },
         "Action": {
@@ -1072,13 +1091,6 @@
     "slickqaAgentStatus": {
       "type": "object",
       "properties": {
-        "Id": {
-          "$ref": "#/definitions/slickqaAgentId"
-        },
-        "LastCheckin": {
-          "type": "string",
-          "format": "date-time"
-        },
         "RunStatus": {
           "type": "string"
         },
@@ -1090,10 +1102,6 @@
         },
         "CurrentTest": {
           "$ref": "#/definitions/slickqaAgentCurrentTest"
-        },
-        "LastScreenshotUpdate": {
-          "type": "string",
-          "format": "date-time"
         },
         "Provides": {
           "type": "array",
@@ -1149,13 +1157,24 @@
         }
       }
     },
+    "slickqaAgentStatusUpdate": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "$ref": "#/definitions/slickqaAgentId"
+        },
+        "Status": {
+          "$ref": "#/definitions/slickqaAgentStatus"
+        }
+      }
+    },
     "slickqaAgentsResponse": {
       "type": "object",
       "properties": {
         "Agents": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/slickqaAgentStatus"
+            "$ref": "#/definitions/slickqaAgent"
           }
         }
       }

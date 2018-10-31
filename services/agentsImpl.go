@@ -49,8 +49,8 @@ func (SlickAgentsService) GetQueuedAction(ctx context.Context, agentId *slickqa.
 	panic("implement me")
 }
 
-func (SlickAgentsService) AddQueuedAction(ctx context.Context, action *slickqa.AgentQueuedAction) (*slickqa.AgentQueuedAction, error) {
-	err := agentPermissionCheck(ctx, action.Target.Company)
+func (SlickAgentsService) AddQueuedAction(ctx context.Context, action *slickqa.AgentQueuedAction) (*slickqa.Agent, error) {
+	err := agentPermissionCheck(ctx, action.Id.Company)
 	if err != nil {
 		return nil, status.Error(codes.PermissionDenied, err.Error())
 	}
@@ -73,7 +73,7 @@ func (SlickAgentsService) SetAgentRunStatus(ctx context.Context, agentRunStatus 
 	panic("implement me")
 }
 
-func (SlickAgentsService) UpdateScreenshot(ctx context.Context, agentId *slickqa.ScreenshotUpdateRequest) (*slickqa.AgentStatus, error) {
+func (SlickAgentsService) UpdateScreenshotTimestamp(ctx context.Context, agentId *slickqa.ScreenshotUpdateRequest) (*slickqa.Agent, error) {
 	err := agentPermissionCheck(ctx, agentId.Id.Company)
 	if err != nil {
 		return nil, status.Error(codes.PermissionDenied, err.Error())
@@ -82,13 +82,13 @@ func (SlickAgentsService) UpdateScreenshot(ctx context.Context, agentId *slickqa
 	return agentStatus, err
 }
 
-func (SlickAgentsService) UpdateStatus(ctx context.Context, agentStatus *slickqa.AgentStatus) (*slickqa.AgentStatus, error) {
+func (SlickAgentsService) UpdateStatus(ctx context.Context, agentStatus *slickqa.AgentStatusUpdate) (*slickqa.Agent, error) {
 	err := agentPermissionCheck(ctx, agentStatus.Id.Company)
 	if err != nil {
 		return nil, status.Error(codes.PermissionDenied, err.Error())
 	}
-	agentStatus, err = db.Agents.UpdateStatus(agentStatus)
-	return agentStatus, err
+	agent, err := db.Agents.UpdateStatus(*agentStatus.Id, agentStatus.Status)
+	return agent, err
 }
 
 func (SlickAgentsService) GetAgents(ctx context.Context, agentQuery *slickqa.AgentsRequest) (*slickqa.AgentsResponse, error) {

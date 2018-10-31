@@ -857,7 +857,7 @@ func request_Links_GetUploadUrl_0(ctx context.Context, marshaler runtime.Marshal
 }
 
 func request_Agents_UpdateStatus_0(ctx context.Context, marshaler runtime.Marshaler, client AgentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq AgentStatus
+	var protoReq AgentStatusUpdate
 	var metadata runtime.ServerMetadata
 
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && err != io.EOF {
@@ -933,7 +933,7 @@ func request_Agents_GetAgents_0(ctx context.Context, marshaler runtime.Marshaler
 
 }
 
-func request_Agents_UpdateScreenshot_0(ctx context.Context, marshaler runtime.Marshaler, client AgentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_Agents_UpdateScreenshotTimestamp_0(ctx context.Context, marshaler runtime.Marshaler, client AgentsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq ScreenshotUpdateRequest
 	var metadata runtime.ServerMetadata
 
@@ -970,7 +970,7 @@ func request_Agents_UpdateScreenshot_0(ctx context.Context, marshaler runtime.Ma
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Id.Name", err)
 	}
 
-	msg, err := client.UpdateScreenshot(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.UpdateScreenshotTimestamp(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
@@ -1028,26 +1028,26 @@ func request_Agents_AddQueuedAction_0(ctx context.Context, marshaler runtime.Mar
 		_   = err
 	)
 
-	val, ok = pathParams["Target.Company"]
+	val, ok = pathParams["Id.Company"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Target.Company")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Id.Company")
 	}
 
-	err = runtime.PopulateFieldFromPath(&protoReq, "Target.Company", val)
+	err = runtime.PopulateFieldFromPath(&protoReq, "Id.Company", val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Target.Company", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Id.Company", err)
 	}
 
-	val, ok = pathParams["Target.Name"]
+	val, ok = pathParams["Id.Name"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Target.Name")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "Id.Name")
 	}
 
-	err = runtime.PopulateFieldFromPath(&protoReq, "Target.Name", val)
+	err = runtime.PopulateFieldFromPath(&protoReq, "Id.Name", val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Target.Name", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "Id.Name", err)
 	}
 
 	msg, err := client.AddQueuedAction(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -2195,7 +2195,7 @@ func RegisterAgentsHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 
 	})
 
-	mux.Handle("GET", pattern_Agents_GetAgents_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_Agents_GetAgents_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		if cn, ok := w.(http.CloseNotifier); ok {
@@ -2224,7 +2224,7 @@ func RegisterAgentsHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 
 	})
 
-	mux.Handle("PUT", pattern_Agents_UpdateScreenshot_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("PUT", pattern_Agents_UpdateScreenshotTimestamp_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		if cn, ok := w.(http.CloseNotifier); ok {
@@ -2242,14 +2242,14 @@ func RegisterAgentsHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Agents_UpdateScreenshot_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Agents_UpdateScreenshotTimestamp_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_Agents_UpdateScreenshot_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Agents_UpdateScreenshotTimestamp_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -2377,15 +2377,15 @@ var (
 
 	pattern_Agents_GetAgents_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"api", "agents", "Company"}, ""))
 
-	pattern_Agents_UpdateScreenshot_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "agents", "Id.Company", "Id.Name", "screenshot"}, ""))
+	pattern_Agents_UpdateScreenshotTimestamp_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "agents", "Id.Company", "Id.Name", "screenshot"}, ""))
 
 	pattern_Agents_GetQueuedAction_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "agents", "Company", "Name", "action"}, ""))
 
-	pattern_Agents_AddQueuedAction_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "agents", "Target.Company", "Target.Name", "action"}, ""))
+	pattern_Agents_AddQueuedAction_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "agents", "Id.Company", "Id.Name", "action"}, ""))
 
-	pattern_Agents_GetAgentRunStatus_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "agents", "Company", "Name", "status"}, ""))
+	pattern_Agents_GetAgentRunStatus_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "agents", "Company", "Name", "run-status"}, ""))
 
-	pattern_Agents_SetAgentRunStatus_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "agents", "Id.Company", "Id.Name", "status"}, ""))
+	pattern_Agents_SetAgentRunStatus_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 1, 0, 4, 1, 5, 3, 2, 4}, []string{"api", "agents", "Id.Company", "Id.Name", "run-status"}, ""))
 )
 
 var (
@@ -2393,7 +2393,7 @@ var (
 
 	forward_Agents_GetAgents_0 = runtime.ForwardResponseMessage
 
-	forward_Agents_UpdateScreenshot_0 = runtime.ForwardResponseMessage
+	forward_Agents_UpdateScreenshotTimestamp_0 = runtime.ForwardResponseMessage
 
 	forward_Agents_GetQueuedAction_0 = runtime.ForwardResponseMessage
 

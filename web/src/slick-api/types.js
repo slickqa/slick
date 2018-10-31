@@ -11,6 +11,19 @@
  */
 
 /**
+ * @typedef {Object} slickqaAgent
+ * @memberof module:types
+ * 
+ * @property {slickqaAgentId} Id 
+ * @property {string} GivenRunStatus 
+ * @property {string} GivenAction 
+ * @property {string} GivenActionParameter 
+ * @property {date} LastCheckin 
+ * @property {date} LastScreenshotUpdate 
+ * @property {slickqaAgentStatus} status 
+ */
+
+/**
  * @typedef {Object} slickqaAgentCurrentTest
  * @memberof module:types
  * 
@@ -31,8 +44,7 @@
  * @typedef {Object} slickqaAgentQueuedAction
  * @memberof module:types
  * 
- * @property {string} Id 
- * @property {slickqaAgentId} Target 
+ * @property {slickqaAgentId} Id 
  * @property {string} Action 
  * @property {string} ActionParameter 
  */
@@ -49,12 +61,9 @@
  * @typedef {Object} slickqaAgentStatus
  * @memberof module:types
  * 
- * @property {slickqaAgentId} Id 
- * @property {date} LastCheckin 
  * @property {string} RunStatus 
  * @property {string[]} Groups 
  * @property {slickqaAgentCurrentTest} CurrentTest 
- * @property {date} LastScreenshotUpdate 
  * @property {string[]} Provides 
  * @property {string[]} BrokenProvides 
  * @property {slickqaProjectReleaseBuildInfo[]} Projects 
@@ -69,10 +78,18 @@
  */
 
 /**
+ * @typedef {Object} slickqaAgentStatusUpdate
+ * @memberof module:types
+ * 
+ * @property {slickqaAgentId} Id 
+ * @property {slickqaAgentStatus} Status 
+ */
+
+/**
  * @typedef {Object} slickqaAgentsResponse
  * @memberof module:types
  * 
- * @property {slickqaAgentStatus[]} Agents 
+ * @property {slickqaAgent[]} Agents 
  */
 
 /**

@@ -4,18 +4,12 @@ import * as gateway from './gateway'
 
 /**
  * @param {string} Company 
- * @param {object} options Optional options
- * @param {date} [options.UpdatedSince] 
  * @return {Promise<HttpResponse<slickqaAgentsResponse>>} A successful response.
  */
-export function GetAgents(Company, options) {
-  if (!options) options = {}
+export function GetAgents(Company) {
   const parameters = {
     path: {
       Company
-    },
-    query: {
-      UpdatedSince: gateway.formatDate(options.UpdatedSince, 'date-time')
     }
   }
   return gateway.request(GetAgentsOperation, parameters)
@@ -54,10 +48,10 @@ export function GetAgentRunStatus(Company, Name) {
 /**
  * @param {string} Id.Company 
  * @param {string} Id.Name 
- * @param {slickqaScreenshotUpdateRequest} body 
- * @return {Promise<HttpResponse<slickqaAgentStatus>>} A successful response.
+ * @param {slickqaAgentQueuedAction} body 
+ * @return {Promise<HttpResponse<slickqaAgent>>} A successful response.
  */
-export function UpdateScreenshot(Id.Company, Id.Name, body) {
+export function AddQueuedAction(Id.Company, Id.Name, body) {
   const parameters = {
     path: {
       'Id.Company': Id.Company,
@@ -67,26 +61,7 @@ export function UpdateScreenshot(Id.Company, Id.Name, body) {
       body
     }
   }
-  return gateway.request(UpdateScreenshotOperation, parameters)
-}
-
-/**
- * @param {string} Id.Company 
- * @param {string} Id.Name 
- * @param {slickqaAgentStatus} body 
- * @return {Promise<HttpResponse<slickqaAgentStatus>>} A successful response.
- */
-export function UpdateStatus(Id.Company, Id.Name, body) {
-  const parameters = {
-    path: {
-      'Id.Company': Id.Company,
-      'Id.Name': Id.Name
-    },
-    body: {
-      body
-    }
-  }
-  return gateway.request(UpdateStatusOperation, parameters)
+  return gateway.request(AddQueuedActionOperation, parameters)
 }
 
 /**
@@ -109,27 +84,46 @@ export function SetAgentRunStatus(Id.Company, Id.Name, body) {
 }
 
 /**
- * @param {string} Target.Company 
- * @param {string} Target.Name 
- * @param {slickqaAgentQueuedAction} body 
- * @return {Promise<HttpResponse<slickqaAgentQueuedAction>>} A successful response.
+ * @param {string} Id.Company 
+ * @param {string} Id.Name 
+ * @param {slickqaScreenshotUpdateRequest} body 
+ * @return {Promise<HttpResponse<slickqaAgent>>} A successful response.
  */
-export function AddQueuedAction(Target.Company, Target.Name, body) {
+export function UpdateScreenshotTimestamp(Id.Company, Id.Name, body) {
   const parameters = {
     path: {
-      'Target.Company': Target.Company,
-      'Target.Name': Target.Name
+      'Id.Company': Id.Company,
+      'Id.Name': Id.Name
     },
     body: {
       body
     }
   }
-  return gateway.request(AddQueuedActionOperation, parameters)
+  return gateway.request(UpdateScreenshotTimestampOperation, parameters)
+}
+
+/**
+ * @param {string} Id.Company 
+ * @param {string} Id.Name 
+ * @param {slickqaAgentStatusUpdate} body 
+ * @return {Promise<HttpResponse<slickqaAgent>>} A successful response.
+ */
+export function UpdateStatus(Id.Company, Id.Name, body) {
+  const parameters = {
+    path: {
+      'Id.Company': Id.Company,
+      'Id.Name': Id.Name
+    },
+    body: {
+      body
+    }
+  }
+  return gateway.request(UpdateStatusOperation, parameters)
 }
 
 const GetAgentsOperation = {
   path: '/api/agents/{Company}',
-  method: 'get'
+  method: 'post'
 }
 
 const GetQueuedActionOperation = {
@@ -138,11 +132,23 @@ const GetQueuedActionOperation = {
 }
 
 const GetAgentRunStatusOperation = {
-  path: '/api/agents/{Company}/{Name}/status',
+  path: '/api/agents/{Company}/{Name}/run-status',
   method: 'get'
 }
 
-const UpdateScreenshotOperation = {
+const AddQueuedActionOperation = {
+  path: '/api/agents/{Id.Company}/{Id.Name}/action',
+  contentTypes: ['application/json'],
+  method: 'post'
+}
+
+const SetAgentRunStatusOperation = {
+  path: '/api/agents/{Id.Company}/{Id.Name}/run-status',
+  contentTypes: ['application/json'],
+  method: 'put'
+}
+
+const UpdateScreenshotTimestampOperation = {
   path: '/api/agents/{Id.Company}/{Id.Name}/screenshot',
   contentTypes: ['application/json'],
   method: 'put'
@@ -150,18 +156,6 @@ const UpdateScreenshotOperation = {
 
 const UpdateStatusOperation = {
   path: '/api/agents/{Id.Company}/{Id.Name}/status',
-  contentTypes: ['application/json'],
-  method: 'post'
-}
-
-const SetAgentRunStatusOperation = {
-  path: '/api/agents/{Id.Company}/{Id.Name}/status',
-  contentTypes: ['application/json'],
-  method: 'put'
-}
-
-const AddQueuedActionOperation = {
-  path: '/api/agents/{Target.Company}/{Target.Name}/action',
   contentTypes: ['application/json'],
   method: 'post'
 }
