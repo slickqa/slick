@@ -349,7 +349,7 @@ service Agents {
     };
   }
 
-  rpc SetAgentRunStatus(AgentRunStatus) returns(AgentRunStatus) {
+  rpc SetAgentRunStatus(AgentRunStatus) returns(Agent) {
     option (google.api.http) = {
       put: "/api/agents/{Id.Company}/{Id.Name}/run-status"
       body: "*"

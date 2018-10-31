@@ -1,6 +1,7 @@
 package db
 
 import (
+	"github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
 	"github.com/golang/protobuf/ptypes"
 	"github.com/slickqa/slick/slickconfig"
@@ -14,7 +15,7 @@ const (
 type agentsType struct {}
 var Agents = agentsType{}
 
-func (agentsType) UpdateStatus(id slickqa.AgentId, status *slickqa.AgentStatus) (*slickqa.Agent, error) {
+func (a agentsType) UpdateStatus(id slickqa.AgentId, status *slickqa.AgentStatus) (*slickqa.Agent, error) {
 	mongo := MongoSession.Copy()
 	defer mongo.Close()
 	update := bson.M{
@@ -30,13 +31,11 @@ func (agentsType) UpdateStatus(id slickqa.AgentId, status *slickqa.AgentStatus) 
 	if err != nil {
 		return nil, err
 	}
-	var agent slickqa.Agent
-	err = mongo.DB(slickconfig.Configuration.Mongo.Database).C(AgentsCollectionName).Find(bson.M{"_id": id}).One(&agent)
 
-	return &agent, err
+	return a.GetAgentWithMongoConnection(&id, mongo)
 }
 
-func (agentsType) UpdateScreenshotTimestamp(id *slickqa.AgentId) (*slickqa.Agent, error) {
+func (a agentsType) UpdateScreenshotTimestamp(id *slickqa.AgentId) (*slickqa.Agent, error) {
 	mongo := MongoSession.Copy()
 	defer mongo.Close()
 	query := bson.M{
@@ -52,10 +51,7 @@ func (agentsType) UpdateScreenshotTimestamp(id *slickqa.AgentId) (*slickqa.Agent
 	if err != nil {
 		return nil, err
 	}
-	var agent slickqa.Agent
-	err = mongo.DB(slickconfig.Configuration.Mongo.Database).C(AgentsCollectionName).Find(bson.M{"_id": id}).One(&agent)
-
-	return &agent, err
+	return a.GetAgentWithMongoConnection(id, mongo)
 }
 
 func (agentsType) FindAgents(request *slickqa.AgentsRequest) ([]*slickqa.Agent, error) {
@@ -77,3 +73,40 @@ func (agentsType) FindAgents(request *slickqa.AgentsRequest) ([]*slickqa.Agent, 
 	return agents, err
 }
 
+func (a agentsType) GetAgent(id *slickqa.AgentId) (*slickqa.Agent, error) {
+	mongo := MongoSession.Copy()
+	defer mongo.Close()
+	return a.GetAgentWithMongoConnection(id, mongo)
+}
+
+func (agentsType) GetAgentWithMongoConnection(id *slickqa.AgentId, mongo *mgo.Session) (*slickqa.Agent, error) {
+	var agent slickqa.Agent
+	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(AgentsCollectionName).Find(bson.M{"_id": id}).One(&agent)
+	return &agent, err
+}
+
+func (a agentsType) UpdateGivenRunStatus(id *slickqa.AgentId, runStatus string) (*slickqa.Agent, error) {
+	mongo := MongoSession.Copy()
+	defer mongo.Close()
+
+	_, err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(AgentsCollectionName).Upsert(bson.M{"_id": id}, bson.M{"givenRunStatus": runStatus})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return a.GetAgentWithMongoConnection(id, mongo)
+}
+
+func (a agentsType) UpdateGivenAction(id *slickqa.AgentId, action string, actionParameter string) (*slickqa.Agent, error) {
+	mongo := MongoSession.Copy()
+	defer mongo.Close()
+
+	_, err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(AgentsCollectionName).Upsert(bson.M{"_id": id}, bson.M{"givenAction": action, "givenActionParameter": actionParameter})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return a.GetAgentWithMongoConnection(id, mongo)
+}

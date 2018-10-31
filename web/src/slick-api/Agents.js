@@ -74,7 +74,7 @@ export function AddQueuedAction(Id.Company, Id.Name, body) {
  * @param {string} Id.Company 
  * @param {string} Id.Name 
  * @param {slickqaAgentRunStatus} body 
- * @return {Promise<HttpResponse<slickqaAgentRunStatus>>} A successful response.
+ * @return {Promise<HttpResponse<slickqaAgent>>} A successful response.
  */
 export function SetAgentRunStatus(Id.Company, Id.Name, body) {
   const parameters = {
