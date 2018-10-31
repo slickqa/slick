@@ -135,10 +135,11 @@ message AvailableCompanySettings {
 
 message AgentsRequest {
   string Company = 1; //
+  google.protobuf.Timestamp UpdatedSince = 2; //
 }
 
 message AgentsResponse {
-  repeated AgentStatus Agents = 1; //
+  repeated Agent Agents = 1; //
 
 }
 
@@ -150,6 +151,10 @@ message ProjectsRequest {
 
 message ProjectsListResponse {
   repeated Project Projects = 1; //
+}
+
+message ScreenshotUpdateRequest {
+  AgentId Id = 1; //
 }
 
 service Auth {
@@ -305,7 +310,7 @@ service Links {
 }
 
 service Agents {
-  rpc UpdateStatus(AgentStatus) returns (AgentStatus) {
+  rpc UpdateStatus(AgentStatusUpdate) returns (Agent) {
     option (google.api.http) = {
       post: "/api/agents/{Id.Company}/{Id.Name}/status"
       body: "*"
@@ -314,9 +319,43 @@ service Agents {
 
   rpc GetAgents(AgentsRequest) returns (AgentsResponse) {
     option (google.api.http) = {
-      get: "/api/agents/{Company}"
+      post: "/api/agents/{Company}"
     };
   }
+
+  rpc UpdateScreenshotTimestamp(ScreenshotUpdateRequest) returns (Agent) {
+    option (google.api.http) = {
+      put: "/api/agents/{Id.Company}/{Id.Name}/screenshot"
+      body: "*"
+    };
+  }
+
+  rpc GetQueuedAction(AgentId) returns(AgentQueuedAction) {
+    option (google.api.http) = {
+      get: "/api/agents/{Company}/{Name}/action"
+    };
+  }
+
+  rpc AddQueuedAction(AgentQueuedAction) returns(Agent) {
+    option (google.api.http) = {
+      post: "/api/agents/{Id.Company}/{Id.Name}/action"
+      body: "*"
+    };
+  }
+
+  rpc GetAgentRunStatus(AgentId) returns(AgentRunStatus) {
+    option (google.api.http) = {
+      get: "/api/agents/{Company}/{Name}/run-status"
+    };
+  }
+
+  rpc SetAgentRunStatus(AgentRunStatus) returns(AgentRunStatus) {
+    option (google.api.http) = {
+      put: "/api/agents/{Id.Company}/{Id.Name}/run-status"
+      body: "*"
+    };
+  }
+
 }
 
 service Version {
@@ -449,12 +488,51 @@ message AgentCurrentTest {
   string AutomationId = 3; //`bson:"automationId"`
 }
 
-message AgentStatus {
-  AgentId Id = 1; //`bson:"_id"`
-  google.protobuf.Timestamp LastCheckin = 2; //`bson:"checkin"`
-  string RunStatus = 3; //`bson:"runstatus"`
-  repeated string Groups = 4; //`bson:"groups"`
-  AgentCurrentTest CurrentTest = 5; //`bson:"testcase"`
+message ProjectReleaseBuildInfo {
+  string Project = 1; //`bson:"project"`
+  string Release = 2; //`bson:"release"`
+  string Build = 3; //`bson:"build"`
 }
 
+message AgentQueuedAction {
+  AgentId Id = 1; //`bson:"_id"`
+  string Action = 2; //`bson:"action"`
+  string ActionParameter = 3; //`bson:"parameter"`
+}
 
+message AgentRunStatus {
+  AgentId Id = 1; //`bson:"_id"`
+  string RunStatus = 2; //`bson:"status"`
+}
+
+message AgentStatusUpdate {
+  AgentId Id = 1; //`bson:"_id"`
+  AgentStatus Status = 2; //`bson:"status"`
+}
+
+message AgentStatus {
+  string RunStatus = 3; //`bson:"runStatus"`
+  repeated string Groups = 4; //`bson:"groups"`
+  AgentCurrentTest CurrentTest = 5; //`bson:"testcase"`
+  repeated string Provides = 7; //`bson:"provides"`
+  repeated string BrokenProvides = 8; //`bson:"brokenProvides"`
+  repeated ProjectReleaseBuildInfo Projects = 9; //`bson:"projects"`
+  string Action = 10; //`bson:"action"`
+  string ActionParameter = 11; //`bson:"actionParameter"`
+  string Hardware = 12; //`bson:"hardware"`
+  string IP = 13; //`bson:"ip"`
+  bool ShouldExit = 14; //`bson:"shouldExit"`
+  map<string, string> Versions = 15; //`bson:"versions"`
+  map<string, string> Attributes = 16; //`bson:"attributes"`
+  map<string, string> RequiredAttributes = 18; //`bson:"requiredAttributes"`
+}
+
+message Agent {
+    AgentId Id = 1; //`bson:"_id"`
+    string GivenRunStatus = 2; //`bson:"givenRunStatus"`
+    string GivenAction = 3; //`bson:"givenAction"`
+    string GivenActionParameter = 4; //`bson:"givenActionParameter"`
+    google.protobuf.Timestamp LastCheckin = 5; //`bson:"checkIn"`
+    google.protobuf.Timestamp LastScreenshotUpdate = 6; //`bson:"screenshotUpdate"`
+    AgentStatus status = 7; //`bson:"status"`
+}

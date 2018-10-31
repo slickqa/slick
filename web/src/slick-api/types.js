@@ -11,6 +11,19 @@
  */
 
 /**
+ * @typedef {Object} slickqaAgent
+ * @memberof module:types
+ * 
+ * @property {slickqaAgentId} Id 
+ * @property {string} GivenRunStatus 
+ * @property {string} GivenAction 
+ * @property {string} GivenActionParameter 
+ * @property {date} LastCheckin 
+ * @property {date} LastScreenshotUpdate 
+ * @property {slickqaAgentStatus} status 
+ */
+
+/**
  * @typedef {Object} slickqaAgentCurrentTest
  * @memberof module:types
  * 
@@ -28,21 +41,55 @@
  */
 
 /**
- * @typedef {Object} slickqaAgentStatus
+ * @typedef {Object} slickqaAgentQueuedAction
  * @memberof module:types
  * 
  * @property {slickqaAgentId} Id 
- * @property {date} LastCheckin 
+ * @property {string} Action 
+ * @property {string} ActionParameter 
+ */
+
+/**
+ * @typedef {Object} slickqaAgentRunStatus
+ * @memberof module:types
+ * 
+ * @property {slickqaAgentId} Id 
+ * @property {string} RunStatus 
+ */
+
+/**
+ * @typedef {Object} slickqaAgentStatus
+ * @memberof module:types
+ * 
  * @property {string} RunStatus 
  * @property {string[]} Groups 
  * @property {slickqaAgentCurrentTest} CurrentTest 
+ * @property {string[]} Provides 
+ * @property {string[]} BrokenProvides 
+ * @property {slickqaProjectReleaseBuildInfo[]} Projects 
+ * @property {string} Action 
+ * @property {string} ActionParameter 
+ * @property {string} Hardware 
+ * @property {string} IP 
+ * @property {boolean} ShouldExit 
+ * @property {object} Versions 
+ * @property {object} Attributes 
+ * @property {object} RequiredAttributes 
+ */
+
+/**
+ * @typedef {Object} slickqaAgentStatusUpdate
+ * @memberof module:types
+ * 
+ * @property {slickqaAgentId} Id 
+ * @property {slickqaAgentStatus} Status 
  */
 
 /**
  * @typedef {Object} slickqaAgentsResponse
  * @memberof module:types
  * 
- * @property {slickqaAgentStatus[]} Agents 
+ * @property {slickqaAgent[]} Agents 
  */
 
 /**
@@ -193,6 +240,15 @@
  */
 
 /**
+ * @typedef {Object} slickqaProjectReleaseBuildInfo
+ * @memberof module:types
+ * 
+ * @property {string} Project 
+ * @property {string} Release 
+ * @property {string} Build 
+ */
+
+/**
  * @typedef {Object} slickqaProjectsListResponse
  * @memberof module:types
  * 
@@ -208,6 +264,13 @@
  * @property {string} SecretKey 
  * @property {string} Bucket 
  * @property {string} Prefix 
+ */
+
+/**
+ * @typedef {Object} slickqaScreenshotUpdateRequest
+ * @memberof module:types
+ * 
+ * @property {slickqaAgentId} Id 
  */
 
 /**
