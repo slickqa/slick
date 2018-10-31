@@ -56,11 +56,17 @@ func defaultPreferences() *slickqa.Preferences {
 }
 
 func defaultPreferencesForUser(user *slickqa.UserInfo) *slickqa.Preferences {
+	logger := log.With().Str("loggerName", "services.googleLogin.defaultPreferencesForUser").Logger()
+	logger.Debug().Str("email", user.EmailAddress).Msg("Creating default preferences for user.")
 	if user.Permissions != nil && len(user.Permissions.Companies) > 0 {
+		logger.Debug().Str("email", user.EmailAddress).Int("CompaniesLength", len(user.Permissions.Companies)).Msg("Found companies in permissions")
 		for _, company := range user.Permissions.Companies {
+			logger.Debug().Str("company", company.CompanyName).Msg("Checking for settings")
 			settings, err := db.CompanySettings.Find(company.CompanyName)
-			if err != nil {
+			if err == nil {
+				logger.Debug().Str("company", company.CompanyName).Str("email", user.EmailAddress).Msg("User has permissions to company")
 				if settings.UserPreferenceTemplate != nil {
+					logger.Debug().Str("company", company.CompanyName).Msgf("Found preferences, using %+v", settings.UserPreferenceTemplate)
 					return settings.UserPreferenceTemplate
 				}
 			}
