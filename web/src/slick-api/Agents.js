@@ -4,12 +4,18 @@ import * as gateway from './gateway'
 
 /**
  * @param {string} Company 
+ * @param {object} options Optional options
+ * @param {date} [options.UpdatedSince] 
  * @return {Promise<HttpResponse<slickqaAgentsResponse>>} A successful response.
  */
-export function GetAgents(Company) {
+export function GetAgents(Company, options) {
+  if (!options) options = {}
   const parameters = {
     path: {
       Company
+    },
+    query: {
+      UpdatedSince: gateway.formatDate(options.UpdatedSince, 'date-time')
     }
   }
   return gateway.request(GetAgentsOperation, parameters)
@@ -68,7 +74,7 @@ export function AddQueuedAction(Id.Company, Id.Name, body) {
  * @param {string} Id.Company 
  * @param {string} Id.Name 
  * @param {slickqaAgentRunStatus} body 
- * @return {Promise<HttpResponse<slickqaAgentRunStatus>>} A successful response.
+ * @return {Promise<HttpResponse<slickqaAgent>>} A successful response.
  */
 export function SetAgentRunStatus(Id.Company, Id.Name, body) {
   const parameters = {
@@ -123,7 +129,7 @@ export function UpdateStatus(Id.Company, Id.Name, body) {
 
 const GetAgentsOperation = {
   path: '/api/agents/{Company}',
-  method: 'post'
+  method: 'get'
 }
 
 const GetQueuedActionOperation = {

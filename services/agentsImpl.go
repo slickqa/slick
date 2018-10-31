@@ -46,7 +46,16 @@ func (SlickAgentsService) GetQueuedAction(ctx context.Context, agentId *slickqa.
 	if err != nil {
 		return nil, status.Error(codes.PermissionDenied, err.Error())
 	}
-	panic("implement me")
+	agent, err := db.Agents.GetAgent(agentId)
+	if err != nil {
+		return nil, status.Error(codes.NotFound, err.Error())
+	}
+
+	return &slickqa.AgentQueuedAction{
+		Id: agentId,
+		Action: agent.GivenAction,
+		ActionParameter: agent.GivenActionParameter,
+	}, nil
 }
 
 func (SlickAgentsService) AddQueuedAction(ctx context.Context, action *slickqa.AgentQueuedAction) (*slickqa.Agent, error) {
@@ -54,23 +63,39 @@ func (SlickAgentsService) AddQueuedAction(ctx context.Context, action *slickqa.A
 	if err != nil {
 		return nil, status.Error(codes.PermissionDenied, err.Error())
 	}
-	panic("implement me")
+	agent, err := db.Agents.UpdateGivenAction(action.Id, action.Action, action.ActionParameter)
+
+	return  agent, err
 }
 
-func (SlickAgentsService) GetAgentRunStatus(ctx context.Context, agentId*slickqa.AgentId) (*slickqa.AgentRunStatus, error) {
+func (SlickAgentsService) GetAgentRunStatus(ctx context.Context, agentId *slickqa.AgentId) (*slickqa.AgentRunStatus, error) {
 	err := agentPermissionCheck(ctx, agentId.Company)
 	if err != nil {
 		return nil, status.Error(codes.PermissionDenied, err.Error())
 	}
-	panic("implement me")
+
+	agent, err := db.Agents.GetAgent(agentId)
+	if err != nil {
+		return nil, status.Error(codes.NotFound, err.Error())
+	}
+
+	runstatus := "IDLE"
+	if agent.GivenRunStatus != "" {
+		runstatus = agent.GivenRunStatus
+	}
+
+	return &slickqa.AgentRunStatus{
+		Id: agentId,
+		RunStatus: runstatus,
+	}, nil
 }
 
-func (SlickAgentsService) SetAgentRunStatus(ctx context.Context, agentRunStatus *slickqa.AgentRunStatus) (*slickqa.AgentRunStatus, error) {
+func (SlickAgentsService) SetAgentRunStatus(ctx context.Context, agentRunStatus *slickqa.AgentRunStatus) (*slickqa.Agent, error) {
 	err := agentPermissionCheck(ctx, agentRunStatus.Id.Company)
 	if err != nil {
 		return nil, status.Error(codes.PermissionDenied, err.Error())
 	}
-	panic("implement me")
+	return db.Agents.UpdateGivenRunStatus(agentRunStatus.Id, agentRunStatus.RunStatus)
 }
 
 func (SlickAgentsService) UpdateScreenshotTimestamp(ctx context.Context, agentId *slickqa.ScreenshotUpdateRequest) (*slickqa.Agent, error) {

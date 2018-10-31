@@ -95,9 +95,7 @@ func issueLoginSession() http.Handler {
 			if user.EmailAddress == slickconfig.Configuration.DefaultAccess.Admin {
 				user.Permissions.SlickAdmin = 1
 			}
-			if user.UserPreferences == nil {
-				user.UserPreferences = defaultPreferencesForUser(user)
-			}
+			user.UserPreferences = defaultPreferencesForUser(user)
 			err = db.User.AddUser(user)
 			if err != nil {
 				logger.Error().AnErr("error", err).Str("user", user.EmailAddress).Msg("Cannot store in database user, login can continue, but many things may not work.")

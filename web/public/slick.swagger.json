@@ -16,7 +16,7 @@
   ],
   "paths": {
     "/api/agents/{Company}": {
-      "post": {
+      "get": {
         "operationId": "GetAgents",
         "responses": {
           "200": {
@@ -32,6 +32,13 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "UpdatedSince",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
           }
         ],
         "tags": [
@@ -144,7 +151,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/slickqaAgentRunStatus"
+              "$ref": "#/definitions/slickqaAgent"
             }
           }
         },
