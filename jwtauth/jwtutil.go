@@ -112,6 +112,7 @@ func CreateJWTForUser(user slickqa.UserInfo) (string, error) {
 		}
 		for _, project := range company.Projects {
 			slickCompany.ProjectPermissions[project.ProjectName] = slickconfig.PermissionFromRoles(project.Roles)
+			logger.Debug().Str("email", user.EmailAddress).Strs("roles", project.Roles).Str("project", project.ProjectName).Uint32("permission", slickCompany.ProjectPermissions[project.ProjectName]).Msg("Permissions for user")
 		}
 		permissions.Companies[company.CompanyName] = slickCompany
 	}

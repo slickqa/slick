@@ -125,6 +125,25 @@ export default class LoginState {
     return this.DecodedJwt.exp <= Math.floor(this.LastCheck / 1000);
   }
 
+  @computed get HasWriteAccessToResults() {
+    if(!this.IsLoggedIn) {
+      return false;
+    }
+
+    if(this.IsSlickAdmin || this.CompanyAdminList.length > 0) {
+      return true;
+    }
+    let retval = false;
+    Object.keys(this.DecodedJwt.sp.co).forEach((company) => {
+      Object.keys(this.DecodedJwt.sp.co[company].proj).forEach((project) => {
+        if((this.DecodedJwt.sp.co[company].proj[project] & 512) > 0) {
+          retval = true;
+        }
+      });
+    });
+    return retval;
+  }
+
   /**
    * Does the token expire within a certain period of time.
    * @param {Number} seconds
