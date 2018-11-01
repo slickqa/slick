@@ -113,11 +113,17 @@ func (c *SlickConfiguration) LoadFromStandardLocations() {
 }
 
 func (c *SlickConfiguration) Load(data []byte) {
+	logger = log.With().Str("loggerName", "slickconfig").Logger()
 	err := toml.Unmarshal(data, c)
 	if err != nil {
 		logger.Warn().AnErr("error", err).Msg("Problem loading configuration")
 	}
+	if len(c.Roles.Defaults) == 0 {
+		c.Roles.Defaults = DefaultRoles
+	}
+	logger.Debug().Int("default-roles-length", len(c.Roles.Defaults)).Msg("Initializing roles")
 	for _, role := range c.Roles.Defaults {
+		logger.Debug().Str("role-name", role.Name).Msg("Initializing Role")
 		roles[role.Name] = role
 	}
 }

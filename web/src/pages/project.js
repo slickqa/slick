@@ -37,7 +37,6 @@ export class ProjectPage extends Component {
 
   render() {
     let { ProjectsState } = this.props;
-    console.log(this.props);
     let companyParam = this.props.match.params.company;
     let projectParam = this.props.match.params.project;
     setTimeout(() => {ProjectsState.current = {Company: companyParam, Name: projectParam}}, 0);

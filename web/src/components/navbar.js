@@ -105,6 +105,10 @@ export default class Navbar extends Component {
     if(this.props.LoginState.IsSlickAdmin || this.props.LoginState.CompanyAdminList.length > 0 || Object.keys(this.props.LoginState.ProjectAdminObject).length > 0) {
       admin = <SidebarIcon key="Administration" selected={this.state.nav === "Administration"} name="Administration" icon={<AdminIcon />} onSelect={this.changeNavAction("Administration")}/>
     }
+    let lab = null;
+    if(this.props.LoginState.IsSlickAdmin || this.props.LoginState.CompanyAdminList.length > 0 ) {
+
+    }
     return (
       <Box full="vertical" direction="row">
         <Box full="vertical" className="slick-navbar">
