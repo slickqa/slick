@@ -19,6 +19,7 @@ window.CompanyApi = CompanyApi;
 window.ProjectsApi = ProjectsApi;
 
 import navigation from './navigation';
+import AgentsState from "./state/agents";
 
 
 ApiInit({
@@ -37,10 +38,12 @@ export default class BasicApp extends Component {
     this.LoginState = new LoginState();
     this.CompaniesState = new CompaniesState();
     this.ProjectsState = new ProjectsState();
+    this.AgentsState = new AgentsState();
     window.UsersTate = this.UserState;
     window.LoginState = this.LoginState;
     window.CompaniesState = this.CompaniesState;
     window.ProjectsState = this.ProjectsState;
+    window.AgentsState = this.AgentsState;
     if(Object.keys(this.UserState.User).length !== 0) {
       reaction(() => this.UserState.User.UserPreferences.Theme, () => {
         this.componentDidMount();
@@ -64,9 +67,11 @@ export default class BasicApp extends Component {
       devtools = <DevTools/>;
     }
     return (
-      <Provider UserState={this.UserState} LoginState={this.LoginState}
+      <Provider UserState={this.UserState}
+                LoginState={this.LoginState}
                 CompaniesState={this.CompaniesState}
-                ProjectsState={this.ProjectsState}>
+                ProjectsState={this.ProjectsState}
+                AgentsState={this.AgentsState}>
       <App centered={false}>
         {devtools}
         <Router>

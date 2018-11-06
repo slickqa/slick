@@ -20,6 +20,7 @@ web/src/slick-api: web/public/slick.swagger.json web/node_modules/.bin/openapi
 	cat web/additionalTypeDef.txt >> web/src/slick-api/types.js
 	perl -pi -e 's/Promise<slickqa(.*?)>/Promise<HttpResponse<slickqa\1>>/' web/src/slick-api/*.js
 	perl -pi -e 's/Id\.([A-Z])/Id_\1/g' web/src/slick-api/Links.js
+	perl -pi -e 's/Id\.([A-Z])/Id_\1/g' web/src/slick-api/Agents.js
 	patch -p1 <fixcodecompletion.diff
 clean:
 	rm -rf slickqa/slick.pb.go slickqa/slick.pb.gw.go web/public/slick.swagger.json web/src/slick-api
