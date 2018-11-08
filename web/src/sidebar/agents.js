@@ -28,8 +28,12 @@ export default class AgentsSideBarComponent extends Component {
         <Box>
           {Object.keys(AgentsState.statsForAgentsByCompany).map((companyName) => {
             let companyStats = AgentsState.statsForAgentsByCompany[companyName];
+            let companyHeader = <Heading tag="h4" align="left" margin="none"><Anchor path={"/agents/" + companyName}>{companyName}</Anchor></Heading>;
+            if(companyName === AgentsState.currentCompany) {
+              companyHeader = <Box colorIndex="brand-a">{companyHeader}</Box>;
+            }
             return <Box key={companyName} separator="bottom" pad="small" >
-              <Heading tag="h4" align="left">{companyName}</Heading>
+                {companyHeader}
               <Box direction="row">
                 <Box pad="small"><Value size="small" value={companyStats.Total} label="Total" /></Box>
                 <Box pad="small"><Value size="small" value={companyStats.RUNNING ? companyStats.RUNNING : 0} label="Running" colorIndex="neutral-3"/></Box>

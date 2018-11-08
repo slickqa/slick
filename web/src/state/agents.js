@@ -13,6 +13,8 @@ export default class AgentsState {
 
   @observable lastUpdate = new Date();
 
+  @observable currentCompany = "";
+
   constructor() {
     this.timer = setInterval(this.poll.bind(this), 1500);
   }
