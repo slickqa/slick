@@ -21,6 +21,7 @@
  * @property {date} LastCheckin 
  * @property {date} LastScreenshotUpdate 
  * @property {slickqaAgentStatus} status 
+ * @property {string} Image 
  */
 
 /**
