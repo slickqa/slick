@@ -50,6 +50,10 @@ export class AgentsPage extends Component {
       agentList = agentNames.map((name) => {
         let agent = agentMap[name];
         let link = null;
+        let image = "/img/agent-default.jpg";
+        if(agent.Image) {
+          image = agent.Image;
+        }
         if(agent.status && agent.status.CurrentTest) {
           link = <Anchor target="_blank" href={agent.status.CurrentTest.Url} label={<Label size="small" className="agent-running-url">{agent.status.CurrentTest.Name}</Label>} />;
 
@@ -62,7 +66,7 @@ export class AgentsPage extends Component {
         } else if(agent.status && agent.status.RunStatus && agent.status.RunStatus === "PAUSED") {
           stateIcon = <PausedIcon colorIndex="accent-3"/>
         }
-        return <Card heading={<Heading tag="h2">{stateIcon} {agent.Id.Name}</Heading>} margin="small" colorIndex="grey-1-a" link={link}/>;
+        return <Card thumbnail={image} heading={<Heading tag="h2">{stateIcon} {agent.Id.Name}</Heading>} margin="small" colorIndex="grey-1-a" link={link}/>;
       });
     }
     return (

@@ -535,4 +535,5 @@ message Agent {
     google.protobuf.Timestamp LastCheckin = 5; //`bson:"checkIn"`
     google.protobuf.Timestamp LastScreenshotUpdate = 6; //`bson:"screenshotUpdate"`
     AgentStatus status = 7; //`bson:"status"`
+    string Image = 8; //`bson:"-"`
 }
