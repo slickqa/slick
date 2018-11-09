@@ -125,6 +125,13 @@ func (SlickAgentsService) GetAgents(ctx context.Context, agentQuery *slickqa.Age
 	if err != nil {
 		return nil, err
 	}
+	linkService := SlickLinksService{}
+	for _, agent := range agents {
+		link, err := linkService.GetDownloadUrl(ctx, &slickqa.LinkIdentity{Company:agent.Id.Company, Project: "Agent", EntityType: "Agent", EntityId: agent.Id.Name, Name: "screen"})
+		if err == nil {
+			agent.Image = link.Url
+		}
+	}
 	return &slickqa.AgentsResponse{
 		Agents: agents,
 	}, nil

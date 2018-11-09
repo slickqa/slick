@@ -13,6 +13,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/minio/minio-go"
+	"strings"
 	"time"
 )
 
@@ -21,6 +22,8 @@ type SlickLinksService struct {
 
 func linkPermissionFromEntityType(entityType string) (uint32) {
 	switch entityType {
+	case "Company":
+		return slickconfig.PERMISSION_ADMIN
 	case "Project":
 		return slickconfig.PERMISSION_ADMIN
 	case "Testcase":
@@ -33,9 +36,50 @@ func linkPermissionFromEntityType(entityType string) (uint32) {
 		return slickconfig.PERMISSION_TESTRUN_WRITE
 	case "Result":
 		return slickconfig.PERMISSION_RESULT_WRITE
+	case "Agent":
+		return slickconfig.PERMISSION_RESULT_WRITE
 	default:
 		return 0xfffffff // an unreasonable permission, not all the bits are even used
 	}
+}
+
+func validateLinkId(id *slickqa.LinkIdentity) error {
+	if id == nil {
+		return fmt.Errorf("invalid link id")
+	}
+
+	if id.Company == "" {
+		return fmt.Errorf("invalid link id, company is empty")
+	}
+
+	if id.Project == "" {
+		return fmt.Errorf("invalid link id, project is empty")
+	}
+
+	if id.EntityType == "" {
+		return fmt.Errorf("invalid link id, entity type is empty")
+	}
+
+	if id.EntityType != "Project" &&
+	   id.EntityType != "Testcase" &&
+	   id.EntityType != "Build" &&
+	   id.EntityType != "Testplan" &&
+	   id.EntityType != "Testrun" &&
+	   id.EntityType != "Result" &&
+	   id.EntityType != "Agent" &&
+	   id.EntityType != "Company" {
+	   	return fmt.Errorf("link identity type %s is invalid", id.EntityType)
+	}
+
+	if id.EntityId == "" {
+		return fmt.Errorf("invlid link id, entity id is empty")
+	}
+
+	if id.Name == "" {
+		return fmt.Errorf("invlid link id, name is empty")
+	}
+
+	return nil
 }
 
 func listIdentityFromLinkIdentity(identity *slickqa.LinkIdentity) (*slickqa.LinkListIdentity) {
@@ -110,6 +154,12 @@ func (l SlickLinksService) AddLink(ctx context.Context, link *slickqa.Link) (*sl
 	if err != nil {
 		return nil, status.Error(codes.PermissionDenied, err.Error())
 	}
+
+	err = validateLinkId(link.Id)
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
+
 	// make sure they aren't editing protected entries of the link object
 	sanitizeLinkObject(link, nil)
 
@@ -186,7 +236,7 @@ func (l SlickLinksService) GetDownloadUrl(ctx context.Context, id *slickqa.LinkI
 
 
 	logger := log.With().Str("loggerName", "services.linksImpl.GetDownloadUrl").Logger()
-	logger.Debug().Msg("Looking for link")
+	logger.Debug().Msgf("Looking for link %+v", id)
 	// find link in db, return error if it doesn't exist
 	link, err := db.Links.FindLinkById(id)
 	if err != nil {
@@ -225,15 +275,74 @@ func (l SlickLinksService) GetDownloadUrl(ctx context.Context, id *slickqa.LinkI
 }
 
 func (l SlickLinksService) GetUploadUrl(ctx context.Context, uploadInfo *slickqa.FileUploadInfo) (*slickqa.LinkUrl, error) {
+	logger := log.With().Str("loggerName", "services.linksImpl.GetUploadUrl").Logger()
 	err := jwtauth.HasPermission(ctx, uploadInfo.Id.Company, uploadInfo.Id.Project, linkPermissionFromEntityType(uploadInfo.Id.EntityType))
 	if err != nil {
 		return nil, status.Error(codes.PermissionDenied, err.Error())
 	}
-	// find link in db, return error if it doesn't exist
-	// update db with current file upload info
-	// generate upload URL from company storage settings locked to file upload info
+	err = validateLinkId(uploadInfo.Id)
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
 
-	panic("implement me")
+	if uploadInfo.ContentType == "" {
+		return nil, status.Error(codes.InvalidArgument, "Must supply a content type")
+	}
+
+	if uploadInfo.FileName == "" {
+		return nil, status.Error(codes.InvalidArgument, "Must have a non empty filename")
+	}
+
+	// find link in db, return error if it doesn't exist
+	link, err := db.Links.FindLinkById(uploadInfo.Id)
+	if err != nil {
+		return nil, status.Error(codes.NotFound, err.Error())
+	}
+
+	if link.Type != "File" {
+		return nil, status.Error(codes.InvalidArgument, "only links with a type of 'File' can get an upload url")
+	}
+
+	// get company settings for s3 configuration before we update the link
+	settings, err := db.CompanySettings.Find(uploadInfo.Id.Company)
+	if err != nil || settings.StorageSettings == nil {
+		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("No storage settings are defined for %s", uploadInfo.Id.Company))
+	}
+
+	// update db with current file upload info
+	prefix := "/"
+	if settings.StorageSettings.Prefix != "" {
+		prefix = settings.StorageSettings.Prefix
+	}
+	if !strings.HasSuffix(prefix, "/") {
+		prefix = prefix + "/"
+	}
+	link.FileInfo = &slickqa.SlickFile{
+		FileName: uploadInfo.FileName,
+		ContentType: uploadInfo.ContentType,
+		Path: prefix + uploadInfo.Id.EntityType + "/" + uploadInfo.Id.EntityId + "/" + uploadInfo.FileName,
+		Size: uploadInfo.Size,
+	}
+
+	err = db.Links.UpdateLink(link)
+	if err != nil {
+		return nil, status.Errorf(codes.Internal, "Unable to update link: %s", err.Error())
+	}
+
+	logger.Debug().Str("BaseUrl", settings.StorageSettings.BaseUrl).Msg("Initializing minio client")
+	// generate URL from company storage settings
+	minioClient, err := minio.New(settings.StorageSettings.BaseUrl, settings.StorageSettings.AccessKey, settings.StorageSettings.SecretKey, true)
+	if err != nil {
+		logger.Error().Str("error", err.Error()).Msg("Unable to create storage client")
+		return nil, status.Error(codes.Unknown, "Unable to create storage client")
+	}
+
+	// generate upload URL from company storage settings locked to file upload info
+	// TODO come up with a more intelligent time period or at least configurable, maybe tied to jwt expiration?
+	url, err := minioClient.PresignedPutObject(settings.StorageSettings.Bucket, link.FileInfo.Path, time.Minute * 15)
+
+	expire, _ := ptypes.TimestampProto(time.Now().Add(time.Minute * 15))
+	return &slickqa.LinkUrl{Url: url.String(), Expires: expire}, nil
 }
 
 

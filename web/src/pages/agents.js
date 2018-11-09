@@ -66,7 +66,7 @@ export class AgentsPage extends Component {
         } else if(agent.status && agent.status.RunStatus && agent.status.RunStatus === "PAUSED") {
           stateIcon = <PausedIcon colorIndex="accent-3"/>
         }
-        return <Card key={agent.Id.Name} thumbnail={agentImage} heading={<Heading tag="h2">{stateIcon} {agent.Id.Name}</Heading>} margin="small" colorIndex="grey-1-a" link={link}/>;
+        return <Card key={agent.Id.Name} thumbnail={<Image className="agent-thumbnail" src={agentImage} />} heading={<Heading tag="h2">{stateIcon} {agent.Id.Name}</Heading>} margin="small" colorIndex="grey-1-a" link={link}/>;
       });
     }
     return (

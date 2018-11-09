@@ -1,3 +1,7 @@
 label.agent-running-url.grommetux-label {
   color: nth($brand-neutral-colors, 3);
 }
+
+img.agent-thumbnail {
+  max-height: 190px;
+}
