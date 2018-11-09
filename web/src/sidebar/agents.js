@@ -28,7 +28,7 @@ export default class AgentsSideBarComponent extends Component {
         <Box>
           {Object.keys(AgentsState.statsForAgentsByCompany).map((companyName) => {
             let companyStats = AgentsState.statsForAgentsByCompany[companyName];
-            let companyHeader = <Heading tag="h4" align="left" margin="none"><Anchor path={"/agents/" + companyName}>{companyName}</Anchor></Heading>;
+            let companyHeader = <Heading tag="h4" margin="none"><Anchor path={"/agents/" + companyName}>{companyName}</Anchor></Heading>;
             if(companyName === AgentsState.currentCompany) {
               companyHeader = <Box colorIndex="brand-a">{companyHeader}</Box>;
             }
