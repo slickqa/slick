@@ -33,6 +33,8 @@ func linkPermissionFromEntityType(entityType string) (uint32) {
 		return slickconfig.PERMISSION_TESTRUN_WRITE
 	case "Result":
 		return slickconfig.PERMISSION_RESULT_WRITE
+	case "Agent":
+		return slickconfig.PERMISSION_RESULT_WRITE
 	default:
 		return 0xfffffff // an unreasonable permission, not all the bits are even used
 	}
@@ -186,7 +188,7 @@ func (l SlickLinksService) GetDownloadUrl(ctx context.Context, id *slickqa.LinkI
 
 
 	logger := log.With().Str("loggerName", "services.linksImpl.GetDownloadUrl").Logger()
-	logger.Debug().Msg("Looking for link")
+	logger.Debug().Msgf("Looking for link %+v", id)
 	// find link in db, return error if it doesn't exist
 	link, err := db.Links.FindLinkById(id)
 	if err != nil {
