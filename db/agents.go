@@ -64,8 +64,8 @@ func (agentsType) FindAgents(request *slickqa.AgentsRequest) ([]*slickqa.Agent, 
 	if request.UpdatedSince != nil {
 		query = bson.M{
 			"_id.company": request.Company,
-			"checkIn": bson.M{
-				"$gt": request.UpdatedSince,
+			"checkIn.seconds": bson.M{
+				"$gt": request.UpdatedSince.Seconds,
 			},
 		}
 	}
