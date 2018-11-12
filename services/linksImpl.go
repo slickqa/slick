@@ -1,19 +1,18 @@
 package services
 
 import (
-	"github.com/rs/zerolog/log"
-	"github.com/slickqa/slick/slickqa"
 	"context"
-	"github.com/slickqa/slick/jwtauth"
-	"google.golang.org/grpc/status"
-	"google.golang.org/grpc/codes"
-	"github.com/slickqa/slick/db"
-	"github.com/slickqa/slick/slickconfig"
-	"github.com/golang/protobuf/ptypes"
 	"errors"
 	"fmt"
+	"github.com/golang/protobuf/ptypes"
 	"github.com/minio/minio-go"
-	"strings"
+	"github.com/rs/zerolog/log"
+	"github.com/slickqa/slick/db"
+	"github.com/slickqa/slick/jwtauth"
+	"github.com/slickqa/slick/slickconfig"
+	"github.com/slickqa/slick/slickqa"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"time"
 )
 
@@ -310,12 +309,9 @@ func (l SlickLinksService) GetUploadUrl(ctx context.Context, uploadInfo *slickqa
 	}
 
 	// update db with current file upload info
-	prefix := "/"
+	prefix := ""
 	if settings.StorageSettings.Prefix != "" {
 		prefix = settings.StorageSettings.Prefix
-	}
-	if !strings.HasSuffix(prefix, "/") {
-		prefix = prefix + "/"
 	}
 	link.FileInfo = &slickqa.SlickFile{
 		FileName: uploadInfo.FileName,
@@ -340,6 +336,7 @@ func (l SlickLinksService) GetUploadUrl(ctx context.Context, uploadInfo *slickqa
 	// generate upload URL from company storage settings locked to file upload info
 	// TODO come up with a more intelligent time period or at least configurable, maybe tied to jwt expiration?
 	url, err := minioClient.PresignedPutObject(settings.StorageSettings.Bucket, link.FileInfo.Path, time.Minute * 15)
+	logger.Debug().Str("URL", url.String()).Msg("Generated upload url")
 
 	expire, _ := ptypes.TimestampProto(time.Now().Add(time.Minute * 15))
 	return &slickqa.LinkUrl{Url: url.String(), Expires: expire}, nil
