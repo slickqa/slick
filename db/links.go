@@ -2,6 +2,7 @@ package db
 
 import (
 	"github.com/globalsign/mgo"
+	"github.com/globalsign/mgo/bson"
 	"github.com/slickqa/slick/slickconfig"
 	"github.com/slickqa/slick/slickqa"
 )
@@ -57,6 +58,6 @@ func (*linksType) DeleteLink(id *slickqa.LinkIdentity) (error) {
 func (*linksType) UpdateLink(link *slickqa.Link) (error) {
 	mongo := MongoSession.Copy()
 	defer mongo.Close()
-	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(LinksCollectionName).Update(link.Id, link)
+	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(LinksCollectionName).Update(bson.M{"_id": link.Id}, link)
 	return err
 }
