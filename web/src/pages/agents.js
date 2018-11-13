@@ -11,6 +11,7 @@ import TextInput from 'grommet/components/TextInput';
 import Button from 'grommet/components/Button';
 import Anchor from 'grommet/components/Anchor';
 import Menu from 'grommet/components/Menu';
+import CheckBox from 'grommet/components/CheckBox';
 import Card from 'grommet/components/Card';
 import Label from 'grommet/components/Label';
 import Paragraph from 'grommet/components/Paragraph';
@@ -23,6 +24,7 @@ import IdleIcon from 'grommet/components/icons/base/Clock';
 import RunningIcon from 'grommet/components/icons/base/Play';
 import PausedIcon from 'grommet/components/icons/base/Pause';
 import Animate from 'grommet/components/Animate';
+import * as AgentsApi from '../slick-api/Agents';
 
 /**
  * @property {UserState} props.UserState
@@ -49,24 +51,32 @@ export class AgentsPage extends Component {
       agentNames.sort();
       agentList = agentNames.map((name) => {
         let agent = agentMap[name];
-        let link = null;
-        let agentImage = "/img/agent-default.jpg";
-        if(agent.Image) {
-          agentImage = agent.Image;
-        }
-        if(agent.status && agent.status.CurrentTest) {
-          link = <Anchor target="_blank" href={agent.status.CurrentTest.Url} label={<Label size="small" className="agent-running-url">{agent.status.CurrentTest.Name}</Label>} />;
+        if(agent.status) {
+          let link = null;
+          let agentImage = "/img/agent-default.jpg";
+          if (agent.Image) {
+            agentImage = agent.Image;
+          }
+          if (agent.status && agent.status.CurrentTest) {
+            link = <Anchor target="_blank" href={agent.status.CurrentTest.Url} label={<Label size="small"
+                                                                                             className="agent-running-url">{agent.status.CurrentTest.Name}</Label>}/>;
 
+          }
+          let heading = <Box direction="row">
+            <Box className="agent-header" tag="div">{agent.Id.Name}</Box>
+            <Box onClick={() => {AgentsApi.SetAgentRunStatus(agent.Id.Company, agent.Id.Name, {RunStatus: agent.status.RunStatus === "PAUSED" ? "IDLE" : "PAUSED"})}} >
+              <Box pad={{vertical: "small"}}><PausedIcon colorIndex={agent.status.RunStatus === "PAUSED" ? "accent-3" : "neutral-4"}/></Box>
+            </Box>
+          </Box>;
+                    let description = <Box>
+                      <Box direction="row">
+                        <Box>Current Status:</Box><Box pad={{"horizontal": "small"}}>{agent.status.RunStatus}</Box>
+                      </Box>
+                    </Box>;
+          return <Card key={agent.Id.Name} thumbnail={<Image className="agent-thumbnail" src={agentImage}/>} description={description}
+                       heading={heading} margin="small" colorIndex="grey-1-a" link={link}/>;
         }
-        let stateIcon = <UnknownIcon colorIndex="neutral-2"/>;
-        if(agent.status && agent.status.RunStatus && agent.status.RunStatus === "IDLE") {
-          stateIcon = <IdleIcon colorIndex="neutral-4"/>
-        } else if(agent.status && agent.status.RunStatus && agent.status.RunStatus === "RUNNING") {
-          stateIcon = <RunningIcon colorIndex="neutral-3"/>
-        } else if(agent.status && agent.status.RunStatus && agent.status.RunStatus === "PAUSED") {
-          stateIcon = <PausedIcon colorIndex="accent-3"/>
-        }
-        return <Card key={agent.Id.Name} thumbnail={<Image className="agent-thumbnail" src={agentImage} />} heading={<Heading tag="h2">{stateIcon} {agent.Id.Name}</Heading>} margin="small" colorIndex="grey-1-a" link={link}/>;
+        return null;
       });
     }
     return (

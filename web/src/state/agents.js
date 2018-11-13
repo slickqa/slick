@@ -33,7 +33,7 @@ export default class AgentsState {
       AgentsApi.GetAgents(company, {UpdatedSince: this.lastUpdate}).then((response) => {
         if(response.data.Agents) {
           response.data.Agents.forEach((agent) => {
-            if(agent) {
+            if(agent && agent.Id) {
               if (!this.agentsByName[agent.Id.Company]) {
                 this.agentsByName[agent.Id.Company] = {};
               }
@@ -59,23 +59,25 @@ export default class AgentsState {
       companiesTree[company]["Projects"] = {};
       Object.keys(this.agentsByName[company]).forEach((agentName) => {
         let agent = this.agentsByName[company][agentName];
-        if(!companiesTree[company][agent.status.RunStatus]) {
-          companiesTree[company][agent.status.RunStatus] = 0;
-        }
-        companiesTree[company][agent.status.RunStatus]++;
-        companiesTree[company]["Total"]++;
-        agent.status.Projects.forEach((project) => {
-          if(!companiesTree[company]["Projects"][project.Project]) {
-            companiesTree[company]["Projects"][project.Project] = {
-              "Total": 0,
+        if(agent && agent.status) {
+          if (!companiesTree[company][agent.status.RunStatus]) {
+            companiesTree[company][agent.status.RunStatus] = 0;
+          }
+          companiesTree[company][agent.status.RunStatus]++;
+          companiesTree[company]["Total"]++;
+          agent.status.Projects.forEach((project) => {
+            if (!companiesTree[company]["Projects"][project.Project]) {
+              companiesTree[company]["Projects"][project.Project] = {
+                "Total": 0,
+              }
             }
-          }
-          if(!companiesTree[company]["Projects"][project.Project][agent.status.RunStatus]) {
-            companiesTree[company]["Projects"][project.Project][agent.status.RunStatus] = 0;
-          }
-          companiesTree[company]["Projects"][project.Project][agent.status.RunStatus]++;
-          companiesTree[company]["Projects"][project.Project]["Total"]++;
-        });
+            if (!companiesTree[company]["Projects"][project.Project][agent.status.RunStatus]) {
+              companiesTree[company]["Projects"][project.Project][agent.status.RunStatus] = 0;
+            }
+            companiesTree[company]["Projects"][project.Project][agent.status.RunStatus]++;
+            companiesTree[company]["Projects"][project.Project]["Total"]++;
+          });
+        }
       });
     });
     return companiesTree;
