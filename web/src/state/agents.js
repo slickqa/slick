@@ -33,13 +33,15 @@ export default class AgentsState {
       AgentsApi.GetAgents(company, {UpdatedSince: this.lastUpdate}).then((response) => {
         if(response.data.Agents) {
           response.data.Agents.forEach((agent) => {
-            if (!this.agentsByName[agent.Id.Company]) {
-              this.agentsByName[agent.Id.Company] = {};
-            }
-            this.agentsByName[agent.Id.Company][agent.Id.Name] = agent;
-            let agentLastUpdated = new Date(agent.LastCheckin);
-            if (agentLastUpdated > this.lastUpdate) {
-              this.lastUpdate = agentLastUpdated;
+            if(agent) {
+              if (!this.agentsByName[agent.Id.Company]) {
+                this.agentsByName[agent.Id.Company] = {};
+              }
+              this.agentsByName[agent.Id.Company][agent.Id.Name] = agent;
+              let agentLastUpdated = new Date(agent.LastCheckin);
+              if (agentLastUpdated > this.lastUpdate) {
+                this.lastUpdate = agentLastUpdated;
+              }
             }
           });
         }

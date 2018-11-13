@@ -3,10 +3,14 @@ import React, { Component } from 'react';
 import Heading from 'grommet/components/Heading';
 import Anchor from 'grommet/components/Anchor';
 import Box from 'grommet/components/Box';
+import Button from 'grommet/components/Button';
 import Columns from 'grommet/components/Columns';
 import Value from 'grommet/components/Value';
+import PausedIcon from 'grommet/components/icons/base/Pause';
+import UnPauseIcon from 'grommet/components/icons/base/Play';
 import {inject, observer} from 'mobx-react';
 import navigation from '../navigation';
+import * as AgentsApi from '../slick-api/Agents';
 
 @inject('AgentsState') @inject('UserState') @observer
 export default class AgentsSideBarComponent extends Component {
@@ -40,11 +44,23 @@ export default class AgentsSideBarComponent extends Component {
                 <Box pad="small"><Value size="small" value={companyStats.IDLE ? companyStats.IDLE : 0} label="Idle" colorIndex="neutral-4"/></Box>
                 <Box pad="small"><Value size="small" value={companyStats.PAUSED ? companyStats.PAUSED : 0} label="Paused" colorIndex="accent-3"/></Box>
               </Box>
+              <Box>
+                { companyStats.Total != companyStats.PAUSED ? <Button icon={<PausedIcon colorIndex="accent-3"/>} secondary={true} label="Pause All" onClick={this.changeRunStatusForCompany.bind(this, companyName, "PAUSED")}></Button> : null }
+                { companyStats.PAUSED > 0 ? <Button icon={<UnPauseIcon colorIndex="neutral-3"/>} secondary={true} label="UnPause All" onClick={this.changeRunStatusForCompany.bind(this, companyName, "IDLE")}></Button> : null }
+              </Box>
             </Box>;
           })}
         </Box>
       </Box>
     );
+  }
+
+  changeRunStatusForCompany(company, status) {
+    let { AgentsState } = this.props;
+    let agentMap = AgentsState.agentsByName[company];
+    Object.keys(agentMap).forEach((agentName) => {
+      AgentsApi.SetAgentRunStatus(company, agentName, {RunStatus: status})
+    })
   }
 
   componentWillUnmount() {
