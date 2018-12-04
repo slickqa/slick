@@ -41,6 +41,9 @@ func (s *SlickAuthService) RefreshToken(ctx context.Context, request *slickqa.Re
 }
 
 func (s *SlickAuthService) LoginWithToken(ctx context.Context, req *slickqa.ApiTokenLoginRequest) (*slickqa.LoginResponse, error) {
+	if req.Token == "" {
+		return failedLoginResponse()
+	}
 	user, err := db.User.FindByToken(req.Token)
 	if err != nil {
 		return failedLoginResponse()
