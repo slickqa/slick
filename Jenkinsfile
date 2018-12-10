@@ -5,7 +5,7 @@ pipeline {
       agent {
         docker {
           image 'slickqa/slick-development'
-          args '-v slickqa-slick-build:/development'
+          args '-v slickqa-slick-build:/development -u root'
         }
 
       }
@@ -23,7 +23,7 @@ npm install'''
       agent {
         docker {
           image 'slickqa/slick-development'
-          args '-v slickqa-slick-build:/development'
+          args '-v slickqa-slick-build:/development -u root'
         }
 
       }
