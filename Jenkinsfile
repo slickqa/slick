@@ -1,11 +1,16 @@
 pipeline {
   agent any
   stages {
+    stage('Prepare') {
+      steps {
+        sh '''if ! docker volume list |grep -q slickqa-slick-build; then docker volume create --opt o=uid=jenkins,gid=jenkins slickqa-slick-build; fi'''
+      }
+    }
     stage('Build') {
       agent {
         docker {
           image 'slickqa/slick-development'
-          args '-v slickqa-slick-build:/development -u root'
+          args '-v slickqa-slick-build:/development'
         }
 
       }
@@ -23,7 +28,7 @@ npm install'''
       agent {
         docker {
           image 'slickqa/slick-development'
-          args '-v slickqa-slick-build:/development -u root'
+          args '-v slickqa-slick-build:/development'
         }
 
       }
