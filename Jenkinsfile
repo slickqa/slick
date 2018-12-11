@@ -30,7 +30,6 @@ pipeline {
             ln -svf $(pwd) $GOPATH/src/github.com/slickqa/slick
             cd $GOPATH/src/github.com/slickqa/slick
             make deps
-            go list ./... |xargs go list -f '{{ join .Imports "\n" }}' |grep -v github.com/slickqa/slick |xargs go get -u
             cd web
             npm install
         '''
