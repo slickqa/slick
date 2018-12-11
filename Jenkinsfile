@@ -28,7 +28,7 @@ pipeline {
             ln -svf $(pwd) $GOPATH/src/github.com/slickqa/slick
             cd $GOPATH/src/github.com/slickqa/slick
             make deps
-            go get .
+            go get ./...
             cd web
             npm install
         '''
