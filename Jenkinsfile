@@ -42,7 +42,7 @@ pipeline {
         stash(name: 'dist', includes: 'dist/**/*')
       }
     }
-    stage('Build Docker Image') {
+    stage('Publish Version') {
       when {
         branch 'master'  //only run these steps on the master branch
       }
