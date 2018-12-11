@@ -131,8 +131,8 @@ func (c *SlickConfiguration) Load(data []byte) {
 func (c *SlickConfiguration) LoadFromLocation(location string) {
 	if strings.HasPrefix(location, "http") {
 		resp, err := http.Get(location)
-		defer resp.Body.Close()
 		if err == nil {
+			defer resp.Body.Close()
 			body, err := ioutil.ReadAll(resp.Body)
 			if err == nil {
 				c.Load(body)
