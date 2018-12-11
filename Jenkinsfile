@@ -3,7 +3,14 @@ pipeline {
   stages {
     stage('Prepare') {
       steps {
-        sh '''if ! docker volume list |grep -q slickqa-slick-build; then docker volume create --opt o=uid=jenkins,gid=jenkins slickqa-slick-build; fi'''
+        sh '''if ! docker volume list |grep -q slickqa-slick-build; 
+then 
+    docker volume create slickqa-slick-build;
+fi
+JENKINS_UID=$(id jenkins -u)
+JENKINS_GID=$(id jenkins -g)
+docker run --rm=true -v slickqa-slick-build:/development slickqa/slick-development /bin/bash -c "mkdir /development/go /development/.cache 2>/dev/null; chown -R $JENKINS_UID:$JENKINS_GID /development/go; chown -R $JENKINS_UID:$JENKINS_GID /development/.cache;"
+'''
       }
     }
     stage('Build') {
