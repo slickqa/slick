@@ -9,7 +9,7 @@ then
 fi
 JENKINS_UID=$(id jenkins -u)
 JENKINS_GID=$(id jenkins -g)
-docker run --rm=true -v slickqa-slick-build:/development slickqa/slick-development /bin/bash -c "mkdir /development/go /development/.cache 2>/dev/null; chown -R $JENKINS_UID:$JENKINS_GID /development/go; chown -R $JENKINS_UID:$JENKINS_GID /development/.cache;"
+docker run --rm=true -v slickqa-slick-build:/development slickqa/slick-development /bin/bash -c "mkdir /development/go /development/.cache /development/home 2>/dev/null; chown -R $JENKINS_UID:$JENKINS_GID /development/go /development/.cache /development/home;"
 '''
       }
     }
@@ -17,7 +17,7 @@ docker run --rm=true -v slickqa-slick-build:/development slickqa/slick-developme
       agent {
         docker {
           image 'slickqa/slick-development'
-          args '-v slickqa-slick-build:/development'
+          args '-v slickqa-slick-build:/development -e HOME=/development/home'
         }
 
       }
@@ -35,7 +35,7 @@ npm install'''
       agent {
         docker {
           image 'slickqa/slick-development'
-          args '-v slickqa-slick-build:/development'
+          args '-v slickqa-slick-build:/development -e HOME=/development/home'
         }
 
       }
