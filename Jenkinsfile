@@ -1,5 +1,6 @@
 pipeline {
   agent any
+  options { disableConcurrentBuilds() }
   stages {
     stage('Prepare') {
       steps {
@@ -25,10 +26,10 @@ pipeline {
       steps {
         sh '''
             mkdir -p $GOPATH/src/github.com/slickqa
+            rm $GOPATH/src/github.com/slickqa/slick
             ln -svf $(pwd) $GOPATH/src/github.com/slickqa/slick
             cd $GOPATH/src/github.com/slickqa/slick
             make deps
-            go get .
             cd web
             npm install
         '''
