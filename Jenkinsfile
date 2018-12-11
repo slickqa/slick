@@ -26,6 +26,7 @@ pipeline {
       steps {
         sh '''
             mkdir -p $GOPATH/src/github.com/slickqa
+            rm $GOPATH/src/github.com/slickqa/slick
             ln -svf $(pwd) $GOPATH/src/github.com/slickqa/slick
             cd $GOPATH/src/github.com/slickqa/slick
             make deps
