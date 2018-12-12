@@ -1,6 +1,9 @@
 pipeline {
   agent any
-  options { disableConcurrentBuilds() }
+  options { 
+	disableConcurrentBuilds()
+        lock('Cache Volume')
+  }
   stages {
     stage('Prepare') {
       steps {
