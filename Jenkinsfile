@@ -44,6 +44,7 @@ pipeline {
             go test -race $(go list ./...)
         '''
         stash(name: 'dist', includes: 'dist/**/*')
+        stash(name: 'web-dist', includes: 'web/dist/**/*')
       }
     }
     stage('Publish Version') {
@@ -52,6 +53,7 @@ pipeline {
       }
       steps {
         unstash('dist')
+        unstash('web-dist')
         sh '''
             cp /etc/ssl/certs/ca-certificates.crt ca-certificates.crt
             docker build -t slickqa/slick -t slickqa/slick:5 -t slickqa/slick:5.0 -t slickqa/slick:5.0.0 -t slickqa/slick:5.0.0.${BUILD_NUMBER} .
