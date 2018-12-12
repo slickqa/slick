@@ -74,3 +74,4 @@ deps:
 	go get -u github.com/slickqa/protobuf/protoc-gen-go
 	go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
 	go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
+	go list ./... |xargs go list -f '{{ join .Imports "\n" }}' |grep -v github.com/slickqa/slick | grep -v workspace |xargs go get -u -t -f
