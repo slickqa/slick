@@ -53,6 +53,7 @@ pipeline {
       steps {
         unstash('dist')
         sh '''
+            cp /etc/ssl/certs/ca-certificates.crt ca-certificates.crt
             docker build -t slickqa/slick -t slickqa/slick:5 -t slickqa/slick:5.0 -t slickqa/slick:5.0.0 -t slickqa/slick:5.0.0.${BUILD_NUMBER} .
             docker push slickqa/slick
             docker rmi slickqa/slick:latest slickqa/slick:5 slickqa/slick:5.0 slickqa/slick:5.0.0 slickqa/slick:5.0.0.${BUILD_NUMBER}
