@@ -66,7 +66,6 @@ dist/windows-amd64-embedded/slick.exe: dist/web.zip dist/linux-amd64-normal/slic
 	cp dist/windows-amd64-normal/slick.exe dist/windows-amd64-embedded/slick.exe
 	rice append -i ./commands --exec dist/windows-amd64-embedded/slick.exe
 
-
 dist: dist/web.zip slickversion/build.go dist/linux-amd64-normal/slick dist/linux-amd64-embedded/slick dist/mac-amd64-normal/slick dist/mac-amd64-embedded/slick dist/windows-amd64-normal/slick.exe dist/windows-amd64-embedded/slick.exe
 
 deps:
