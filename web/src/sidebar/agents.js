@@ -52,7 +52,7 @@ export default class AgentsSideBarComponent extends Component {
             if(companyName === AgentsState.currentCompany) {
               companyHeader = <Box colorIndex="brand-a">{companyHeader}</Box>;
             }
-            let groups = Object.keys(AgentsState.agentsByGroup[companyName]).map((groupName) => {
+            let groups = Object.keys(AgentsState.agentsByGroup[companyName]).sort().map((groupName) => {
               return <Box key={companyName + "-" + groupName} margin={{vertical: "small"}}>
                 <Box separator="bottom" margin={{left: "small"}}>
                   <Title style={{fontWeight: "normal", fontSize: "130%"}}>{groupName}</Title>
