@@ -50,6 +50,9 @@ export default class AgentsState {
           let index = this.agentsByGroup[agent.Id.Company][group].indexOf(agent.Id.Name);
           if (index >= 0) {
             this.agentsByGroup[agent.Id.Company][group].splice(index, 1);
+            if(this.agentsByGroup[agent.Id.Company][group].length === 0) {
+              delete this.agentsByGroup[agent.Id.Company][group]
+            }
           }
         }
       });
