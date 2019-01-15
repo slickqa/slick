@@ -95,11 +95,13 @@ export default class AgentsState {
 
   @action removeOldAgents() {
     let tooOld = new Date(Date.now() - (30 * 60 * 1000));
+    let screenshotTooOld = new Date(Date.now() - (2 * 60 * 1000));
 
     Object.keys(this.agentsByName).forEach((company) => {
       Object.keys(this.agentsByName[company]).forEach((agentName) => {
         let agent = this.agentsByName[company][agentName];
-        if((new Date(agent.LastCheckin)) < tooOld) {
+        if((new Date(agent.LastCheckin)) < tooOld ||
+           (new Date(agent.LastScreenshotUpdate)) < screenshotTooOld) {
           this.removeFromGroups(agent);
           delete this.agentsByName[company][agentName];
         }
