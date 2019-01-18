@@ -200,10 +200,10 @@ export class TabCard extends Component {
 export class Charts extends Component {
   render() {
     return (
-      <Box colorIndex="grey-2-a">
+      <Box colorIndex="grey-2-a" size={{width:{min: "large"}}}>
       <Tabs>
-        <Tab title="Annotated Meter">
-          <Columns justify="center">
+        <Tab title="Circle Meter">
+          <Box justify="center">
             <AnnotatedMeter legend={true}
                             size='small'
                             type='circle'
@@ -216,6 +216,10 @@ export class Charts extends Component {
                               {"label": "Broken", "value": 5, "colorIndex": "graph-5"},
                               {"label": "No Result", "value": 10, "colorIndex": "graph-6"},
                               {"label": "Not Tested", "value": 10, "colorIndex": "graph-7"}]} />
+          </Box>
+        </Tab>
+        <Tab title="Bar Meter">
+          <Box justify="center">
             <AnnotatedMeter legend={true}
                             size='medium'
                             type='bar'
@@ -229,7 +233,7 @@ export class Charts extends Component {
                               {"label": "No Result", "value": 10, "colorIndex": "graph-6"},
                               {"label": "Not Tested", "value": 10, "colorIndex": "graph-7"}
                               ]} />
-          </Columns>
+          </Box>
         </Tab>
       </Tabs>
       </Box>
