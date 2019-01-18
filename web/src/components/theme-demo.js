@@ -69,7 +69,7 @@ export class NotificationCard extends Component {
     }
 
     return (
-      <Card heading="Notifications" colorIndex="grey-1-a" margin="small">
+      <Card heading="Notifications" colorIndex="grey-1-a" margin={{vertical: "small"}}>
         <Notification status="ok" size="medium" margin="small" message="Ok" onClick={() => this.changeToastState("ok")}/>
         <Notification status="critical" size="medium" margin="small" message="Critical" onClick={() => this.changeToastState("critical")}/>
         <Notification status="warning" size="medium" margin="small" message="Warning" onClick={() => this.changeToastState("warning")}/>
@@ -102,7 +102,7 @@ export class TextCard extends Component {
       tip = <Tip target="has-a-tip" onClose={this.changeTipState}>This is the tip</Tip>;
     }
     return (
-      <Card heading="Text and Form Components" colorIndex="grey-1-a" margin="small">
+      <Card heading="Text and Form Components" colorIndex="grey-1-a" margin={{vertical: "small"}}>
         <Markdown content="Markdown text can also be rendered, including [a link to google](https://www.google.com)" />
         <Anchor label="An Anchor" />
         <FilterControl unfilteredTotal={100}
@@ -131,7 +131,7 @@ export class TextCard extends Component {
 export class TabCard extends Component {
   render() {
     return (
-      <Card heading="Tabs and Icons" colorIndex="grey-1-a" margin="small">
+      <Card heading="Tabs and Icons" colorIndex="grey-1-a" margin={{vertical: "small"}}>
         <Tabs>
           <Tab title='List Items'>
             <List>

@@ -31,13 +31,13 @@ export class ThemeUserSettingsPage extends Component {
     return (
       <StandardPage nav="User">
         <Box direction="row">
-          <Box colorIndex="grey-1-a">
+          <Box colorIndex="grey-1-a" pad={{horizontal: "small"}}>
             <Heading>
               <User size="medium"/> {UserState.User.FullName}
             </Heading>
           </Box>
         </Box>
-        <Box pad="small">
+        <Box margin={{vertical: "small"}}>
           <Image size="small"
                  src={UserState.User.AvatarUrl}
           />
@@ -73,7 +73,7 @@ export class ThemeUserSettingsPage extends Component {
             </Form>
           </Box>
         </Box>
-        <Box direction="row" wrap={true}>
+        <Box direction="row" wrap={true} pad={{between: "small"}}>
           <NotificationCard/>
           <TextCard/>
           <TabCard/>
