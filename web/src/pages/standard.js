@@ -22,9 +22,9 @@ export default class StandardPage extends Component {
     }
     if(this.props.LoginState.IsLoggedIn) {
       return (
-        <Split style={style} flex="right" className="slick-standard-page">
+        <Split style={style} flex="right" fixed={true} className="slick-standard-page">
           <Navbar nav={this.props.nav}/>
-          <Box full="vertical" pad="small" className="slick-standard-page-content">
+          <Box pad="small" className="slick-standard-page-content">
             {this.props.children}
           </Box>
         </Split>

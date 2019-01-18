@@ -30,19 +30,19 @@ export class ThemeUserSettingsPage extends Component {
     const { UserState } = this.props;
     return (
       <StandardPage nav="User">
-        <Columns>
-          <Box colorIndex="grey-1-a">
+        <Box direction="row">
+          <Box colorIndex="grey-1-a" pad={{horizontal: "small"}}>
             <Heading>
               <User size="medium"/> {UserState.User.FullName}
             </Heading>
           </Box>
-        </Columns>
-        <Box pad="small">
+        </Box>
+        <Box margin={{vertical: "small"}}>
           <Image size="small"
                  src={UserState.User.AvatarUrl}
           />
         </Box>
-        <Columns size="small">
+        <Box direction="row" size="small">
           <Menu responsive={true}
                 label='Change Theme'
                 inline={false}
@@ -54,6 +54,7 @@ export class ThemeUserSettingsPage extends Component {
               if(UserState.User.UserPreferences.Theme !== theme) {
                 return (
                   <Anchor
+                    key={theme}
                     className='active'
                     onClick={() => {UserState.User.UserPreferences.Theme = theme}}>
                     {theme}
@@ -63,23 +64,22 @@ export class ThemeUserSettingsPage extends Component {
             })}
           </Menu>
 
-        </Columns>
-        <Columns>
+        </Box>
+        <Box direction="row" pad={{vertical: "small"}}>
           <Box colorIndex="grey-1-a">
-
             <Form plain={true} onSubmit={(e) => {e.preventDefault(); UserState.submit();}}>
               <FormField label="Current Theme" htmlFor="Theme">
                 <TextInput value={UserState.User.UserPreferences.Theme}/>
               </FormField>
             </Form>
           </Box>
-        </Columns>
-        <Columns>
+        </Box>
+        <Box direction="row" wrap={true} pad={{between: "small"}}>
           <NotificationCard/>
           <TextCard/>
           <TabCard/>
           <Charts/>
-        </Columns>
+        </Box>
       </StandardPage>
     );
   }

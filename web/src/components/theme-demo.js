@@ -69,7 +69,7 @@ export class NotificationCard extends Component {
     }
 
     return (
-      <Card heading="Notifications" colorIndex="grey-1-a" margin="small">
+      <Card heading="Notifications" colorIndex="grey-1-a" margin={{vertical: "small"}}>
         <Notification status="ok" size="medium" margin="small" message="Ok" onClick={() => this.changeToastState("ok")}/>
         <Notification status="critical" size="medium" margin="small" message="Critical" onClick={() => this.changeToastState("critical")}/>
         <Notification status="warning" size="medium" margin="small" message="Warning" onClick={() => this.changeToastState("warning")}/>
@@ -102,7 +102,7 @@ export class TextCard extends Component {
       tip = <Tip target="has-a-tip" onClose={this.changeTipState}>This is the tip</Tip>;
     }
     return (
-      <Card heading="Text and Form Components" colorIndex="grey-1-a" margin="small">
+      <Card heading="Text and Form Components" colorIndex="grey-1-a" margin={{vertical: "small"}}>
         <Markdown content="Markdown text can also be rendered, including [a link to google](https://www.google.com)" />
         <Anchor label="An Anchor" />
         <FilterControl unfilteredTotal={100}
@@ -131,7 +131,7 @@ export class TextCard extends Component {
 export class TabCard extends Component {
   render() {
     return (
-      <Card heading="Tabs and Icons" colorIndex="grey-1-a" margin="small">
+      <Card heading="Tabs and Icons" colorIndex="grey-1-a" margin={{vertical: "small"}}>
         <Tabs>
           <Tab title='List Items'>
             <List>
@@ -200,10 +200,10 @@ export class TabCard extends Component {
 export class Charts extends Component {
   render() {
     return (
-      <Box colorIndex="grey-2-a">
+      <Box colorIndex="grey-2-a" size={{width:{min: "large"}}}>
       <Tabs>
-        <Tab title="Annotated Meter">
-          <Columns justify="center">
+        <Tab title="Circle Meter">
+          <Box justify="center">
             <AnnotatedMeter legend={true}
                             size='small'
                             type='circle'
@@ -216,6 +216,10 @@ export class Charts extends Component {
                               {"label": "Broken", "value": 5, "colorIndex": "graph-5"},
                               {"label": "No Result", "value": 10, "colorIndex": "graph-6"},
                               {"label": "Not Tested", "value": 10, "colorIndex": "graph-7"}]} />
+          </Box>
+        </Tab>
+        <Tab title="Bar Meter">
+          <Box justify="center">
             <AnnotatedMeter legend={true}
                             size='medium'
                             type='bar'
@@ -229,7 +233,7 @@ export class Charts extends Component {
                               {"label": "No Result", "value": 10, "colorIndex": "graph-6"},
                               {"label": "Not Tested", "value": 10, "colorIndex": "graph-7"}
                               ]} />
-          </Columns>
+          </Box>
         </Tab>
       </Tabs>
       </Box>
