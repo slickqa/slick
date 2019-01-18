@@ -54,6 +54,7 @@ export class ThemeUserSettingsPage extends Component {
               if(UserState.User.UserPreferences.Theme !== theme) {
                 return (
                   <Anchor
+                    key={theme}
                     className='active'
                     onClick={() => {UserState.User.UserPreferences.Theme = theme}}>
                     {theme}
