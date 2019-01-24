@@ -6,7 +6,7 @@ import globImporter from 'node-sass-glob-importer';
 const env = process.env.NODE_ENV || 'production';
 
 let plugins = [
-  new CopyWebpackPlugin([{ from: './public' }]),
+  new CopyWebpackPlugin([{ from: './public' }, { from: 'node_modules/filepond/dist/filepond.min.css'}]),
   new webpack.DefinePlugin({
     'process.env': {
       NODE_ENV: JSON.stringify(env)

@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Anchor from 'grommet/components/Anchor';
 import Box from 'grommet/components/Box';
 import ImageIcon from 'grommet/components/icons/base/Image';
+import LinkIcon from 'grommet/components/icons/base/Link';
 import UnknownIcon from 'grommet/components/icons/base/Document';
 import {GetDownloadUrl} from '../slick-api/Links';
 import {inject, observer} from 'mobx-react';
@@ -57,7 +58,7 @@ export class LinkItem extends Component {
 
   renderUrl() {
     let link = this.props.link;
-    return <Anchor path={link.Url}>{link.Id.Name}</Anchor>;
+    return <Anchor icon={<LinkIcon/>} href={link.Url} target="_blank">{link.Id.Name}</Anchor>;
   }
 
   renderUnknownLink() {

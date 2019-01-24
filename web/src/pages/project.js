@@ -8,6 +8,7 @@ import Title from 'grommet/components/Title';
 import List from 'grommet/components/List';
 import ListItem from 'grommet/components/ListItem';
 import CloseIcon from 'grommet/components/icons/base/Close';
+import AddIcon from 'grommet/components/icons/base/Add';
 import StandardPage from './standard';
 import navigation from '../navigation';
 import {EmbeddedLinkItemView, LinkItem} from "../components/LinkView";
@@ -15,16 +16,28 @@ import {GetLinks} from "../slick-api/Links";
 import {inject, observer} from 'mobx-react';
 import {observable} from "mobx";
 import qs from 'query-string';
+import * as Permissions from '../permissions';
+import EditLink from "../components/EditLink";
 
-@inject('ProjectsState') @observer
+@inject('ProjectsState', 'LoginState') @observer
 export class ProjectPage extends Component {
   @observable links = [];
 
+  @observable add = {
+    link: false,
+    attribute: false
+  };
+
   constructor(props) {
     super(props);
+    this.refreshLinks = this.refreshLinks.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
+    this.refreshLinks();
+  }
+
+  refreshLinks() {
     let companyParam = this.props.match.params.company;
     let projectParam = this.props.match.params.project;
     document.title = this.props.match.params.project + " Project";
@@ -36,7 +49,7 @@ export class ProjectPage extends Component {
   }
 
   render() {
-    let { ProjectsState } = this.props;
+    let { ProjectsState, LoginState } = this.props;
     let companyParam = this.props.match.params.company;
     let projectParam = this.props.match.params.project;
     setTimeout(() => {ProjectsState.current = {Company: companyParam, Name: projectParam}}, 0);
@@ -50,7 +63,7 @@ export class ProjectPage extends Component {
         Links: [],
       AutomationTools: [],
       Tags: [],
-      Attributes: [],
+      Attributes: {},
       LastUpdated: new Date()
       };
     }
@@ -69,8 +82,26 @@ export class ProjectPage extends Component {
           </Box>
           <Button icon={<CloseIcon/>} onClick={this.props.history.goBack} primary={true} label="Close"/>
         </Box>;
+      } else {
+            // not found?
       }
     } else {
+      let addLink = null;
+      if(LoginState.hasPermission(companyParam, projectParam, Permissions.ADMIN)) {
+        if(!this.add.link) {
+          addLink = <Box pad={{vertical: "small", horizontal: "medium"}} direction="row">
+            <Button icon={<AddIcon/>} primary={true} onClick={() => {
+              this.add.link = true;
+            }}/>
+          </Box>;
+
+        } else {
+          addLink =
+            <Box pad={{vertical: "small", horizontal: "medium"}}>
+              <EditLink addNew={true} link={{Id: {Company: companyParam, Project: projectParam, EntityType: "Project", EntityId: projectParam}}} onDone={() => {this.add.link = false; this.refreshLinks();}}/>
+            </Box>;
+        }
+      }
       content = <Box>
         <Box colorIndex="grey-1-a" pad="small" margin={{vertical: "small"}}><Heading margin="none">Project {projectParam} for Company {companyParam}</Heading></Box>
         <Tiles fill={true}>
@@ -83,6 +114,7 @@ export class ProjectPage extends Component {
                     return <ListItem key={link.Id.Name}><LinkItem link={link} onClick={this.onSelectLinkItem.bind(this, link.Id.Name)}/></ListItem>;
                   })}
                 </List>
+                {addLink}
               </Box>
             </Box>
           </Tile>
@@ -103,6 +135,7 @@ export class ProjectPage extends Component {
   }
 
   onSelectLinkItem(itemName) {
+    // if link is not external
     this.props.history.push({
       path: this.props.location.path,
       search: qs.stringify({view: itemName})
