@@ -15,6 +15,7 @@ import {observer} from 'mobx-react';
 import PropTypes from "prop-types";
 import * as LinksApi from '../slick-api/Links';
 import { FilePond, File, registerPlugin } from 'react-filepond';
+import mime from 'mime-types';
 
 
 @observer
@@ -70,6 +71,10 @@ export default class EditLink extends Component {
                      this.link.Id.EntityId,
                      this.link.Id.Name,
                      this.link).then(() => {
+      let type = file.type;
+      if(!type) {
+        type = mime.lookup(file.name) || 'application/octet-stream';
+      }
       LinksApi.GetUploadUrl(this.link.Id.Company,
                             this.link.Id.Project,
                             this.link.Id.EntityType,
@@ -77,7 +82,7 @@ export default class EditLink extends Component {
                             this.link.Id.Name,
                        {
                          FileName: file.name,
-                         ContentType: file.type,
+                         ContentType: type,
                          Size: file.size,
                        }).then((response) => {
         const request = new XMLHttpRequest();
