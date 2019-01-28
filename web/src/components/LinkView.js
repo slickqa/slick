@@ -58,6 +58,9 @@ export class LinkItem extends Component {
     if(link.Type === "URL") {
       this.link.url = link.Url;
       this.link.icon = <LinkIcon/>;
+    } else if(link.Type === "EmbeddedUrl") {
+      this.link.url = link.Url;
+      this.link.icon = <LinkIcon/>;
     } else if(link.Type === "File") {
       if(link.FileInfo && link.FileInfo.ContentType && link.FileInfo.ContentType.startsWith("text")) {
         if(link.FileInfo.FileName && link.FileInfo.FileName.endsWith(".md")) {
@@ -80,7 +83,7 @@ export class LinkItem extends Component {
   }
 
   onClick(event) {
-    if(this.props.link.Type === "File") {
+    if(this.props.link.Type === "File" || this.props.link.Type === "EmbeddedUrl") {
       event.preventDefault();
       this.props.onClick();
     }
@@ -131,20 +134,22 @@ export class EmbeddedLinkItemView extends Component {
 
   componentDidMount() {
     let link = this.props.link;
-    GetDownloadUrl(link.Id.Company, link.Id.Project, link.Id.EntityType, link.Id.EntityId, link.Id.Name)
-      .then((resp) => {
-        if(resp.data.Url) {
-          this.download.url = resp.data.Url;
-          if(link.Type === "File" && link.FileInfo.ContentType.startsWith("text")) {
-            this.download.content = "Downloading...";
-            fetch(resp.data.Url).then((response) => {
-              response.text().then((content) => {
-                this.download.content = content;
+    if(link.Type === "File") {
+      GetDownloadUrl(link.Id.Company, link.Id.Project, link.Id.EntityType, link.Id.EntityId, link.Id.Name)
+        .then((resp) => {
+          if (resp.data.Url) {
+            this.download.url = resp.data.Url;
+            if (link.Type === "File" && link.FileInfo.ContentType.startsWith("text")) {
+              this.download.content = "Downloading...";
+              fetch(resp.data.Url).then((response) => {
+                response.text().then((content) => {
+                  this.download.content = content;
+                });
               });
-            });
+            }
           }
-        }
-      });
+        });
+    }
   }
 
   render() {
@@ -163,10 +168,12 @@ export class EmbeddedLinkItemView extends Component {
       }
     } else if(link.Type === "File" && link.FileInfo.ContentType.startsWith("video")) {
         return <Video fit="contain" size={size} src={this.download.url} />;
+    } else if(link.Type === "EmbeddedUrl") {
+        return <Box tag="iframe" full="vertical" src={link.Url} allowtransparency="true" />;
     } else {
-      return <Box align="center">
-        <QuestionMarkIcon size="huge"/>
-      </Box>;
+        return <Box align="center">
+          <QuestionMarkIcon size="huge"/>
+        </Box>;
     }
   }
 

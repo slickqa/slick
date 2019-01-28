@@ -56,9 +56,9 @@ if (env === 'production') {
   ]);
   devConfig.devtool = 'cheap-module-source-map';
   devConfig.entry = [
-    require.resolve('react-dev-utils/webpackHotDevClient'),
-    './src/index.js'
-  ];
+      require.resolve('react-dev-utils/webpackHotDevClient'),
+      './src/index.js'
+    ];
   devConfig.devServer = {
     compress: true,
     disableHostCheck: true,
@@ -77,10 +77,13 @@ if (env === 'production') {
 plugins.push(new webpack.LoaderOptionsPlugin(loaderOptionsConfig));
 
 export default Object.assign({
-  entry: './src/index.js',
+  entry: {
+    index: './src/index.js',
+    'example-embed': './src/example-embed.js'
+  },
   output: {
     path: path.resolve('./dist'),
-    filename: 'index.js',
+    filename: '[name].js',
     publicPath: '/'
   },
   resolve: {
