@@ -46,6 +46,7 @@ export class LinkItem extends Component {
       }),
     }),
     onClick: PropTypes.func,
+    size: PropTypes.string,
   };
 
   constructor(props) {
@@ -54,24 +55,28 @@ export class LinkItem extends Component {
 
   componentDidMount() {
     let link = this.props.link;
+    let size = "small";
+    if(this.props.size) {
+      size = this.props.size;
+    }
     this.link.name = link.Id.Name;
     if(link.Type === "URL") {
       this.link.url = link.Url;
-      this.link.icon = <LinkIcon/>;
+      this.link.icon = <LinkIcon size={size}/>;
     } else if(link.Type === "EmbeddedUrl") {
       this.link.url = link.Url;
-      this.link.icon = <LinkIcon/>;
+      this.link.icon = <LinkIcon size={size}/>;
     } else if(link.Type === "File") {
       if(link.FileInfo && link.FileInfo.ContentType && link.FileInfo.ContentType.startsWith("text")) {
         if(link.FileInfo.FileName && link.FileInfo.FileName.endsWith(".md")) {
-          this.link.icon = <MarkdownIcon/>;
+          this.link.icon = <MarkdownIcon size={size}/>;
         } else {
-          this.link.icon = <PreformattedTextIcon/>;
+          this.link.icon = <PreformattedTextIcon size={size}/>;
         }
       } else if(link.FileInfo && link.FileInfo.ContentType && link.FileInfo.ContentType.startsWith("image")) {
-        this.link.icon = <ImageIcon/>;
+        this.link.icon = <ImageIcon size={size}/>;
       } else if(link.FileInfo && link.FileInfo.ContentType && link.FileInfo.ContentType.startsWith("video")) {
-        this.link.icon = <VideoIcon/>;
+        this.link.icon = <VideoIcon size={size}/>;
       }
     }
     if(link.Type === "File") {
@@ -169,7 +174,7 @@ export class EmbeddedLinkItemView extends Component {
     } else if(link.Type === "File" && link.FileInfo.ContentType.startsWith("video")) {
         return <Video fit="contain" size={size} src={this.download.url} />;
     } else if(link.Type === "EmbeddedUrl") {
-        return <Box tag="iframe" full="vertical" src={link.Url} allowtransparency="true" />;
+        return <Box tag="iframe" style={{borderWidth: 0}} flex="grow" src={link.Url} allowTransparency="true" />;
     } else {
         return <Box align="center">
           <QuestionMarkIcon size="huge"/>

@@ -24,7 +24,7 @@ export default class StandardPage extends Component {
       return (
         <Split style={style} flex="right" fixed={true} className="slick-standard-page">
           <Navbar nav={this.props.nav}/>
-          <Box pad="small" className="slick-standard-page-content">
+          <Box pad="small" style={{minHeight: "100%"}} className="slick-standard-page-content">
             {this.props.children}
           </Box>
         </Split>

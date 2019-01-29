@@ -28,7 +28,7 @@ export class ProjectSideBarComponent extends Component {
                 <Heading tag="h4" margin="none">{companyName}</Heading>
                   {(ProjectsState.companiesTree[companyName]).map(project => {
                     return (
-                      <Box key={project.Id.Name} pad={{horizontal: "small"}} colorIndex={ProjectsState.current.Company === companyName && ProjectsState.current.Name === project.Id.Name ? 'brand-a' : null}>
+                      <Box key={companyName + "-" + project.Id.Name} pad={{horizontal: "small"}} colorIndex={ProjectsState.current.Company === companyName && ProjectsState.current.Name === project.Id.Name ? 'brand-a' : null}>
                         <Anchor label={project.Id.Name} path={"/projects/" + project.Id.Company + "/" + project.Id.Name} />
                       </Box>
                     );
