@@ -55,10 +55,13 @@ if (env === 'production') {
     new webpack.HotModuleReplacementPlugin()
   ]);
   devConfig.devtool = 'cheap-module-source-map';
-  devConfig.entry = [
+  devConfig.entry = {
+    index: [
       require.resolve('react-dev-utils/webpackHotDevClient'),
       './src/index.js'
-    ];
+    ],
+    'example-embed': './src/example-embed.js'
+  };
   devConfig.devServer = {
     compress: true,
     disableHostCheck: true,
