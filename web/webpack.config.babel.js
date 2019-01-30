@@ -6,7 +6,7 @@ import globImporter from 'node-sass-glob-importer';
 const env = process.env.NODE_ENV || 'production';
 
 let plugins = [
-  new CopyWebpackPlugin([{ from: './public' }]),
+  new CopyWebpackPlugin([{ from: './public' }, { from: 'node_modules/filepond/dist/filepond.min.css'}]),
   new webpack.DefinePlugin({
     'process.env': {
       NODE_ENV: JSON.stringify(env)
@@ -55,10 +55,13 @@ if (env === 'production') {
     new webpack.HotModuleReplacementPlugin()
   ]);
   devConfig.devtool = 'cheap-module-source-map';
-  devConfig.entry = [
-    require.resolve('react-dev-utils/webpackHotDevClient'),
-    './src/index.js'
-  ];
+  devConfig.entry = {
+    index: [
+      require.resolve('react-dev-utils/webpackHotDevClient'),
+      './src/index.js'
+    ],
+    'example-embed': './src/example-embed.js'
+  };
   devConfig.devServer = {
     compress: true,
     disableHostCheck: true,
@@ -77,10 +80,13 @@ if (env === 'production') {
 plugins.push(new webpack.LoaderOptionsPlugin(loaderOptionsConfig));
 
 export default Object.assign({
-  entry: './src/index.js',
+  entry: {
+    index: './src/index.js',
+    'example-embed': './src/example-embed.js'
+  },
   output: {
     path: path.resolve('./dist'),
-    filename: 'index.js',
+    filename: '[name].js',
     publicPath: '/'
   },
   resolve: {

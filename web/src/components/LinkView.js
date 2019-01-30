@@ -3,15 +3,29 @@ import React, { Component } from 'react';
 import Anchor from 'grommet/components/Anchor';
 import Box from 'grommet/components/Box';
 import ImageIcon from 'grommet/components/icons/base/Image';
+import LinkIcon from 'grommet/components/icons/base/Link';
 import UnknownIcon from 'grommet/components/icons/base/Document';
+import MarkdownIcon from 'grommet/components/icons/base/DocumentText';
+import PreformattedTextIcon from 'grommet/components/icons/base/DocumentTxt';
+import VideoIcon from 'grommet/components/icons/base/Video';
+import QuestionMarkIcon from 'grommet/components/icons/base/CircleQuestion';
+import Markdown from 'grommet/components/Markdown';
+import Video from 'grommet/components/Video';
 import {GetDownloadUrl} from '../slick-api/Links';
 import {inject, observer} from 'mobx-react';
 import PropTypes from "prop-types";
-import {observable} from "mobx";
+import {observable, set} from "mobx";
 
 
 @observer
 export class LinkItem extends Component {
+
+  @observable link = {
+    icon: <UnknownIcon/>,
+    url: "#",
+    name: ""
+  };
+
   static propTypes = {
     link: PropTypes.shape({
       Id: PropTypes.shape({
@@ -32,37 +46,57 @@ export class LinkItem extends Component {
       }),
     }),
     onClick: PropTypes.func,
+    size: PropTypes.string,
   };
 
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
     let link = this.props.link;
+    let size = "small";
+    if(this.props.size) {
+      size = this.props.size;
+    }
+    this.link.name = link.Id.Name;
     if(link.Type === "URL") {
-      this.render = this.renderUrl.bind(this);
-    } else if(link.Type === "File" && link.FileInfo.ContentType.startsWith("image")) {
-      this.render = this.renderImageLink.bind(this);
-    } else {
-      this.render = this.renderUnknownLink.bind(this);
+      this.link.url = link.Url;
+      this.link.icon = <LinkIcon size={size}/>;
+    } else if(link.Type === "EmbeddedUrl") {
+      this.link.url = link.Url;
+      this.link.icon = <LinkIcon size={size}/>;
+    } else if(link.Type === "File") {
+      if(link.FileInfo && link.FileInfo.ContentType && link.FileInfo.ContentType.startsWith("text")) {
+        if(link.FileInfo.FileName && link.FileInfo.FileName.endsWith(".md")) {
+          this.link.icon = <MarkdownIcon size={size}/>;
+        } else {
+          this.link.icon = <PreformattedTextIcon size={size}/>;
+        }
+      } else if(link.FileInfo && link.FileInfo.ContentType && link.FileInfo.ContentType.startsWith("image")) {
+        this.link.icon = <ImageIcon size={size}/>;
+      } else if(link.FileInfo && link.FileInfo.ContentType && link.FileInfo.ContentType.startsWith("video")) {
+        this.link.icon = <VideoIcon size={size}/>;
+      }
+    }
+    if(link.Type === "File") {
+      GetDownloadUrl(link.Id.Company, link.Id.Project, link.Id.EntityType, link.Id.EntityId, link.Id.Name)
+        .then((resp) => {
+          this.link.url = resp.data.Url;
+        });
+    }
+  }
+
+  onClick(event) {
+    if(this.props.link.Type === "File" || this.props.link.Type === "EmbeddedUrl") {
+      event.preventDefault();
+      this.props.onClick();
     }
   }
 
   render() {
     // unused, replaced by specialty render
-  }
-
-  renderImageLink() {
-    let link = this.props.link;
-    return <Anchor icon={<ImageIcon/>} onClick={this.props.onClick}>{link.Id.Name}</Anchor>;
-  }
-
-  renderUrl() {
-    let link = this.props.link;
-    return <Anchor path={link.Url}>{link.Id.Name}</Anchor>;
-  }
-
-  renderUnknownLink() {
-    let link = this.props.link;
-    return <Anchor icon={<UnknownIcon/>} onClick={this.props.onClick}>{link.Id.Name}</Anchor>;
+    return <Anchor icon={this.link.icon} href={this.link.url} target="_blank" onClick={this.onClick.bind(this)}>{this.link.name}</Anchor>;
   }
 
 }
@@ -90,40 +124,62 @@ export class EmbeddedLinkItemView extends Component {
       }),
     }),
     onClose: PropTypes.func,
+    size: PropTypes.string,
+  };
+
+  @observable download = {
+    url: "",
+    content: ""
   };
 
   constructor(props) {
     super(props);
-    let link = this.props.link;
-    if(link.Type === "File" && link.FileInfo.ContentType.startsWith("image")) {
-      this.render = this.renderImageLink.bind(this);
-    } else {
-      this.render = this.renderUnknownLink.bind(this);
-    }
-    this.state = {
-      downloadUrl: ""
-    };
+    window.embedded = this;
   }
 
   componentDidMount() {
     let link = this.props.link;
-    GetDownloadUrl(link.Id.Company, link.Id.Project, link.Id.EntityType, link.Id.EntityId, link.Id.Name)
-      .then((resp) => {
-        if(resp.data.Url) {
-          this.setState(() => {
-            return {downloadUrl: resp.data.Url};
-          });
-        }
-      });
+    if(link.Type === "File") {
+      GetDownloadUrl(link.Id.Company, link.Id.Project, link.Id.EntityType, link.Id.EntityId, link.Id.Name)
+        .then((resp) => {
+          if (resp.data.Url) {
+            this.download.url = resp.data.Url;
+            if (link.Type === "File" && link.FileInfo.ContentType.startsWith("text")) {
+              this.download.content = "Downloading...";
+              fetch(resp.data.Url).then((response) => {
+                response.text().then((content) => {
+                  this.download.content = content;
+                });
+              });
+            }
+          }
+        });
+    }
   }
 
   render() {
-    // replaced at creation time by type specific render
-  }
-
-  renderImageLink() {
     let link = this.props.link;
-    return <Box><img className="embedded-link-item-view" src={this.state.downloadUrl} alt={link.Id.Name}/></Box>;
+    let size = "large";
+    if(this.props.size) {
+      size = this.props.size;
+    }
+    if(link.Type === "File" && link.FileInfo.ContentType.startsWith("image")) {
+      return <Box><img className="embedded-link-item-view" src={this.download.url} alt={link.Id.Name}/></Box>;
+    } else if(link.Type === "File" && link.FileInfo.ContentType.startsWith("text")) {
+      if(link.FileInfo.FileName.endsWith(".md")) {
+        return <Box pad="medium"><Markdown content={this.download.content}/></Box>;
+      } else {
+        return <Box pad="small"><pre>{this.download.content}</pre></Box>;
+      }
+    } else if(link.Type === "File" && link.FileInfo.ContentType.startsWith("video")) {
+        return <Video fit="contain" size={size} src={this.download.url} />;
+    } else if(link.Type === "EmbeddedUrl") {
+        return <Box tag="iframe" style={{borderWidth: 0}} flex="grow" src={link.Url} allowTransparency="true" />;
+    } else {
+        return <Box align="center">
+          <QuestionMarkIcon size="huge"/>
+        </Box>;
+    }
   }
 
 

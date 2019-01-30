@@ -2,7 +2,6 @@ import {observable, computed, action} from 'mobx';
 import * as AuthService from '../slick-api/Auth';
 import {init as ApiInit} from '../slick-api/gateway/index';
 
-
 /**
  * @typedef {Object} SlickCompany
  *
@@ -75,6 +74,31 @@ export default class LoginState {
 
   @computed get IsLoggedIn() {
     return localStorage.token && typeof this.DecodedJwt.sp !== 'undefined' && !this.IsExpired;
+  }
+
+  /**
+   * Does the user have a particular permission for a project.
+   * @param company {string} Company Name
+   * @param project {string} Project Name
+   * @param permission {number} permission
+   * @returns {boolean} true if they have the permission, false otherwise
+   */
+  hasPermission(company, project, permission) {
+    if(!this.IsLoggedIn) {
+      return false;
+    }
+    if(this.IsSlickAdmin || this.CompanyAdminList.includes(company)) {
+      return true
+    }
+    if(typeof this.DecodedJwt.sp.co !== "undefined" &&
+       this.DecodedJwt.sp.co.hasOwnProperty(company) &&
+       typeof this.DecodedJwt.sp.co[company].proj !== "undefined" &&
+       this.DecodedJwt.sp.co[company].proj.hasOwnProperty(project) &&
+       ((this.DecodedJwt.sp.co[company].proj[project] % 2) === 0) ||
+        ((this.DecodedJwt.sp.co[company].proj[project] & permission) > 0)) {
+        return true;
+    }
+    return false;
   }
 
   /**

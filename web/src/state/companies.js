@@ -8,6 +8,11 @@ import * as CompanyApi from '../slick-api/Company';
 export default class CompaniesState {
   @observable companies = [];
 
+  @observable current = {
+    company: "",
+    link: ""
+  };
+
   /**
    * @returns {Promise<HttpResponse<slickqaAvailableCompanySettings>>}
    */
