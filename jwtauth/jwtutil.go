@@ -1,20 +1,20 @@
 package jwtauth
 
 import (
-	"github.com/dgrijalva/jwt-go"
-	"fmt"
-	"errors"
 	"context"
 	"crypto/rsa"
-	"github.com/slickqa/slick/slickqa"
-	"time"
-	"encoding/pem"
-	"github.com/slickqa/slick/slickconfig"
 	"crypto/x509"
+	"encoding/pem"
+	"errors"
+	"fmt"
+	"github.com/dgrijalva/jwt-go"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
+	"github.com/slickqa/slick/slickconfig"
+	"github.com/slickqa/slick/slickqa"
 	"google.golang.org/grpc/metadata"
 	"strings"
-	"github.com/rs/zerolog/log"
-	"github.com/rs/zerolog"
+	"time"
 )
 
 var (
@@ -213,4 +213,22 @@ func HasPermission(ctx context.Context, CompanyName string, ProjectName string, 
 		return err
 	}
 	return nil
+}
+
+func HasCompanyReadOnlyPermission(ctx context.Context, CompanyName string) error {
+	claims, err := GetClaimsFromContext(ctx)
+	if err != nil {
+		return err
+	}
+
+	if claims != nil {
+		company, ok := claims.Permissions.Companies[CompanyName]
+		if ok && len(company.ProjectPermissions) > 0 {
+			return nil
+		}
+		return fmt.Errorf("user %s does not have read only permissions to company %s", claims.Id, CompanyName)
+	}
+
+	// this shouldn't happen (claims is nil and err was nil)
+	return errors.New("unable to get claims from context")
 }
