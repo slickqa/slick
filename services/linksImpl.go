@@ -134,9 +134,25 @@ func checkLinkForErrors(target *slickqa.Link) (error) {
 
 func (SlickLinksService) GetLinks(ctx context.Context, id *slickqa.LinkListIdentity) (*slickqa.LinkList, error) {
 	err := jwtauth.HasPermission(ctx, id.Company, id.Project, 0)
+
 	if err != nil {
-		return nil, status.Error(codes.PermissionDenied, err.Error())
+		if id.EntityType == "Company" && id.Project == "-" && id.EntityId == "-" {
+			claims, err := jwtauth.GetClaimsFromContext(ctx)
+			if err != nil {
+				return nil, status.Error(codes.PermissionDenied, err.Error())
+			}
+
+			// if they are looking for company links they need a minimum of read only access to at least one project in
+			// the company
+			company, ok := claims.Permissions.Companies[id.Company]
+			if !(ok && id.EntityType == "Company" && len(company.ProjectPermissions) > 0) {
+				return nil, status.Error(codes.PermissionDenied, fmt.Sprintf("User %s does not have read only permissions to Company %s", claims.Id, id.Project))
+			}
+		} else {
+			return nil, status.Error(codes.PermissionDenied, err.Error())
+		}
 	}
+
 	links, err := db.Links.FindLinks(&db.LinksQuery{ Company: id.Company, Project: id.Project, EntityType: id.EntityType, EntityId: id.EntityId})
 	return &slickqa.LinkList{
 		Links: links,
