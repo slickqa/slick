@@ -362,6 +362,10 @@ func (l SlickLinksService) GetUploadUrl(ctx context.Context, uploadInfo *slickqa
 	// generate upload URL from company storage settings locked to file upload info
 	// TODO come up with a more intelligent time period or at least configurable, maybe tied to jwt expiration?
 	url, err := minioClient.PresignedPutObject(settings.StorageSettings.Bucket, link.FileInfo.Path, time.Minute * 15)
+	if err != nil {
+		logger.Error().AnErr("error", err).Str("errorMessage", err.Error()).Msg("Error getting pre-signed url")
+		return nil, status.Errorf(codes.Internal, "Error getting pre-signed url: %s", err.Error())
+	}
 	logger.Debug().Str("URL", url.String()).Msg("Generated upload url")
 
 	expire, _ := ptypes.TimestampProto(time.Now().Add(time.Minute * 15))
