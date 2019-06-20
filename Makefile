@@ -1,7 +1,6 @@
 BUILD_NUMBER?=dev
 JAVASCRIPT_SOURCE_FILES:=$(shell find web/src -print)
 
-
 all: generated
 
 generated: slickqa/slick.pb.go slickqa/slick.pb.gw.go web/public/slick.swagger.json web/src/slick-api
