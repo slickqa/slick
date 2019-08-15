@@ -1,7 +1,7 @@
 package commands
 
 import (
-	"github.com/codegangsta/cli"
+	"github.com/urfave/cli"
 	"github.com/slickqa/slick/db"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc"

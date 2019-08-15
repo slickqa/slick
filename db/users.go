@@ -1,9 +1,11 @@
 package db
 
 import (
-	"github.com/globalsign/mgo/bson"
-	"github.com/slickqa/slick/slickqa"
+	"context"
+	"fmt"
 	"github.com/slickqa/slick/slickconfig"
+	"github.com/slickqa/slick/slickqa"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 const (
@@ -18,31 +20,31 @@ type userIdQuery struct {
 }
 
 func (u *userType) Find(email string) (*slickqa.UserInfo, error) {
-	mongo := MongoSession.Copy()
-	defer mongo.Close()
 	result := slickqa.UserInfo{}
-	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(UsersCollectionName).Find(userIdQuery{Email: email}).One(&result)
+	findResult := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(UsersCollectionName).FindOne(context.TODO(), userIdQuery{Email: email})
+	if findResult == nil || findResult.Err() != nil {
+		return nil, fmt.Errorf("user with email %s not found", email)
+	}
+	err := findResult.Decode(&result)
 	return &result, err
 }
 
 func (u *userType) FindByToken(token string) (*slickqa.UserInfo, error) {
-	mongo := MongoSession.Copy()
-	defer mongo.Close()
 	result := slickqa.UserInfo{}
-	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(UsersCollectionName).Find(bson.M{"apiToken": token}).One(&result)
+	findResult := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(UsersCollectionName).FindOne(context.TODO(), bson.M{"apiToken": token})
+	if findResult == nil || findResult.Err() != nil {
+		return nil, fmt.Errorf("user with token %s not found", token)
+	}
+	err := findResult.Decode(&result)
 	return &result, err
 }
 
 func (u *userType) AddUser(user *slickqa.UserInfo) error {
-	mongo := MongoSession.Copy()
-	defer mongo.Close()
-	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(UsersCollectionName).Insert(user)
+	_, err := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(UsersCollectionName).InsertOne(context.TODO(), user)
 	return err
 }
 
 func (u *userType) UpdateUser(user *slickqa.UserInfo) error {
-	mongo := MongoSession.Copy()
-	defer mongo.Close()
-	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(UsersCollectionName).Update(userIdQuery{Email: user.EmailAddress}, user)
+	_, err := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(UsersCollectionName).UpdateOne(context.TODO(), userIdQuery{Email: user.EmailAddress}, user)
 	return err
 }

@@ -1,10 +1,11 @@
 package db
 
 import (
-	"github.com/globalsign/mgo"
-	"github.com/globalsign/mgo/bson"
+	"context"
+	"fmt"
 	"github.com/slickqa/slick/slickconfig"
 	"github.com/slickqa/slick/slickqa"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 const (
@@ -22,42 +23,37 @@ type LinksQuery struct {
 }
 
 func (l *linksType) FindLinkById(id *slickqa.LinkIdentity) (*slickqa.Link, error) {
-	mongo := MongoSession.Copy()
-	defer mongo.Close()
 	var retval slickqa.Link
-	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(LinksCollectionName).FindId(id).One(&retval)
+	findResult := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(LinksCollectionName).FindOne(context.TODO(), bson.M{"_id": id})
+	if findResult == nil || findResult.Err() != nil {
+		return nil, fmt.Errorf("link with id %+v not found", id)
+	}
+	err := findResult.Decode(&retval)
 	return &retval, err
 }
 
 func (l *linksType) FindLinks(query *LinksQuery) ([]*slickqa.Link, error) {
-	mongo := MongoSession.Copy()
-	defer mongo.Close()
-	return l.FindLinksUsingConnection(query, mongo)
-}
-
-func (*linksType) FindLinksUsingConnection(query *LinksQuery, mongo *mgo.Session) ([]*slickqa.Link, error) {
 	var links []*slickqa.Link
-	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(LinksCollectionName).Find(query).All(&links)
+	cursor, err := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(LinksCollectionName).Find(context.TODO(), query)
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(context.TODO())
+	err = cursor.All(context.TODO(), &links)
 	return links, err
 }
 
-func (*linksType) AddLink(link *slickqa.Link) (error) {
-	mongo := MongoSession.Copy()
-	defer mongo.Close()
-	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(LinksCollectionName).Insert(link)
+func (*linksType) AddLink(link *slickqa.Link) error {
+	_, err := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(LinksCollectionName).InsertOne(context.TODO(), link)
 	return err
 }
 
-func (*linksType) DeleteLink(id *slickqa.LinkIdentity) (error) {
-	mongo := MongoSession.Copy()
-	defer mongo.Close()
-	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(LinksCollectionName).RemoveId(id)
+func (*linksType) DeleteLink(id *slickqa.LinkIdentity) error {
+	_, err := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(LinksCollectionName).DeleteOne(context.TODO(), bson.M{"_id": id})
 	return err
 }
 
-func (*linksType) UpdateLink(link *slickqa.Link) (error) {
-	mongo := MongoSession.Copy()
-	defer mongo.Close()
-	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(LinksCollectionName).Update(bson.M{"_id": link.Id}, link)
+func (*linksType) UpdateLink(link *slickqa.Link) error {
+	_, err := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(LinksCollectionName).UpdateOne(context.TODO(), bson.M{"_id": link.Id}, link)
 	return err
 }
