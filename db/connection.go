@@ -47,9 +47,13 @@ func InitializeMongoConnection() error {
 		dialInfo := options.Client().ApplyURI(slickconfig.Configuration.Mongo.URL)
 		Client, err = mongo.NewClient(dialInfo)
 		if err != nil {
-			logger.Fatal().AnErr("error", err).Str("url", slickconfig.Configuration.Mongo.URL).Msg("Error connecting to mongodb!")
+			logger.Fatal().AnErr("error", err).Str("url", slickconfig.Configuration.Mongo.URL).Msg("Error creating client for mongodb!")
 			return err
 		}
+	}
+	err = Client.Connect(context.TODO())
+	if err != nil {
+		logger.Fatal().AnErr("error", err).Str("url", slickconfig.Configuration.Mongo.URL).Msg("Error connecting to mongodb!")
 	}
 	return nil
 }
