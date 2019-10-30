@@ -45,6 +45,6 @@ func (u *userType) AddUser(user *slickqa.UserInfo) error {
 }
 
 func (u *userType) UpdateUser(user *slickqa.UserInfo) error {
-	_, err := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(UsersCollectionName).UpdateOne(context.TODO(), userIdQuery{Email: user.EmailAddress}, user)
+	_, err := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(UsersCollectionName).ReplaceOne(context.TODO(), userIdQuery{Email: user.EmailAddress}, user)
 	return err
 }

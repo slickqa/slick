@@ -8,6 +8,7 @@ require (
 	github.com/dghubble/gologin v2.1.0+incompatible
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fatih/structtag v1.1.0 // indirect
+	github.com/go-delve/delve v1.3.1 // indirect
 	github.com/go-ini/ini v1.46.0 // indirect
 	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/golang/protobuf v1.3.2

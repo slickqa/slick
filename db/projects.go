@@ -45,7 +45,7 @@ func (*projectType) GetAllProjects(company string) ([]*slickqa.Project, error) {
 		cursor *mongo.Cursor
 	)
 	if company == "" {
-		cursor, err = Client.Database(slickconfig.Configuration.Mongo.Database).Collection(ProjectsCollectionName).Find(context.TODO(), nil)
+		cursor, err = Client.Database(slickconfig.Configuration.Mongo.Database).Collection(ProjectsCollectionName).Find(context.TODO(), bson.M{})
 	} else {
 		cursor, err = Client.Database(slickconfig.Configuration.Mongo.Database).Collection(ProjectsCollectionName).Find(context.TODO(), bson.M{ "_id": slickqa.ProjectIdentity{Company: company}})
 	}

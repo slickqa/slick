@@ -80,6 +80,6 @@ func (u *companySettingsType) UpdateCompanySettings(companyName string, companyS
 		logger.Error().Str("providedCompanyName", companyName).Str("updatedCompanySettingsCompanyName", companySettings.CompanyName).Msg("Request to update company with a name that is different.  Can't change company name!")
 		return errors.New("not allowed to change company name in settings")
 	}
-	_, err := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(CompanySettingsCollectionName).UpdateOne(context.TODO(), companyIdQuery{CompanyName:companyName}, companySettings)
+	_, err := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(CompanySettingsCollectionName).ReplaceOne(context.TODO(), companyIdQuery{CompanyName:companyName}, companySettings)
 	return err
 }

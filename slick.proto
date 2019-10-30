@@ -419,7 +419,7 @@ message SlickFile {
 
 message ProjectIdentity {
   string Company = 1 [(tagger.tags) = "bson:\"company\""]; //`bson:"company"`
-  string Name = 2 [(tagger.tags) = "bson:\"name\""]; //`bson:"name"`
+  string Name = 2 [(tagger.tags) = "bson:\"name,omitempty\""]; //`bson:"name"`
 }
 
 message Project {

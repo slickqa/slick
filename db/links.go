@@ -54,6 +54,6 @@ func (*linksType) DeleteLink(id *slickqa.LinkIdentity) error {
 }
 
 func (*linksType) UpdateLink(link *slickqa.Link) error {
-	_, err := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(LinksCollectionName).UpdateOne(context.TODO(), bson.M{"_id": link.Id}, link)
+	_, err := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(LinksCollectionName).ReplaceOne(context.TODO(), bson.M{"_id": link.Id}, link)
 	return err
 }
