@@ -7,6 +7,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/slickqa/slick/slickconfig"
 	"github.com/slickqa/slick/slickqa"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 const (
@@ -49,7 +50,7 @@ func (u *companySettingsType) Find(CompanyName string) (*slickqa.CompanySettings
 
 func (u *companySettingsType) FindAll() ([]*slickqa.CompanySettings, error) {
 	result := make([]*slickqa.CompanySettings, 0)
-	cursor, err := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(CompanySettingsCollectionName).Find(context.TODO(), nil)
+	cursor, err := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(CompanySettingsCollectionName).Find(context.TODO(), bson.M{})
 	if err != nil {
 		return nil, err
 	}
