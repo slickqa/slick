@@ -44,7 +44,7 @@ type AuthenticationEncryptionConfiguration struct {
 }
 
 type MongoConfiguration struct {
-	URL string `toml:"connect-url" comment:"The URL should contain any authentication information to use.  See https://godoc.org/github.com/globalsign/mgo#Dial"`
+	URL string `toml:"connect-url" comment:"The URL should contain any authentication information to use.  See https://docs.mongodb.com/manual/reference/connection-string/"`
 	Database string `toml:"database" comment:"The name of the database to use for slick."`
 	UseTLS bool `toml:"use-tls" comment:"Use TLS (encryption) on the connection.  If you don't supply a root ca's file (with your server's certificate in it) then certificate verification is not done.'"`
 	RootCertificatesLocation string `toml:"root-ca-file" comment:"If you want to validate the server's certificate, put in a path to the file storing the certificate(s)."`

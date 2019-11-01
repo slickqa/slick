@@ -2,7 +2,7 @@ package main
 
 import (
 	"os"
-	"github.com/codegangsta/cli"
+	"github.com/urfave/cli"
 	"github.com/rs/zerolog/log"
 	"github.com/slickqa/slick/slickconfig"
 	"github.com/slickqa/slick/commands"

@@ -23,6 +23,13 @@ export class CompanyLinkView extends Component {
     this.refreshLinks();
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if(prevProps.match.params.company !== this.props.match.params.company ||
+       prevProps.match.params.link !== this.props.match.params.link ) {
+      this.refreshLinks();
+    }
+  }
+
   refreshLinks() {
     let companyParam = this.props.match.params.company;
     let linkParam = this.props.match.params.link;

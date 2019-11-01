@@ -6,13 +6,14 @@ all: generated
 generated: slickqa/slick.pb.go slickqa/slick.pb.gw.go web/public/slick.swagger.json web/src/slick-api
 
 slickqa/slick.pb.go: slick.proto
-	protoc -I/usr/local/include -I. -I${GOPATH}/src -I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis --go_out=plugins=grpc+retag:slickqa/ slick.proto
+	protoc -I/usr/local/include -I. -Iproto-dependencies/ --go_out=plugins=grpc:slickqa/ slick.proto
+	cd slickqa; protoc -I/usr/local/include -I.. -I../proto-dependencies/ --gotag_out=xxx="json+\"-\" bson+\"-\"":. ../slick.proto
 
 slickqa/slick.pb.gw.go: slick.proto
-	protoc -I/usr/local/include -I. -I${GOPATH}/src -I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis --grpc-gateway_out=logtostderr=true:slickqa/ slick.proto
+	protoc -I/usr/local/include -I. -Iproto-dependencies/ --grpc-gateway_out=logtostderr=true:slickqa/ slick.proto
 
 web/public/slick.swagger.json: slick.proto
-	protoc -I/usr/local/include -I. -I${GOPATH}/src -I${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis --swagger_out=logtostderr=true:web/public/ slick.proto
+	protoc -I/usr/local/include -I. -Iproto-dependencies/ --swagger_out=logtostderr=true:web/public/ slick.proto
 
 web/node_modules/.bin/openapi:
 	cd web; npm install
@@ -71,7 +72,8 @@ dist: dist/web.zip slickversion/build.go dist/linux-amd64-normal/slick dist/linu
 deps:
 	go get -u github.com/GeertJohan/go.rice
 	go get -u github.com/GeertJohan/go.rice/rice
-	go get -u github.com/slickqa/protobuf/protoc-gen-go
+	go get -u github.com/golang/protobuf/protoc-gen-go
 	go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
 	go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
-	go list ./... |xargs go list -f '{{ join .Imports "\n" }}' |grep -v github.com/slickqa/slick | grep -v workspace |xargs go get -u -t -f
+	go get -u github.com/srikrsna/protoc-gen-gotag
+	#go list ./... |xargs go list -f '{{ join .Imports "\n" }}' |grep -v github.com/slickqa/slick | grep -v workspace |xargs go get -u -t -f

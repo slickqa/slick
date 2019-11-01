@@ -3,6 +3,8 @@ syntax = "proto3";
 import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 
+import "tagger/tagger.proto";
+
 package slickqa;
 
 option java_package = "com.slickqa.client.protobuf";
@@ -17,7 +19,7 @@ message IsAuthorizedRequest {
 }
 
 message IsAuthorizedResponse {
-  bool Allowed = 1; //`json:"Allowed"`
+  bool Allowed = 1 [(tagger.tags) = "json:\"Allowed\""];//`json:"Allowed"`
   string Message = 2; //
 }
 
@@ -42,56 +44,56 @@ message UsersQueryResponse {
 }
 
 message ProjectPermissionInfo {
-  string ProjectName = 1; //`bson:"name"`
-  repeated string Roles = 2; //`bson:"roles"`
+  string ProjectName = 1 [(tagger.tags) = "bson:\"name\""];
+  repeated string Roles = 2 [(tagger.tags) = "bson:\"roles\""];
 }
 
 message CompanyPermissionInfo {
-  string CompanyName = 1; //`bson:"name"`
-  uint32 CompanyAdmin = 2; //`bson:"admin"`
-  repeated ProjectPermissionInfo Projects = 3; //`bson:"projects"`
+  string CompanyName = 1 [(tagger.tags) = "bson:\"name\""];
+  uint32 CompanyAdmin = 2 [(tagger.tags) = "bson:\"admin\""];
+  repeated ProjectPermissionInfo Projects = 3 [(tagger.tags) = "bson:\"projects\""];
 }
 
 message SlickPermissionInfo {
-  uint32 SlickAdmin = 1; //`bson:"slickAdmin"`
-  repeated CompanyPermissionInfo Companies = 2; //`bson:"companies"`
+  uint32 SlickAdmin = 1 [(tagger.tags) = "bson:\"slickAdmin\""];
+  repeated CompanyPermissionInfo Companies = 2 [(tagger.tags) = "bson:\"companies\""];
 }
 
 message Preferences {
-  string HomeUrl = 1; //`bson:"home"`
-  string Theme = 2; //`bson:"theme"`
-  string BackgroundUrl = 3; //`bson:"background"`
-  repeated Link Favorites = 4; //`bson:"favorites"`
+  string HomeUrl = 1 [(tagger.tags) = "bson:\"home\""];
+  string Theme = 2 [(tagger.tags) = "bson:\"theme\""];
+  string BackgroundUrl = 3 [(tagger.tags) = "bson:\"background\""];
+  repeated Link Favorites = 4 [(tagger.tags) = "bson:\"favorites\""];
 }
 
 message S3StorageSettings {
-  string BaseUrl = 1; //`bson:"baseUrl"`
-  string AccessKey = 2; //`bson:"accessKey"`
-  string SecretKey = 3; //`bson:"secretKey"`
-  string Bucket = 4; //`bson:"bucket"`
-  string Prefix = 5; //`bson:"prefix"`
+  string BaseUrl = 1 [(tagger.tags) = "bson:\"baseUrl\""]; //`bson:"baseUrl"`
+  string AccessKey = 2 [(tagger.tags) = "bson:\"accessKey\""]; //`bson:"accessKey"`
+  string SecretKey = 3 [(tagger.tags) = "bson:\"secretKey\""]; //`bson:"secretKey"`
+  string Bucket = 4 [(tagger.tags) = "bson:\"bucket\""]; //`bson:"bucket"`
+  string Prefix = 5 [(tagger.tags) = "bson:\"prefix\""]; //`bson:"prefix"`
 }
 
 message CompanySettings {
-  string CompanyName = 1; //`bson:"_id"`
-  Preferences UserPreferenceTemplate = 2; //`bson:"user-preferences"`
-  string CustomIconUrl = 3; //`bson:"icon-url"`
-  repeated Link Links = 4; //`bson:"links"`
-  string CompanyBannerUrl = 5; //`bson:"company-banner"`
-  S3StorageSettings StorageSettings = 6; //`bson:"storage-settings"`
+  string CompanyName = 1 [(tagger.tags) = "bson:\"_id\""]; //`bson:"_id"`
+  Preferences UserPreferenceTemplate = 2 [(tagger.tags) = "bson:\"user-preferences\""]; //`bson:"user-preferences"`
+  string CustomIconUrl = 3 [(tagger.tags) = "bson:\"icon-url\""]; //`bson:"icon-url"`
+  repeated Link Links = 4 [(tagger.tags) = "bson:\"links\""]; //`bson:"links"`
+  string CompanyBannerUrl = 5 [(tagger.tags) = "bson:\"company-banner\""]; //`bson:"company-banner"`
+  S3StorageSettings StorageSettings = 6 [(tagger.tags) = "bson:\"storage-settings\""]; //`bson:"storage-settings"`
 }
 
 message UserInfo {
-  string EmailAddress = 1; //`bson:"_id"`
-  SlickPermissionInfo Permissions = 2; //`bson:"permissions"`
-  string FullName = 3; //`bson:"fullName"`
-  string GivenName = 4; //`bson:"givenName"`
-  string FamilyName = 5; //`bson:"familyName"`
-  string AvatarUrl = 6; //`bson:"avatarUrl"`
-  string JobTitle = 7; //`bson:"title"`
-  string HashedPassword = 8; //`bson:"hashedPassword"`
-  Preferences UserPreferences = 9; //`bson:"preferences"`
-  string ApiToken = 10; //`bson:"apiToken"`
+  string EmailAddress = 1 [(tagger.tags) = "bson:\"_id\""]; //`bson:"_id"`
+  SlickPermissionInfo Permissions = 2 [(tagger.tags) = "bson:\"permissions\""]; //`bson:"permissions"`
+  string FullName = 3 [(tagger.tags) = "bson:\"fullName\""]; //`bson:"fullName"`
+  string GivenName = 4 [(tagger.tags) = "bson:\"givenName\""]; //`bson:"givenName"`
+  string FamilyName = 5 [(tagger.tags) = "bson:\"familyName\""]; //`bson:"familyName"`
+  string AvatarUrl = 6 [(tagger.tags) = "bson:\"avatarUrl\""]; //`bson:"avatarUrl"`
+  string JobTitle = 7 [(tagger.tags) = "bson:\"title\""]; //`bson:"title"`
+  string HashedPassword = 8 [(tagger.tags) = "bson:\"hashedPassword\""]; //`bson:"hashedPassword"`
+  Preferences UserPreferences = 9 [(tagger.tags) = "bson:\"preferences\""]; //`bson:"preferences"`
+  string ApiToken = 10 [(tagger.tags) = "bson:\"apiToken\""]; //`bson:"apiToken"`
 }
 
 message ApiTokenLoginRequest {
@@ -104,7 +106,7 @@ message PlainUserLoginRequest {
 }
 
 message LoginResponse {
-  bool Success = 1; //`json:"Success"`
+  bool Success = 1 [(tagger.tags) = "json:\"Success\""]; //`json:"Success"`
   string Token = 2; //
   UserInfo User = 3; //
 }
@@ -130,7 +132,7 @@ message AvailableCompanySettingsRequest {
 }
 
 message AvailableCompanySettings {
-  repeated CompanySettings Companies = 1; //`json:"Companies"`
+  repeated CompanySettings Companies = 1 [(tagger.tags) = "json:\"Companies\""]; //`json:"Companies"`
 }
 
 message AgentsRequest {
@@ -375,10 +377,10 @@ message FileUploadInfo {
 }
 
 message LinkListIdentity {
-  string Company = 1; //`bson:"company"`
-  string Project = 2; //`bson:"project"`
-  string EntityType = 3; //`bson:"type"`
-  string EntityId = 4; //`bson:"id"`
+  string Company = 1 [(tagger.tags) = "bson:\"company\""]; //`bson:"company"`
+  string Project = 2 [(tagger.tags) = "bson:\"project\""]; //`bson:"project"`
+  string EntityType = 3 [(tagger.tags) = "bson:\"type\""]; //`bson:"type"`
+  string EntityId = 4 [(tagger.tags) = "bson:\"id\""]; //`bson:"id"`
 }
 
 message LinkList {
@@ -391,149 +393,149 @@ message LinkUrl {
 }
 
 message LinkIdentity {
-  string Company = 1; //`bson:"company,omitempty"`
-  string Project = 2; //`bson:"project,omitempty"`
-  string EntityType = 3; //`bson:"type,omitempty"`
-  string EntityId = 4; //`bson:"id,omitempty"`
-  string Name = 5; //`bson:"name,omitempty"`
+  string Company = 1 [(tagger.tags) = "bson:\"company,omitempty\""]; //`bson:"company,omitempty"`
+  string Project = 2 [(tagger.tags) = "bson:\"project,omitempty\""]; //`bson:"project,omitempty"`
+  string EntityType = 3 [(tagger.tags) = "bson:\"type,omitempty\""]; //`bson:"type,omitempty"`
+  string EntityId = 4 [(tagger.tags) = "bson:\"id,omitempty\""]; //`bson:"id,omitempty"`
+  string Name = 5 [(tagger.tags) = "bson:\"name,omitempty\""]; //`bson:"name,omitempty"`
 }
 
 message Link {
-  LinkIdentity Id = 1; //`bson:"_id"`
-  string Type = 2; //`bson:"type"`
-  int32 Order = 3; //`bson:"order"`
-  string Url = 4; //`bson:"url"`
-  string Creator = 5; //`bson:"creator"`
-  SlickFile FileInfo = 6; //`bson:"fileinfo"`
-  google.protobuf.Timestamp Updated = 7; //`bson:"updated"`
+  LinkIdentity Id = 1 [(tagger.tags) = "bson:\"_id\""]; //`bson:"_id"`
+  string Type = 2 [(tagger.tags) = "bson:\"type\""]; //`bson:"type"`
+  int32 Order = 3 [(tagger.tags) = "bson:\"order\""]; //`bson:"order"`
+  string Url = 4 [(tagger.tags) = "bson:\"url\""]; //`bson:"url"`
+  string Creator = 5 [(tagger.tags) = "bson:\"creator\""]; //`bson:"creator"`
+  SlickFile FileInfo = 6 [(tagger.tags) = "bson:\"fileinfo\""]; //`bson:"fileinfo"`
+  google.protobuf.Timestamp Updated = 7 [(tagger.tags) = "bson:\"updated\""]; //`bson:"updated"`
 }
 
 message SlickFile {
-  string Path = 1; //`bson:"path"`
-  string FileName = 2; //`bson:"filename"`
-  string ContentType = 3; //`bson:"contenttype"`
-  int64 Size = 4; //`bson:"size"`
+  string Path = 1 [(tagger.tags) = "bson:\"path\""]; //`bson:"path"`
+  string FileName = 2 [(tagger.tags) = "bson:\"filename\""]; //`bson:"filename"`
+  string ContentType = 3 [(tagger.tags) = "bson:\"contenttype\""]; //`bson:"contenttype"`
+  int64 Size = 4 [(tagger.tags) = "bson:\"size\""]; //`bson:"size"`
 }
 
 message ProjectIdentity {
-  string Company = 1; //`bson:"company"`
-  string Name = 2; //`bson:"name"`
+  string Company = 1 [(tagger.tags) = "bson:\"company\""]; //`bson:"company"`
+  string Name = 2 [(tagger.tags) = "bson:\"name,omitempty\""]; //`bson:"name"`
 }
 
 message Project {
-  ProjectIdentity Id = 1; //`bson:"_id"`
-  repeated Link Links = 2; //`bson:"links"`
-  repeated string AutomationTools = 3; //`bson:"automationTools"`
-  repeated string Tags = 4; //`bson:"tags"`
-  map<string, string> Attributes = 5; //`bson:"attributes"`
-  google.protobuf.Timestamp LastUpdated = 6; //`bson:"lastUpdated"`
+  ProjectIdentity Id = 1 [(tagger.tags) = "bson:\"_id\""]; //`bson:"_id"`
+  repeated Link Links = 2 [(tagger.tags) = "bson:\"links\""]; //`bson:"links"`
+  repeated string AutomationTools = 3 [(tagger.tags) = "bson:\"automationTools\""]; //`bson:"automationTools"`
+  repeated string Tags = 4 [(tagger.tags) = "bson:\"tags\""]; //`bson:"tags"`
+  map<string, string> Attributes = 5 [(tagger.tags) = "bson:\"attributes\""]; //`bson:"attributes"`
+  google.protobuf.Timestamp LastUpdated = 6 [(tagger.tags) = "bson:\"lastUpdated\""]; //`bson:"lastUpdated"`
 }
 
 message ComponentIdentity {
-  ProjectIdentity Project = 1; //`bson:"project"`
-  string Name = 2; //`bson:"name"`
+  ProjectIdentity Project = 1 [(tagger.tags) = "bson:\"project\""]; //`bson:"project"`
+  string Name = 2 [(tagger.tags) = "bson:\"name\""]; //`bson:"name"`
 }
 
 message Component{
-  ComponentIdentity Id = 1; //`bson:"_id"`
-  string Description = 2; //
+  ComponentIdentity Id = 1 [(tagger.tags) = "bson:\"_id\""]; //`bson:"_id"`
+  string Description = 2 [(tagger.tags) = "bson:\"description\""]; //
 }
 
 message Feature {
-  bytes Id = 1; //`bson:"_id,omitempty"`
-  string Name = 2; //`bson:"name"`
-  bytes ComponentId= 3; //`bson:"componentId,omitempty"` 
-  string ProjectId= 4; //`bson:"_id,omitempty"`
+  bytes Id = 1 [(tagger.tags) = "bson:\"_id,omitempty\""]; //`bson:"_id,omitempty"`
+  string Name = 2 [(tagger.tags) = "bson:\"name\""]; //`bson:"name"`
+  bytes ComponentId = 3 [(tagger.tags) = "bson:\"componentId,omitempty\""]; //`bson:"componentId,omitempty"`
+  string ProjectId = 4 [(tagger.tags) = "bson:\"_id,omitempty\""]; //`bson:"_id,omitempty"`
 }
 
 message Testcase{
-  bytes Id = 1; //`bson:"_id,omitempty"`
-  string Name = 2; //`bson:"name"`
-  string AutomationKey = 3; //`bson:"automationId"`
-  string AutomationTool = 4; //`bson:"automationTool"`
-  bytes ComponentId = 5; //`bson:"componentId,omitempty"`
-  bool Deleted = 6; //`bson:"bson:"deleted"`
-  int32 ImportanceRating = 7; //`bson:"bson:"importanceRating"`
-  repeated string InactiveNotes = 8; //`bson:"inactiveNotes"`
-  string ProjectId = 9; //`bson:"_id,omitempty"`
-  int32 StabilityRating = 10; //`bson:"stabilityRating"`
-  repeated string Steps = 11; //`bson:"steps"`
-  repeated string Tags = 12; //`bson:"tags"`
+  bytes Id = 1 [(tagger.tags) = "bson:\"_id,omitempty\""]; //`bson:"_id,omitempty"`
+  string Name = 2 [(tagger.tags) = "bson:\"name\""]; //`bson:"name"`
+  string AutomationKey = 3 [(tagger.tags) = "bson:\"automationId\""]; //`bson:"automationId"`
+  string AutomationTool = 4 [(tagger.tags) = "bson:\"automationTool\""]; //`bson:"automationTool"`
+  bytes ComponentId = 5 [(tagger.tags) = "bson:\"componentId,omitempty\""]; //`bson:"componentId,omitempty"`
+  bool Deleted = 6 [(tagger.tags) = "bson:\"deleted\""]; //`bson:"bson:"deleted"`
+  int32 ImportanceRating = 7 [(tagger.tags) = "bson:\"importanceRating\""]; //`bson:"bson:"importanceRating"`
+  repeated string InactiveNotes = 8 [(tagger.tags) = "bson:\"inactiveNotes\""]; //`bson:"inactiveNotes"`
+  string ProjectId = 9 [(tagger.tags) = "bson:\"projectId,omitempty\""]; //`bson:"_id,omitempty"`
+  int32 StabilityRating = 10 [(tagger.tags) = "bson:\"stabilityRating\""]; //`bson:"stabilityRating"`
+  repeated string Steps = 11 [(tagger.tags) = "bson:\"steps\""]; //`bson:"steps"`
+  repeated string Tags = 12 [(tagger.tags) = "bson:\"tags\""]; //`bson:"tags"`
 }
 
 message Testplans{
-  bytes Id = 1; //`bson:"_id,omitempty"`
-  string Name = 2; //`bson:"name"`
+  bytes Id = 1 [(tagger.tags) = "bson:\"_id,omitempty\""]; //`bson:"_id,omitempty"`
+  string Name = 2 [(tagger.tags) = "bson:\"name\""]; //`bson:"name"`
 }
 
 message Testruns{
-  bytes Id = 1; //`bson:"_id,omitempty"`
-  string Name = 2; //`bson:"name"`
-  string ProjectId = 3; //`bson:"_id,omitempty"`
-  string Build = 4; //`bson:"build"`
-  google.protobuf.Timestamp RunStarted = 5; //`bson:"runStarted"`
-  google.protobuf.Timestamp RunFinished = 6; //`bson:"runFinished"`
-  string State = 7; //`bson:"state"`
-  string TestplanId = 8; //`bson:"_id,omitempty"`
+  bytes Id = 1 [(tagger.tags) = "bson:\"_id,omitempty\""]; //`bson:"_id,omitempty"`
+  string Name = 2 [(tagger.tags) = "bson:\"name\""]; //`bson:"name"`
+  string ProjectId = 3 [(tagger.tags) = "bson:\"_id,omitempty\""]; //`bson:"_id,omitempty"`
+  string Build = 4 [(tagger.tags) = "bson:\"build\""]; //`bson:"build"`
+  google.protobuf.Timestamp RunStarted = 5 [(tagger.tags) = "bson:\"runStarted\""]; //`bson:"runStarted"`
+  google.protobuf.Timestamp RunFinished = 6 [(tagger.tags) = "bson:\"runFinished\""]; //`bson:"runFinished"`
+  string State = 7 [(tagger.tags) = "bson:\"state\""]; //`bson:"state"`
+  string TestplanId = 8 [(tagger.tags) = "bson:\"_id,omitempty\""]; //`bson:"_id,omitempty"`
 }
 
 message AgentId {
-  string Company = 1; //`bson:"company"`
-  string Name = 2; //`bson:"name"`
+  string Company = 1 [(tagger.tags) = "bson:\"company\""]; //`bson:"company"`
+  string Name = 2 [(tagger.tags) = "bson:\"name\""]; //`bson:"name"`
 }
 
 message AgentCurrentTest {
-  string Name = 1; //`bson:"name"`
-  string Url = 2; //`bson:"url"`
-  string AutomationId = 3; //`bson:"automationId"`
+  string Name = 1 [(tagger.tags) = "bson:\"name\""]; //`bson:"name"`
+  string Url = 2 [(tagger.tags) = "bson:\"url\""]; //`bson:"url"`
+  string AutomationId = 3 [(tagger.tags) = "bson:\"automationId\""]; //`bson:"automationId"`
 }
 
 message ProjectReleaseBuildInfo {
-  string Project = 1; //`bson:"project"`
-  string Release = 2; //`bson:"release"`
-  string Build = 3; //`bson:"build"`
+  string Project = 1 [(tagger.tags) = "bson:\"project\""]; //`bson:"project"`
+  string Release = 2 [(tagger.tags) = "bson:\"release\""]; //`bson:"release"`
+  string Build = 3 [(tagger.tags) = "bson:\"build\""]; //`bson:"build"`
 }
 
 message AgentQueuedAction {
-  AgentId Id = 1; //`bson:"_id"`
-  string Action = 2; //`bson:"action"`
-  string ActionParameter = 3; //`bson:"parameter"`
+  AgentId Id = 1 [(tagger.tags) = "bson:\"_id\""]; //`bson:"_id"`
+  string Action = 2 [(tagger.tags) = "bson:\"action\""]; //`bson:"action"`
+  string ActionParameter = 3 [(tagger.tags) = "bson:\"parameter\""]; //`bson:"parameter"`
 }
 
 message AgentRunStatus {
-  AgentId Id = 1; //`bson:"_id"`
-  string RunStatus = 2; //`bson:"status"`
+  AgentId Id = 1 [(tagger.tags) = "bson:\"_id\""]; //`bson:"_id"`
+  string RunStatus = 2 [(tagger.tags) = "bson:\"status\""]; //`bson:"status"`
 }
 
 message AgentStatusUpdate {
-  AgentId Id = 1; //`bson:"_id"`
-  AgentStatus Status = 2; //`bson:"status"`
+  AgentId Id = 1 [(tagger.tags) = "bson:\"_id\""]; //`bson:"_id"`
+  AgentStatus Status = 2 [(tagger.tags) = "bson:\"status\""]; //`bson:"status"`
 }
 
 message AgentStatus {
-  string RunStatus = 3; //`bson:"runStatus"`
-  repeated string Groups = 4; //`bson:"groups"`
-  AgentCurrentTest CurrentTest = 5; //`bson:"testcase"`
-  repeated string Provides = 7; //`bson:"provides"`
-  repeated string BrokenProvides = 8; //`bson:"brokenProvides"`
-  repeated ProjectReleaseBuildInfo Projects = 9; //`bson:"projects"`
-  string Action = 10; //`bson:"action"`
-  string ActionParameter = 11; //`bson:"actionParameter"`
-  string Hardware = 12; //`bson:"hardware"`
-  string IP = 13; //`bson:"ip"`
-  bool ShouldExit = 14; //`bson:"shouldExit"`
-  map<string, string> Versions = 15; //`bson:"versions"`
-  map<string, string> Attributes = 16; //`bson:"attributes"`
-  map<string, string> RequiredAttributes = 18; //`bson:"requiredAttributes"`
+  string RunStatus = 3 [(tagger.tags) = "bson:\"runStatus\""]; //`bson:"runStatus"`
+  repeated string Groups = 4 [(tagger.tags) = "bson:\"groups\""]; //`bson:"groups"`
+  AgentCurrentTest CurrentTest = 5 [(tagger.tags) = "bson:\"testcase\""]; //`bson:"testcase"`
+  repeated string Provides = 7 [(tagger.tags) = "bson:\"provides\""]; //`bson:"provides"`
+  repeated string BrokenProvides = 8 [(tagger.tags) = "bson:\"brokenProvides\""]; //`bson:"brokenProvides"`
+  repeated ProjectReleaseBuildInfo Projects = 9 [(tagger.tags) = "bson:\"projects\""]; //`bson:"projects"`
+  string Action = 10 [(tagger.tags) = "bson:\"action\""]; //`bson:"action"`
+  string ActionParameter = 11 [(tagger.tags) = "bson:\"actionParameter\""]; //`bson:"actionParameter"`
+  string Hardware = 12 [(tagger.tags) = "bson:\"hardware\""]; //`bson:"hardware"`
+  string IP = 13 [(tagger.tags) = "bson:\"ip\""]; //`bson:"ip"`
+  bool ShouldExit = 14 [(tagger.tags) = "bson:\"shouldExit\""]; //`bson:"shouldExit"`
+  map<string, string> Versions = 15 [(tagger.tags) = "bson:\"versions\""]; //`bson:"versions"`
+  map<string, string> Attributes = 16 [(tagger.tags) = "bson:\"attributes\""]; //`bson:"attributes"`
+  map<string, string> RequiredAttributes = 18 [(tagger.tags) = "bson:\"requiredAttributes\""]; //`bson:"requiredAttributes"`
 }
 
 message Agent {
-    AgentId Id = 1; //`bson:"_id"`
-    string GivenRunStatus = 2; //`bson:"givenRunStatus"`
-    string GivenAction = 3; //`bson:"givenAction"`
-    string GivenActionParameter = 4; //`bson:"givenActionParameter"`
-    google.protobuf.Timestamp LastCheckin = 5; //`bson:"checkIn"`
-    google.protobuf.Timestamp LastScreenshotUpdate = 6; //`bson:"screenshotUpdate"`
-    AgentStatus status = 7; //`bson:"status"`
-    string Image = 8; //`bson:"-"`
+    AgentId Id = 1 [(tagger.tags) = "bson:\"_id\""]; //`bson:"_id"`
+    string GivenRunStatus = 2 [(tagger.tags) = "bson:\"givenRunStatus\""]; //`bson:"givenRunStatus"`
+    string GivenAction = 3 [(tagger.tags) = "bson:\"givenAction\""]; //`bson:"givenAction"`
+    string GivenActionParameter = 4 [(tagger.tags) = "bson:\"givenActionParameter\""]; //`bson:"givenActionParameter"`
+    google.protobuf.Timestamp LastCheckin = 5 [(tagger.tags) = "bson:\"checkIn\""]; //`bson:"checkIn"`
+    google.protobuf.Timestamp LastScreenshotUpdate = 6 [(tagger.tags) = "bson:\"screenshotUpdate\""]; //`bson:"screenshotUpdate"`
+    AgentStatus status = 7 [(tagger.tags) = "bson:\"status\""]; //`bson:"status"`
+    string Image = 8 [(tagger.tags) = "bson:\"-\""]; //`bson:"-"`
 }

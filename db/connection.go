@@ -1,21 +1,21 @@
 package db
 
 import (
-	"github.com/globalsign/mgo"
-	"github.com/globalsign/mgo/bson"
-	"github.com/slickqa/slick/slickconfig"
+	"context"
 	"crypto/tls"
 	"crypto/x509"
-	"io/ioutil"
 	"github.com/rs/zerolog/log"
+	"github.com/slickqa/slick/slickconfig"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+	"io/ioutil"
 )
 
 var (
-	MongoSession *mgo.Session
+	Client *mongo.Client
 )
 
 func InitializeMongoConnection() error {
-	bson.SetJSONTagFallback(true)
 	var err error
 	logger := log.With().Str("loggerName", "db.connection.init").Logger()
 	logger.Debug().Str("url", slickconfig.Configuration.Mongo.URL).Bool("useTLS", slickconfig.Configuration.Mongo.UseTLS).Msg("Connecting to mongo database")
@@ -36,30 +36,34 @@ func InitializeMongoConnection() error {
 			tlsConfig.InsecureSkipVerify = true
 		}
 
-		dialInfo, err := mgo.ParseURL(slickconfig.Configuration.Mongo.URL)
-		if err == nil {
-			MongoSession, err = mgo.DialWithInfo(dialInfo)
-			if err != nil {
-				logger.Fatal().AnErr("error", err).Str("url", slickconfig.Configuration.Mongo.URL).Msg("Error connecting to mongodb!")
-				return err
-			}
-		} else {
+		dialInfo := options.Client().ApplyURI(slickconfig.Configuration.Mongo.URL)
+		dialInfo.SetTLSConfig(tlsConfig)
+		Client, err = mongo.NewClient(dialInfo)
+		if err != nil {
 			logger.Fatal().AnErr("error", err).Str("url", slickconfig.Configuration.Mongo.URL).Msg("Unable to parse URL and connect to mongo!")
 			return err
 		}
-
 	} else {
-		MongoSession, err = mgo.Dial(slickconfig.Configuration.Mongo.URL)
+		dialInfo := options.Client().ApplyURI(slickconfig.Configuration.Mongo.URL)
+		Client, err = mongo.NewClient(dialInfo)
 		if err != nil {
-			logger.Fatal().AnErr("error", err).Str("url", slickconfig.Configuration.Mongo.URL).Msg("Error connecting to mongodb!")
+			logger.Fatal().AnErr("error", err).Str("url", slickconfig.Configuration.Mongo.URL).Msg("Error creating client for mongodb!")
 			return err
 		}
+	}
+	err = Client.Connect(context.TODO())
+	if err != nil {
+		logger.Fatal().AnErr("error", err).Str("url", slickconfig.Configuration.Mongo.URL).Msg("Error connecting to mongodb!")
 	}
 	return nil
 }
 
 func CloseMongoConnection() {
-	if MongoSession != nil {
-		MongoSession.Close()
+	if Client != nil {
+		err := Client.Disconnect(context.Background())
+		if err != nil {
+			logger := log.With().Str("loggerName", "db.connection.close").Logger()
+			logger.Fatal().AnErr("error", err).Msg("Error closing to mongodb connection")
+		}
 	}
 }

@@ -1,10 +1,13 @@
 package db
 
 import (
-	"github.com/slickqa/slick/slickqa"
-	"github.com/slickqa/slick/slickconfig"
+	"context"
 	"errors"
+	"fmt"
 	"github.com/rs/zerolog/log"
+	"github.com/slickqa/slick/slickconfig"
+	"github.com/slickqa/slick/slickqa"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 const (
@@ -36,33 +39,39 @@ func EmptyCompanySettingsFor(name string) *slickqa.CompanySettings {
 }
 
 func (u *companySettingsType) Find(CompanyName string) (*slickqa.CompanySettings, error) {
-	mongo := MongoSession.Copy()
-	defer mongo.Close()
 	result := slickqa.CompanySettings{}
-	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(CompanySettingsCollectionName).Find(companyIdQuery{CompanyName: CompanyName}).One(&result)
+	findResult := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(CompanySettingsCollectionName).FindOne(context.TODO(), companyIdQuery{CompanyName: CompanyName})
+	if findResult == nil || findResult.Err() != nil {
+		return nil, fmt.Errorf("no company settings for %s found", CompanyName)
+	}
+	err := findResult.Decode(&result)
 	return &result, err
 }
 
 func (u *companySettingsType) FindAll() ([]*slickqa.CompanySettings, error) {
-	mongo := MongoSession.Copy()
-	defer mongo.Close()
 	result := make([]*slickqa.CompanySettings, 0)
-	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(CompanySettingsCollectionName).Find(nil).All(&result)
+	cursor, err := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(CompanySettingsCollectionName).Find(context.TODO(), bson.M{})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(context.TODO())
+	err = cursor.All(context.TODO(), &result)
 	return result, err
 }
 
 func (u *companySettingsType) FindAllIn(companies ...string) ([]*slickqa.CompanySettings, error) {
-	mongo := MongoSession.Copy()
-	defer mongo.Close()
 	result := make([]*slickqa.CompanySettings, 0)
-	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(CompanySettingsCollectionName).Find(companyListQuery{CompanyName: inStringList{companies}}).All(&result)
+	cursor, err := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(CompanySettingsCollectionName).Find(context.TODO(), companyListQuery{CompanyName: inStringList{companies}})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(context.TODO())
+	err = cursor.All(context.TODO(), &result)
 	return result, err
 }
 
 func (u *companySettingsType) AddCompanySettings(companySettings *slickqa.CompanySettings) error {
-	mongo := MongoSession.Copy()
-	defer mongo.Close()
-	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(CompanySettingsCollectionName).Insert(companySettings)
+	_, err := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(CompanySettingsCollectionName).InsertOne(context.TODO(), companySettings)
 	return err
 }
 
@@ -72,8 +81,6 @@ func (u *companySettingsType) UpdateCompanySettings(companyName string, companyS
 		logger.Error().Str("providedCompanyName", companyName).Str("updatedCompanySettingsCompanyName", companySettings.CompanyName).Msg("Request to update company with a name that is different.  Can't change company name!")
 		return errors.New("not allowed to change company name in settings")
 	}
-	mongo := MongoSession.Copy()
-	defer mongo.Close()
-	err := mongo.DB(slickconfig.Configuration.Mongo.Database).C(CompanySettingsCollectionName).Update(companyIdQuery{CompanyName:companyName}, companySettings)
+	_, err := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(CompanySettingsCollectionName).ReplaceOne(context.TODO(), companyIdQuery{CompanyName:companyName}, companySettings)
 	return err
 }
