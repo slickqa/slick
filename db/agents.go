@@ -88,7 +88,7 @@ func (a agentsType) GetAgent(id *slickqa.AgentId) (*slickqa.Agent, error) {
 }
 
 func (a agentsType) UpdateGivenRunStatus(id *slickqa.AgentId, runStatus string) (*slickqa.Agent, error) {
-	_, err := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(AgentsCollectionName).UpdateOne(context.TODO(), bson.M{"_id": id}, bson.M{"givenRunStatus": runStatus}, options.Update().SetUpsert(true))
+	_, err := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(AgentsCollectionName).UpdateOne(context.TODO(), bson.M{"_id": id}, bson.M{"$set": bson.M{"givenRunStatus": runStatus}}, options.Update().SetUpsert(true))
 
 	if err != nil {
 		return nil, err
@@ -98,7 +98,7 @@ func (a agentsType) UpdateGivenRunStatus(id *slickqa.AgentId, runStatus string) 
 }
 
 func (a agentsType) UpdateGivenAction(id *slickqa.AgentId, action string, actionParameter string) (*slickqa.Agent, error) {
-	_, err := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(AgentsCollectionName).UpdateOne(context.TODO(), bson.M{"_id": id}, bson.M{"givenAction": action, "givenActionParameter": actionParameter}, options.Update().SetUpsert(true))
+	_, err := Client.Database(slickconfig.Configuration.Mongo.Database).Collection(AgentsCollectionName).UpdateOne(context.TODO(), bson.M{"_id": id}, bson.M{"$set": bson.M{"givenAction": action, "givenActionParameter": actionParameter}}, options.Update().SetUpsert(true))
 
 	if err != nil {
 		return nil, err
