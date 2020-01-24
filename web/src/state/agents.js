@@ -125,18 +125,20 @@ export default class AgentsState {
           }
           companiesTree[company][agent.status.RunStatus]++;
           companiesTree[company]["Total"]++;
-          agent.status.Projects.forEach((project) => {
-            if (!companiesTree[company]["Projects"][project.Project]) {
-              companiesTree[company]["Projects"][project.Project] = {
-                "Total": 0,
+          if (agent.status.Projects) {
+            agent.status.Projects.forEach((project) => {
+              if (!companiesTree[company]["Projects"][project.Project]) {
+                companiesTree[company]["Projects"][project.Project] = {
+                  "Total": 0,
+                }
               }
-            }
-            if (!companiesTree[company]["Projects"][project.Project][agent.status.RunStatus]) {
-              companiesTree[company]["Projects"][project.Project][agent.status.RunStatus] = 0;
-            }
-            companiesTree[company]["Projects"][project.Project][agent.status.RunStatus]++;
-            companiesTree[company]["Projects"][project.Project]["Total"]++;
-          });
+              if (!companiesTree[company]["Projects"][project.Project][agent.status.RunStatus]) {
+                companiesTree[company]["Projects"][project.Project][agent.status.RunStatus] = 0;
+              }
+              companiesTree[company]["Projects"][project.Project][agent.status.RunStatus]++;
+              companiesTree[company]["Projects"][project.Project]["Total"]++;
+            });
+          }
         }
       });
     });
